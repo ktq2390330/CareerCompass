@@ -1,0 +1,8 @@
+from django.urls import path
+from . import views
+
+app_name = 'CCapp'
+
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index')
+]
