@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+/* navigation */
+
+.navigation {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navbar-nav li {
+    display: inline-block;
+    margin-right: 15px;
+}
