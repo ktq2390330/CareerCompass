@@ -58,17 +58,17 @@ class Profile(models.Model):
     uOffer=models.CharField(max_length=255,verbose_name="内定先")
     jOffer_l=models.CharField(max_length=255,verbose_name="応募求人リスト")
 
-    class Meta:
-        db_table="profile"
-        verbose_name="プロフィール"
+#     class Meta:
+#         db_table="profile"
+#         verbose_name="プロフィール"
 
 class Assessment(models.Model):
     uId=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID")
     QA_l=models.TextField(verbose_name="自己分析リスト")
 
-    class Meta:
-        db_table='assessment'
-        verbose_name='自己分析'
+#     class Meta:
+#         db_table='assessment'
+#         verbose_name='自己分析'
 
 class Corporation(models.Model):
     cId=models.IntegerField(primary_key=True,verbose_name="法人番号")
