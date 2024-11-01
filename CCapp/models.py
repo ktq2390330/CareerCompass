@@ -45,6 +45,8 @@ class User(Base):
 class Profile(models.Model):
     uId=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID")
     nationality=models.CharField(max_length=255,verbose_name="国籍")
+    birth=models.DateField(verbose_name="生年月日")
+    gender=models.CharField(max_length=15,verbose_name="性別")
     graduation=models.IntegerField(verbose_name="卒業年度")
     uSchool=models.CharField(max_length=255,verbose_name="学校名")
     sClass=models.IntegerField(verbose_name="学校区分")
