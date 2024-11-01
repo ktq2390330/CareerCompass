@@ -19,67 +19,97 @@
     </head>
     <body>
         <!-- header -->
-         {% comment %} 元々の名前　header class = masthead {% endcomment %}
         <header class="header">
             <!-- brand name -->
             <div id="brand">
-                <a class="brand" href="#">Career Compass</a>
+                <a class="brand" href="#"><i>Career
+                    <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
             </div>
+
+            <!-- ナビゲーション下の実線 -->
+            <hr class="header-line">
+
             <!-- Navigation-->
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-
-                    {% comment %} ここに線を入れたい {% endcomment %}
-                    
-                    <div class="navigation">
-                        <ul class="nav navbar-nav">
-                            <li><a href="#home">トップ</a></li>
-                            <li><a href="#about">プロフィール</a></li>
-                            <li><a href="#services">絞り込み検索</a></li>
-                            <li><a href="#self-reflection">自問自答</a></li>
-                            <li><a href="#overview">サービス概要</a></li>
-                            <li><a href="#contact">お問い合わせ</a></li>
-                            <li><a href="#logout">ログアウト</a></li>
-                        </ul>
-                    </div>
-
-                </div>
+            <nav class="navigation">
+                <ul class="navigation-button">
+                    <li><a href="#home">トップ</a></li>
+                    <li><a href="#about">プロフィール</a></li>
+                    <li><a href="#services">絞り込み検索</a></li>
+                    <li><a href="#self-reflection">自問自答</a></li>
+                    <li><a href="#overview">サービス概要</a></li>
+                    <li><a href="#contact">お問い合わせ</a></li>
+                    <li><a href="#logout">ログアウト</a></li>
+                </ul>
             </nav>
         </header>
 
         <!-- search-box -->
+        <div class="container">
+                <div class="search-field">
+                    <!-- 検索バー-->
+                    <form action="/search" method="GET">
+                        <input type="text" name="query" placeholder="企業名や業種で探す" required>
+                        <button type="submit">検索</button>
+                    </form>
 
-        <div class="main-fluid">
-            <div class="search-fluid">
-                <!-- 検索バー-->
-                <form action="/search" method="GET">
-                    <input type="text" name="query" placeholder="企業名や業種で探す" required>
-                    <button type="submit">検索</button>
-                </form>
+                    <!-- サーチフィールド内の点線 -->
+                    <hr class="search-field-line">
 
-                <!-- pull down menu -->
-                <form action="/search" method"GET">
-                    <label for="indutry">業種:</label>
-                    <select id="indutry" name="indutry">
-                        <option value="it">IT・通信</option>
-            </div>    
+                    <!-- pull down menu -->
+                    <form action="/search" method"GET">
+                        <label for="industry">業種:</label>
+                        <select id="industry" name="industry">
+                            <option value="it">IT・通信</option>
+                            <option value="finance">金融</option>
+                            <option value="manufacturing">製造業</option>
+                            <option value="service">サービス業</option>
+                        </select>
+                    
+                        <label for="jobType">職種:</label>
+                        <select id="jobType" name="jobType">
+                            <option value="developer">開発者</option>
+                            <option value="designer">デザイナー</option>
+                            <option value="manager">マネージャー</option>
+                            <option value="sales">営業</option>
+                        </select>
+                    
+                        <label for="area">エリア:</label>
+                        <select id="area" name="area">
+                            <option value="tokyo">東京</option>
+                            <option value="osaka">大阪</option>
+                            <option value="nagoya">名古屋</option>
+                            <option value="fukuoka">福岡</option>
+                        </select>
+                    
+                        <button type="submit">検索</button>
+
+                    </form>
+
+                    <!-- 詳細検索遷移ボタン -->
+                    <div class="refine-search">
+                        <a href="#">▷より詳細な条件で検索</a>
+                    </div>
+
+                </div>
         </div>
-
         
         <!-- Footer-->
         <footer class="footer bg-light">
             <div class="container">
+                
+                <!-- copyright -->
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Career Compass 2024. All Rights Reserved.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">copyright &copy; Career Compass</p>
                     </div>
                 </div>
+
             </div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        {% comment %} <script src="js/scripts.js"></script> {% endcomment %}
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
