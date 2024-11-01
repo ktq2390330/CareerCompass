@@ -17,7 +17,6 @@ h1 {
 
 .container {
     width: 300px;
-    padding: 20px;
     margin-top: 20px;
     text-align: center;
 }
@@ -40,7 +39,7 @@ button {
     width: 150px;
     padding: 6px; 
     margin-top: 10px;
-    border: 1px solid #ddd;
+    border: 1px;
     border-radius: 5px;
     cursor: pointer;
     background-color: transparent;
