@@ -6,6 +6,16 @@ from .forms import LoginForm
 
 # TemplateViewをインポート
 from django.views.generic.base import TemplateView
+# FormViewをインポート
+from django.views.generic import FormView
+# django.urlsからreverse_lazyをインポート
+from django.urls import reverse_lazy
+# formsモジュールからContactFormをインポート
+from .forms import ContactForm
+# django.contribからmesseagesをインポート
+from django.contrib import messages
+# django.core.mailモジュールからEmailMessageをインポート
+from django.core.mail import EmailMessage
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -33,3 +43,30 @@ class LoginView(TemplateView):
             except User.DoesNotExist:
                 messages.error(request, "ユーザーが存在しません。")
         return self.render_to_response({"form": form})
+    
+class ContactView(FormView):
+    template_name ='contact.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('CCapp:contact')
+    
+    def form_valid(self, form):
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        title = form.cleaned_data['message']
+        subject = 'お問い合わせ: {}'.format(title)
+        message = \
+            'お名前: {0}\nメールアドレス: {1}\n お問い合わせ内容: \n{2}' \
+            .format(name, email, message)
+        # メールの送信元のメールアドレス
+        from_email = 'admin@exxxx.com'
+        # 送信先のメールアドレス
+        to_list = ['admin@exxx.com']
+        message = EmailMessage(subject=subject,
+                               body=message,
+                               from_email=from_email,
+                               to=to_list,
+                               )
+        message.send()
+        message.success(
+            self.request, 'お問い合わせは正常に送信されました。')
+        return super().form_valid(form)
