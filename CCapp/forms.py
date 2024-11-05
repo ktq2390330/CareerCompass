@@ -9,4 +9,4 @@ class ContactForm(forms.Form):
     email = forms.EmailField(label='メールアドレス')
     message = forms.CharField(label='お問い合わせ内容', widget=forms.Textarea)
 
-    def __init__(self, *args, **kwargs):
+    # def __init__(self, *args, **kwargs):
