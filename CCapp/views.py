@@ -18,7 +18,7 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 
 class IndexView(TemplateView):
-    template_name = 'index.html'
+    template_name = 'top.html'
 
 class LoginView(TemplateView):
     template_name = 'login.html'
