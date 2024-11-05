@@ -44,29 +44,32 @@ class LoginView(TemplateView):
                 messages.error(request, "ユーザーが存在しません。")
         return self.render_to_response({"form": form})
     
-class ContactView(FormView):
-    template_name ='contact.html'
-    form_class = ContactForm
-    success_url = reverse_lazy('CCapp:contact')
-    
-    def form_valid(self, form):
-        name = form.cleaned_data['name']
-        email = form.cleaned_data['email']
-        title = form.cleaned_data['message']
-        subject = 'お問い合わせ: {}'.format(title)
-        message = \
-            'お名前: {0}\nメールアドレス: {1}\n お問い合わせ内容: \n{2}' \
+def contact_view(request):
+    if request.method == 'GET':
+        form = ContactForm()
+        return render(request, "contact.html", {'form': form})
+    else:
+        form = ContactForm(redirect.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            messages = form.cleaned_data['message']
+            # メールのタイトルの書式を設定
+            subject = 'お問い合わせ : {}'.format(title)
+            # フォームの入力データの書式を設定
+            message = \
+             '送信者名: {0}\nメールアドレス: {1}\n メッセージ:\n{2}' \
             .format(name, email, message)
-        # メールの送信元のメールアドレス
-        from_email = 'admin@exxxx.com'
-        # 送信先のメールアドレス
-        to_list = ['admin@exxx.com']
-        message = EmailMessage(subject=subject,
-                               body=message,
-                               from_email=from_email,
-                               to=to_list,
-                               )
-        message.send()
-        message.success(
-            self.request, 'お問い合わせは正常に送信されました。')
-        return super().form_valid(form)
+            # メールの送信元のアドレス
+            from_email = 'xxxxxx@gamil.com'
+            # 送信先のメールアドレス
+            to_list = ['xxxxxx@gamil.com']
+            # EmailMessageオブジェクトを生成
+            message = EmailMessage(subject=subject,
+                                   body=message,
+                                   from_email=from_email,
+                                   to=to_list,)
+            message.send()
+            messages.success(
+                request, 'お問い合わせは正常に送信されました。')
+            return redirect('CCapp:contact')
