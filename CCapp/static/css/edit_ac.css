@@ -32,6 +32,7 @@ td {
     padding: 10px;
     text-align: left;
     border-radius: 5px;
+
 }
 
 .form-group {
@@ -64,12 +65,13 @@ small {
 }
 
 td input {
-    text-align: left
+    text-align: left;
     box-sizing: border-box;
     border-radius: 5px; /* 角を丸く */
     border: 1px solid;
     padding: 5px;
     font-size: 1em;
+    margin-bottom: 20px;
 }
 
 #Birth_Year, #Birth_Month, #Birth_Day {
