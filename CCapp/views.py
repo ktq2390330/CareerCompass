@@ -50,6 +50,7 @@ class LoginView(TemplateView):
                 messages.error(request, "ユーザーが存在しません。")
         return self.render_to_response({"form": form})
     
+<<<<<<< HEAD
 class ContactView(FormView):
     template_name ='contact.html'
     form_class = ContactForm
@@ -127,3 +128,46 @@ class UserUpdateView(FormView):
         # フォームが無効な場合、エラーメッセージを表示
         messages.error(self.request, '入力内容に誤りがあります。')
         return super().form_invalid(form)
+=======
+def contact_view(request):
+    if request.method == 'GET':
+        form = ContactForm()
+        return render(request, "contact.html", {'form': form})
+    else:
+        form = ContactForm(redirect.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            messages = form.cleaned_data['message']
+            # メールのタイトルの書式を設定
+            subject = 'お問い合わせ : {}'.format(title)
+            # フォームの入力データの書式を設定
+            message = \
+             '送信者名: {0}\nメールアドレス: {1}\n メッセージ:\n{2}' \
+            .format(name, email, message)
+            # メールの送信元のアドレス
+            from_email = 'xxxxxx@gamil.com'
+            # 送信先のメールアドレス
+            to_list = ['xxxxxx@gamil.com']
+            # EmailMessageオブジェクトを生成
+            message = EmailMessage(subject=subject,
+                                   body=message,
+                                   from_email=from_email,
+                                   to=to_list,)
+            message.send()
+            messages.success(
+                request, 'お問い合わせは正常に送信されました。')
+            return redirect('CCapp:contact')
+        
+class SigninView(TemplateView):
+    template_name = 'signin.html'
+
+class LogoutView(TemplateView):
+    template_name = 'logout.html'
+
+class Delete_acView(TemplateView):
+    template_name = 'delete_ac.html'
+
+class Edit_acView(TemplateView):
+    template_name = 'edit_ac.html'
+>>>>>>> 7f0c4c3a17c401a82d70ac5d5064d7d19591c8d7
