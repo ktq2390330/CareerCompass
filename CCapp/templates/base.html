@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <!-- title -->
-        <title>Career Compass</title>
+        <title>{% block title %} Career Compass {% endblock %}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href={% static "assets/favicon.ico" %} />
         <!-- Bootstrap icons-->
@@ -16,6 +16,10 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href={% static 'css/base.css' %} rel="stylesheet" />
+
+        <!-- 追加のcssを読み込むためのブロック -->
+        {% block head %}{% endblock %}
+
     </head>
     <body>
         <!-- header -->
@@ -32,7 +36,7 @@
             <!-- Navigation-->
             <nav class="navigation">
                 <ul class="navigation-button">
-                    <li><a href="#home">トップ</a></li>
+                    <li><a href="#top">トップ</a></li>
                     <li><a href="#about">プロフィール</a></li>
                     <li><a href="#services">絞り込み検索</a></li>
                     <li><a href="#self-reflection">自問自答</a></li>
@@ -43,55 +47,8 @@
             </nav>
         </header>
 
-        <!-- search-box -->
-        <div class="container">
-                <div class="search-field">
-                    <!-- 検索バー-->
-                    <form action="/search" method="GET">
-                        <input type="text" name="query" placeholder="企業名や業種で探す" required>
-                        <button type="submit">検索</button>
-                    </form>
-
-                    <!-- サーチフィールド内の点線 -->
-                    <hr class="search-field-line">
-
-                    <!-- pull down menu -->
-                    <form action="/search" method"GET">
-                        <label for="industry">業種:</label>
-                        <select id="industry" name="industry">
-                            <option value="it">IT・通信</option>
-                            <option value="finance">金融</option>
-                            <option value="manufacturing">製造業</option>
-                            <option value="service">サービス業</option>
-                        </select>
-                    
-                        <label for="jobType">職種:</label>
-                        <select id="jobType" name="jobType">
-                            <option value="developer">開発者</option>
-                            <option value="designer">デザイナー</option>
-                            <option value="manager">マネージャー</option>
-                            <option value="sales">営業</option>
-                        </select>
-                    
-                        <label for="area">エリア:</label>
-                        <select id="area" name="area">
-                            <option value="tokyo">東京</option>
-                            <option value="osaka">大阪</option>
-                            <option value="nagoya">名古屋</option>
-                            <option value="fukuoka">福岡</option>
-                        </select>
-                    
-                        <button type="submit">検索</button>
-
-                    </form>
-
-                    <!-- 詳細検索遷移ボタン -->
-                    <div class="refine-search">
-                        <a href="#">▷より詳細な条件で検索</a>
-                    </div>
-
-                </div>
-        </div>
+        <!-- ここに別要素をぶち込んで使う -->
+        {% block content %}{% endblock %}
         
         <!-- Footer-->
         <footer class="footer bg-light">
