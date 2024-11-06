@@ -76,3 +76,15 @@ def contact_view(request):
             messages.success(
                 request, 'お問い合わせは正常に送信されました。')
             return redirect('CCapp:contact')
+        
+class SigninView(TemplateView):
+    template_name = 'signin.html'
+
+class LogoutView(TemplateView):
+    template_name = 'logout.html'
+
+class Delete_acView(TemplateView):
+    template_name = 'delete_ac.html'
+
+class Edit_acView(TemplateView):
+    template_name = 'edit_ac.html'
