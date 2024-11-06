@@ -20,6 +20,9 @@ from django.core.mail import EmailMessage
 class IndexView(TemplateView):
     template_name = 'top.html'
 
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
+
 class LoginView(TemplateView):
     template_name = 'login.html'
 
