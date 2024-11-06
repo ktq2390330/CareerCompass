@@ -17,7 +17,7 @@ from django.contrib import messages
 # django.core.mailモジュールからEmailMessageをインポート
 from django.core.mail import EmailMessage
 
-class IndexView(TemplateView):
+class TopView(TemplateView):
     template_name = 'top.html'
 
 class ProfileView(TemplateView):
