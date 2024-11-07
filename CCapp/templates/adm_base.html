@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <!-- title -->
-        <title>{% block title %} Career Compass {% endblock %}</title>
+        <title>{% block title %} [adm]Career Compass {% endblock %}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href={% static "assets/favicon.ico" %} />
         <!-- Bootstrap icons-->
@@ -15,11 +15,11 @@
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href={% static 'css/base.css' %} rel="stylesheet" />
+        <link href={% static 'css/adm_base.css' %} rel="stylesheet" />
 
         <!-- 追加のcssを読み込むためのブロック -->
         {% block head %}{% endblock %}
-
+        
     </head>
     <body>
         <!-- header -->
@@ -30,6 +30,11 @@
                     <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
             </div>
 
+            <!-- 管理者タイトル表示 -->
+            <div class="header_title">
+                <h1>管理者</h1>
+            </div>
+
             <!-- ナビゲーション下の実線 -->
             <hr class="header-line">
 
@@ -37,11 +42,7 @@
             <nav class="navigation">
                 <ul class="navigation-button">
                     <li><a href="#top">トップ</a></li>
-                    <li><a href="#about">プロフィール</a></li>
-                    <li><a href="#services">絞り込み検索</a></li>
-                    <li><a href="#self-reflection">自問自答</a></li>
-                    <li><a href="#overview">サービス概要</a></li>
-                    <li><a href="#contact">お問い合わせ</a></li>
+                    <li><a href="#addpost">求人追加</a></li>
                     <li><a href="#logout">ログアウト</a></li>
                 </ul>
             </nav>
