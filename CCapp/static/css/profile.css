@@ -1,0 +1,117 @@
+/* コンテナのスタイル */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* プロフィールボックスのスタイル */
+.profile-box {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* 写真のコンテナ */
+.photo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* 写真ボックスのスタイル */
+.photo-box {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.photo-box input[type="file"] {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+}
+
+/* フォームグループのスタイル */
+.form-group {
+    display: flex;
+    align-items: center; /* 縦方向の中央揃え */
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 150px; /* ラベルの幅を固定 */
+    margin-right: 10px; /* ラベルと入力欄の間にスペース */
+}
+
+.form-group input,
+.form-group select {
+    flex: 1; /* 残りのスペースを入力欄に割り当て */
+    max-width: 250px; /* 入力欄の最大幅を設定 */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 性別のコンテナ */
+.gender-container {
+    display: flex;
+    align-items: center; /* 縦方向の中央揃え */
+    gap: 0px; /* 各要素の間のスペース */
+}
+
+/* ラベルのスタイル */
+.gender-container label {
+    display: flex; /* フレックスボックスを使用 */
+    align-items: center; /* ラジオボタンとテキストを中央揃え */
+    margin: 0;
+}
+
+/* その他の性別入力欄のスタイル */
+.gender-container input[type="text"] {
+    width: 150px; /* その他の性別入力欄の幅 */
+    margin-left: 10px; /* ラジオボタンの右側にスペース */
+}
+
+/* 学校名のコンテナ */
+.school-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 auto; /* 左右のマージンを自動にして中央揃え */
+    text-align: center;
+    width: 100%; /* 幅を100%に設定 */
+    max-width: 400px; /* 最大幅を設定（必要に応じて調整） */
+    height: 20px; /* 高さを設定して真四角に */
+    display: flex; /* フレックスボックスを使用 */
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center; /* 縦方向の中央揃え */
+}
+
+/* ボタンのグループ */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-group button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

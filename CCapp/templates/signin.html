@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>アカウント情報変更</title>
+    <title>新規登録</title>
     <link href="../static/css/edit_ac.css" rel="stylesheet"/>
 </head>
 <body>
 
-<h1>アカウント情報変更</h1>
+<h1>新規登録</h1>
 <hr>
 <form action="#" method="post">
     <table>
@@ -21,13 +21,13 @@
             <td><input type="text" id="Furigana" name="Furigana" required style="width: 120px;"> <small>例：タナカタロウ</small></td>
         </tr>
         <tr>
-            <td class="form-group"><label>生年月日</label></td>
+            <td class="form-group"><label>生年月日（年）</label></td>
             <td>
-                <input type="text" id="Birth_Year" name="Birth_Year" required style="width: 50px;">
+                <input type="text" id="Birth_Date_Year" name="Birth_Date_Year" required style="width: 50px;">
                 <span>年</span>
-                <input type="text" id="Birth_Month" name="Birth_Month" required style="width: 40px;">
+                <input type="text" id="Birth_Date_Month" name="Birth_Date_Month" required style="width: 40px;">
                 <span>月</span>
-                <input type="text" id="Birth_Day" name="Birth_Day" required style="width: 40px;">
+                <input type="text" id="Birth_Date_Day" name="Birth_Date_Day" required style="width: 40px;">
                 <span>日</span>
             </td>
         </tr>        
@@ -41,8 +41,8 @@
             </td>
         </tr>
         <tr>
-            <td class="form-group"><label for="Email_Address">メールアドレス</label></td>
-            <td><input type="email" id="Email_Address" name="Email_Address" required></td>
+            <td class="form-group"><label for="Mail">メールアドレス</label></td>
+            <td><input type="email" id="Mail" name="Mail" required></td>
         </tr>
         <tr>
             <td class="form-group"><label for="UTel">電話番号</label></td>
@@ -67,25 +67,30 @@
             </td>
         </tr>
         <tr>
-            <td class="form-group"><label for="School_Name">学校名</label></td>
-            <td><input type="text" id="School_Name" name="School_Name" required></td>
+            <td class="form-group"><label for="USchool">学校名</label></td>
+            <td><input type="text" id="USchool" name="USchool" required></td>
         </tr>
         <tr>
             <td class="form-group"><label for="Department">学部・学科名</label></td>
             <td><input type="text" id="Department" name="Department" required></td>
         </tr>
         <tr>
-            <td class="form-group"><label for="Graduation">卒業年度</label></td>
+            <td class="form-group"><label for="Graduation">卒業年（西暦）</label></td>
             <td>
                 <input type="text" id="Graduation" name="Graduation" required style="width: 60px;">
-                                <small>年</small>
+                <small>年</small>
             </td>
         </tr>
     </table>
     <div class="button-group">
         <button type="button" onclick="history.back()">戻る</button>
-        <button type="submit">保存</button>
+        <button type="submit">登録</button>
     </div>
 </form>
+
+<div class="link-group" style="text-align: center; margin-top: 20px;">
+    <a href="login.html">すでにアカウントをお持ちの方はこちら</a>
+</div>
+
 </body>
 </html>

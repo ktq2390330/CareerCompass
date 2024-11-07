@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}プロフィール{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="#" method="post">
+        <div class="profile-box">
+            <div class="photo-container">
+                <div class="photo-box">
+                    <input type="file" id="Face_Img" name="Face_Img" accept="image/*" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="UName">姓名</label>
+                <input type="text" id="UName" name="UName" required>
+            </div>
+            <div class="form-group">
+                <label for="Furigana">姓名（カナ）</label>
+                <input type="text" id="Furigana" name="Furigana" required>
+            </div>
+            <div class="form-group">
+                <label for="Birth_Date">生年月日</label>
+                <input type="text" id="Birth_Date" name="Birth_Date" required>
+            </div>
+            <div class="form-group">
+                <label>性別</label>
+                <div class="gender-container">
+                    <label>
+                        <input type="radio" name="Gender" value="male" required> 男
+                    </label>
+                    <label>
+                        <input type="radio" name="Gender" value="female"> 女
+                    </label>
+                    <label>
+                        <input type="radio" name="Gender" value="other"> その他
+                    </label>
+                    <input type="text" name="Other_Gender" placeholder="その他の性別を入力" style="display: inline-block; width: auto;">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Mail">メールアドレス</label>
+                <input type="email" id="Mail" name="Mail" required>
+            </div>
+            <div class="form-group">
+                <label for="Postal_Code">郵便番号</label>
+                <input type="text" id="Postal_Code" name="Postal_Code" required pattern="\d{3}-\d{4}" placeholder="例: 123-4567">
+            </div>
+            <div class="form-group">
+                <label for="UAddress">住所</label>
+                <input type="text" id="UAddress" name="UAddress" required>
+            </div>
+            <div class="form-group">
+                <label for="Utel">電話番号</label>
+                <input type="tel" id="Utel" name="Utel" required pattern="\d{10,11}" placeholder="例: 09012345678">
+            </div>
+           
+            <div class="form-group">
+                <label for="School_Name">学校名</label>
+                <input type="text" id="School_Name" name="School_Name" required>
+            </div>
+            <div class="form-group">
+                <label for="Enrollment_Period">在学期間</label>
+                <input type="text" id="Enrollment_Period" name="Enrollment_Period" required>
+            </div>
+            <div class="button-group">
+                <button type="submit" name="Account_Delete">アカウントを削除する</button>
+                <button type="submit" name="Account_Edit">アカウント情報を変更する</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
