@@ -139,3 +139,6 @@ class Delete_acView(TemplateView):
 
 class Edit_acView(TemplateView):
     template_name = 'edit_ac.html'
+
+class AdmTopView(TemplateView):
+    template_name = 'adm_dashboard.html'
