@@ -142,3 +142,9 @@ class Edit_acView(TemplateView):
 
 class AdmTopView(TemplateView):
     template_name = 'adm_dashboard.html'
+
+class Filter_areaView(TemplateView):
+    template_name = 'filter_area.html'
+
+class AdmBaseView(TemplateView):
+    template_name = 'adm_base.html'

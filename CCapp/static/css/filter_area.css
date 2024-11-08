@@ -46,6 +46,24 @@
     font-size: 20px;
 }
 
+.areaselection-button {
+    display: flex;
+    justify-content: flex-start; /* 左寄せ */
+    padding: 0;
+    list-style-type: none; /* デフォルトのリストマーカーを削除 */
+    gap: 10px; /* ボタン間のスペースを調整 */
+}
+
+/* ナビゲーション下の点線 */
+.header-line1 {
+    border: none;
+    border-top: dashed 2px black; /* dashedまたはdottedを使用 */
+    height: 1px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto; /* 実線の上下の余白中央揃え */
+}
+
 /* エリア選択ボタンのスタイル */
 .areaselection-button a {
     display: inline-block; /* ボタンをインラインブロックにして横並びにする */
