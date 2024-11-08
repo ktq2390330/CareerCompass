@@ -36,13 +36,13 @@
             <!-- Navigation-->
             <nav class="navigation">
                 <ul class="navigation-button">
-                    <li><a href="#top">トップ</a></li>
-                    <li><a href="#about">プロフィール</a></li>
-                    <li><a href="#services">絞り込み検索</a></li>
+                    <li><a href="{% url 'CCapp:top' %}">トップ</a></li>
+                    <li><a href="{% url 'CCapp:profile' %}">プロフィール</a></li>
+                    <li><a href="{% url 'CCapp:filter_area' %}">絞り込み検索</a></li>
                     <li><a href="#self-reflection">自問自答</a></li>
                     <li><a href="#overview">サービス概要</a></li>
                     <li><a href="#contact">お問い合わせ</a></li>
-                    <li><a href="#logout">ログアウト</a></li>
+                    <li><a href="{% url 'CCapp:logout' %}">ログアウト</a></li>
                 </ul>
             </nav>
         </header>

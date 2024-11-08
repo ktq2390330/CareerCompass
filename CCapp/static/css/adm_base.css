@@ -20,6 +20,17 @@ body {
     text-decoration: none;
     font-weight: bold;
     line-height: 1; /* 行間を狭くする */
+    color: black; /* リンクの色を青に固定 */
+}
+
+/* ホバー、訪問済み、フォーカス、アクティブ状態でも青色に固定 */
+.brand:link,
+.brand:visited,
+.brand:hover,
+.brand:focus,
+.brand:active {
+    color: black; /* クリック後も常に青色にする */
+    text-decoration: none; /* 下線を消す（必要なら） */
 }
 
 /* brand（ロゴ）部分 */
@@ -29,7 +40,12 @@ body {
     text-align: left;  /* 左寄せ */
 }
 
-
+/* brand横のh1タグの体裁 */
+#brand h1 {
+    /* margin-right: 50px; */
+    margin: 0px auto;
+    margin-left: 350px;
+}
 
 /* navigation */
 .navigation {
@@ -39,7 +55,6 @@ body {
 .navigation-button {
     list-style-type: none; /* リストのマーカーを消す */
     padding: 0;
-    margin: 0;
     display: inline-flex; /* 横並びに配置 */
     gap: 100px; /* 各ボタンの間にスペースを追加 */
 }

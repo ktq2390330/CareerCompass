@@ -148,3 +148,6 @@ class Filter_areaView(TemplateView):
 
 class AdmBaseView(TemplateView):
     template_name = 'adm_base.html'
+
+class AdmLoginView(TemplateView):
+    template_name = 'adm_login.html'
