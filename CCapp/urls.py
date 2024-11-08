@@ -9,4 +9,5 @@ urlpatterns = [
     path('contact/',views.ContactView.as_view(), name='contact'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),
+    path('filter_area/',views.Filter_areaView.as_view(), name='filter_area')
 ]

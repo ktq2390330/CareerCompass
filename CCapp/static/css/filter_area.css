@@ -57,11 +57,11 @@
 /* ナビゲーション下の点線 */
 .header-line1 {
     border: none;
-    border-top: dashed 2px black; /* dashedまたはdottedを使用 */
+    border-top: dashed 2px black; /* 点線に変更 */
     height: 1px;
     width: 100%;
     max-width: 1200px;
-    margin: 30px auto; /* 実線の上下の余白中央揃え */
+    margin: 30px auto; /* 上下の余白と中央揃え */
 }
 
 /* エリア選択ボタンのスタイル */
