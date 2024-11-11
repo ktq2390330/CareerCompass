@@ -13,4 +13,6 @@ urlpatterns = [
     path('adm_base/', views.AdmBaseView.as_view(), name='adm_base'),
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),
     path('adm_login/', views.AdmLoginView.as_view(), name='adm_login'),
+    path('subscription/', views.SubscriptionView.as_view(), name='subscription'),
+    path('signin/', views.SigninView.as_view(), name='signin'),
 ]
