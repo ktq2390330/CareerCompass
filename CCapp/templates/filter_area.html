@@ -153,8 +153,9 @@
             
     
         <!-- 検索ボタン（枠外の下に配置） -->
+        <!-- 検索実行時にsession storageのデータをクリアする処理 -->
         <div class="search-button-container">
-            <form action="/search" method="GET">
+            <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
                 <button type="submit" class="search-button">検索</button>
             </form>
         </div>

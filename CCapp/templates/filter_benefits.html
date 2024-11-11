@@ -1,0 +1,83 @@
+<!-- base.htmlを継承 -->
+{% extends "base.html" %}
+
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- top page用のタイトル -->
+{% block title %}filter benefits{% endblock %}
+
+<!-- top page用のcssを読み込む -->
+{% block head %}
+<link href="{% static 'css/filter_area.css' %}" rel="stylesheet">
+{% endblock %}
+
+<!-- base.htmlにぶち込む部分 -->
+{% block content %}
+
+<!-- search-box -->
+<div class="container">
+    <div class="search-field">
+        <!-- 検索バー-->
+        <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="企業名や業種で探す" required>
+            <button type="submit">検索</button>
+        </form>
+
+        <!-- Navigation -->
+        <nav class="navigation">
+            <ul class="navigation-button">
+                <li><a href="#benefits">福利厚生</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-line"></div> <!-- 点線 -->
+
+        <!-- 福利厚生チェックボックスエリア -->
+        <div id="welfare_benefits" class="benefits-details">
+            <h2>福利厚生</h2>
+            <div class="benefits-container">
+                <button type="button" onclick="selectAll('benefits-list', true)">すべて選択</button>
+                <button type="button" onclick="selectAll('benefits-list', false)">選択解除</button>
+
+                <!-- 福利厚生のチェックボックスリスト -->
+                <div id="benefits-list">
+                    <label><input type="checkbox" name="benefits[]" value="high_salary">30歳平均年収が600万円以上</label>
+                    <label><input type="checkbox" name="benefits[]" value="merit_based">実力主義の給与体系・評価制度を導入</label>
+                    <label><input type="checkbox" name="benefits[]" value="annual_leave">年間休日120日以上</label>
+                    <label><input type="checkbox" name="benefits[]" value="welfare">福利厚生が充実</label>
+                    <label><input type="checkbox" name="benefits[]" value="job_rotation">ジョブローテーションで様々な職種を体験できる</label>
+                    <label><input type="checkbox" name="benefits[]" value="training">教育・研修制度が充実</label>
+                    <label><input type="checkbox" name="benefits[]" value="qualification_support">資格取得支援制度あり</label>
+                    <label><input type="checkbox" name="benefits[]" value="independent_training">独立・研修制度が充実</label>
+                    <label><input type="checkbox" name="benefits[]" value="short_working_hours">時短勤務制度あり</label>
+                    <label><input type="checkbox" name="benefits[]" value="maternity_leave">産休・育児休暇取得制度あり</label>
+                    <label><input type="checkbox" name="benefits[]" value="two_days_off">完全週休2日制</label>
+                    <label><input type="checkbox" name="benefits[]" value="overtime">平均残業時間が月20時間以内</label>
+                    <label><input type="checkbox" name="benefits[]" value="housing">社宅・家賃補助制度あり</label>
+                    <label><input type="checkbox" name="benefits[]" value="remote_work">リモートワーク・在宅勤務</label>
+                    <label><input type="checkbox" name="benefits[]" value="face_to_face_training">対面の研修あり</label>
+                    <label><input type="checkbox" name="benefits[]" value="flex_time">フレックス制度あり</label>
+                    <label><input type="checkbox" name="benefits[]" value="side_jobs">副業可</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 検索ボタン（枠外の下に配置） -->
+<div class="search-button-container">
+    <form action="/search" method="GET">
+        <button type="submit" class="search-button">検索</button>
+    </form>
+</div>
+
+<!-- JavaScript: 福利厚生のすべて選択・解除機能 -->
+<script>
+    function selectAll(containerId, select) {
+        const checkboxes = document.getElementById(containerId).querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = select);
+    }
+</script>
+
+{% endblock %}

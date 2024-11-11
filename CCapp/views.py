@@ -23,9 +23,6 @@ from django.contrib.auth import update_session_auth_hash
 class TopView(TemplateView):
     template_name = 'top.html'
 
-class ProfileView(TemplateView):
-    template_name = 'profile.html'
-
 class LoginView(TemplateView):
     template_name = 'login.html'
 
@@ -140,11 +137,14 @@ class Delete_acView(TemplateView):
 class Edit_acView(TemplateView):
     template_name = 'edit_ac.html'
 
-class AdmTopView(TemplateView):
-    template_name = 'adm_dashboard.html'
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
 
 class Filter_areaView(TemplateView):
     template_name = 'filter_area.html'
+
+class AdmTopView(TemplateView):
+    template_name = 'adm_dashboard.html'
 
 class AdmBaseView(TemplateView):
     template_name = 'adm_base.html'
