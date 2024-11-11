@@ -140,7 +140,7 @@ class Edit_acView(TemplateView):
 class ProfileView(TemplateView):
     template_name = 'profile.html'
 
-class Filter_areaView(TemplateView):
+class Filter_AreaView(TemplateView):
     template_name = 'filter_area.html'
 
 class AdmTopView(TemplateView):
@@ -154,3 +154,6 @@ class AdmLoginView(TemplateView):
 
 class SubscriptionView(TemplateView):
     template_name = 'subscription.html'
+
+class Filter_BenefitsView(TemplateView):
+    template_name = 'filter_benefits.html'
