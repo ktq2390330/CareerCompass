@@ -1,0 +1,75 @@
+/* コンテナのスタイル */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 上寄せに変更 */
+    height: 100vh; /* 高さを画面全体に */
+}
+
+/* プロフィールボックスのスタイル */
+.profile-box {
+    border: 1px solid;
+    padding: 20px; /* パディングを調整 */
+    width: 100%; /* 幅を100%にして外枠を広げる */
+}
+
+/* お問い合わせタイトルのスタイル */
+.contact-title {
+    font-size: 32px; /* フォントサイズを大きく */
+    color: black; /* 色を黒に変更 */
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* お問い合わせ説明文のスタイル */
+.contact-description {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* フォームグループのスタイル */
+.form-group {
+    margin-bottom: 15px;
+    display: flex; /* フレックスボックスを使用 */
+    flex-direction: column; /* 縦方向に配置 */
+    align-items: flex-start; /* 左揃え */
+}
+
+.form-group label {
+    margin-bottom: 5px; /* ラベルと入力欄の間に余白を追加 */
+    font-size: 16px; /* フォントサイズを調整 */
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%; /* 幅を100%に設定 */
+    max-width: 535px; /* 最大幅を設定して中央に配置 */
+    padding: 12px; /* 内部の余白を設定 */
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* お問い合わせ内容の入力欄を大きくするスタイル */
+.large-input {
+    height: 150px; /* 高さを大きく設定 */
+}
+
+/* ボタンのグループ */
+.button-group {
+    display: flex;
+    justify-content: center; /* 中央揃え */
+    margin-top: 20px;
+}
+
+.button-group button {
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

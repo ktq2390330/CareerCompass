@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+/* body */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 200px;
+}
+
+
+/* brand */
+.brand {
+    font-size: 30px; /* フォントサイズを大きく */
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1; /* 行間を狭くする */
+}
+
+/* header */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 左揃えにする */
+    position: absolute; /* 絶対配置 */
+    top: 20px; /* 上部の余白 */
+    left: 20px; /* 左側の余白 */
+}
+
+/* ナビゲーション下の実線 */
+.header-line {
+    border: none;
+    border-top: solid 2px black; /* 線の太さを変更 */
+    height: 1px;
+    width: 1155%;
+    margin: 30 0 0 -10%; /* 上下の余白を調整 */
+}
+
+/* container */
+.container {
+    width: 80%; /* コンテナの幅を80%に設定 */
+    padding: 30px; /* パディングを増やす */
+    border-radius: 15px;
+    border: 1px solid transparent;
+    text-align: center; /* 中央揃え */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 縦方向に中央揃え */
+    align-items: center; /* 横方向に中央揃え */
+    font-size: 1.2em; /* フォントサイズを大きく */
+}
+
+/* h3 */
+h3 {
+    margin: 110px 0 0 0; /* 上下の余白を調整 */
+    text-align: center; /* 中央揃え */
+    font-size: 30px;
+}
+
+/* button group */
+.button-group {
+    display: flex;
+    justify-content: center; /* ボタンの間隔を調整 */
+    width: 38%; /* ボタングループの幅を100%に */
+    margin-top: 130px; /* 上部の余白 */
+}
+
+/* button */
+button {
+    width: 120px; /* ボタンの幅を広げる */
+    padding: 15px; /* パディングを増やす */
+    border: 1px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000;
+    font-size: 1em; /* フォントサイズを大きく */
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

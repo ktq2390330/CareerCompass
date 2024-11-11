@@ -1,0 +1,25 @@
+/* サービスについてタイトルのスタイル */
+.service-title {
+    font-size: 32px; /* フォントサイズを大きく */
+    text-transform: uppercase; /* 大文字に変換 */
+    color: black; /* 色を黒に変更 */
+    text-align: center; /* 中央揃え */
+    margin-bottom: 10px; /* 下に余白を追加 */
+}
+
+/* サービス説明文のスタイル */
+.service-description {
+    font-size: 14px; /* フォントサイズを小さく */
+    text-align: center; /* 中央揃え */
+    margin-bottom: 20px; /* 下に余白を追加 */
+}
+
+/* プロフィールボックスのスタイル */
+.profile-box {
+    border: 1px solid; /* 外枠を維持 */
+    padding: 20px; /* パディングを調整 */
+    width: 50%; /* 幅を100%にして外枠を広げる */
+    border-radius: 35px;
+    margin: 0 auto;
+    margin-top: 20px;
+}

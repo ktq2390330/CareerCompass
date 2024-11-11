@@ -44,19 +44,19 @@
 /* フォームグループのスタイル */
 .form-group {
     display: flex;
-    align-items: center; /* 縦方向の中央揃え */
+    align-items: center;
     margin-bottom: 15px;
 }
 
 .form-group label {
-    width: 150px; /* ラベルの幅を固定 */
-    margin-right: 10px; /* ラベルと入力欄の間にスペース */
+    width: 150px;
+    margin-right: 10px;
 }
 
 .form-group input,
 .form-group select {
-    flex: 1; /* 残りのスペースを入力欄に割り当て */
-    max-width: 250px; /* 入力欄の最大幅を設定 */
+    flex: 1;
+    max-width: 250px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -66,21 +66,29 @@
 /* 性別のコンテナ */
 .gender-container {
     display: flex;
-    align-items: center; /* 縦方向の中央揃え */
-    gap: 0px; /* 各要素の間のスペース */
+    align-items: center;
+    gap: 10px;
 }
 
 /* ラベルのスタイル */
 .gender-container label {
-    display: flex; /* フレックスボックスを使用 */
-    align-items: center; /* ラジオボタンとテキストを中央揃え */
+    display: flex;
+    align-items: center;
     margin: 0;
+    gap: 15px; /* テキストとラジオボタンの間隔 */
+}
+
+/* その他の性別入力欄のコンテナ */
+.other-gender-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
 }
 
 /* その他の性別入力欄のスタイル */
-.gender-container input[type="text"] {
-    width: 150px; /* その他の性別入力欄の幅 */
-    margin-left: 10px; /* ラジオボタンの右側にスペース */
+.other-gender-container input[type="text"] {
+    width: 150px;
 }
 
 /* 学校名のコンテナ */
@@ -88,14 +96,14 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
-    margin: 0 auto; /* 左右のマージンを自動にして中央揃え */
+    margin: 0 auto;
     text-align: center;
-    width: 100%; /* 幅を100%に設定 */
-    max-width: 400px; /* 最大幅を設定（必要に応じて調整） */
-    height: 20px; /* 高さを設定して真四角に */
-    display: flex; /* フレックスボックスを使用 */
-    justify-content: center; /* 横方向の中央揃え */
-    align-items: center; /* 縦方向の中央揃え */
+    width: 100%;
+    max-width: 400px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* ボタンのグループ */
