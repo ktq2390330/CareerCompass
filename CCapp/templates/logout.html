@@ -13,8 +13,8 @@
 <div class="container">
     <h3>ログアウトしますか？</h3>
     <div class="button-group">
-        <button class="Yes">はい</button>
-        <button class="No">いいえ</button>
+        <a href="{% url 'CCapp:login' %}"><button>はい</button></a>
+        <a href="{% url 'CCapp:top' %}"><button>いいえ</button></a>
     </div>
 </div>
 
