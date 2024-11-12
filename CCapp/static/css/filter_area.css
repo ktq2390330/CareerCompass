@@ -1,12 +1,5 @@
 @charset "UTF-8";
 
-/* container */
-.container {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 /* search-field */
 .search-field {
     background-color: #ffffff; /* 背景色 */
@@ -15,45 +8,6 @@
     margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
     max-width: 1000px; /* 幅を制限 */
     text-align: center; /* テキストとボタンを中央揃え */
-}
-
-/* search-field form */
-.search-field form {
-    display: flex;
-    justify-content: center;
-    gap: 15px; /* フォーム内の要素間の隙間を広げる */
-    flex-wrap: wrap; /* 要素が幅に収まらない場合に折り返す */
-}
-
-/* 検索バー */
-.search-field input[type="text"] {
-    flex: 1; /* バーの幅を調整 */
-    padding: 20px; /* 入力フィールドの内側余白を増やす */
-    border: 1px solid #000000; /* 枠線の色 */
-    border-radius: 5px; /* 角の丸みを増やす */
-    font-size: 20px;
-}
-
-/* 検索ボタン */
-.search-field button {
-    padding: 12px 20px; /* ボタン内の余白を増やす */
-    background-color: #4598eb; /* ボタンの色 */
-    color: white;
-    border: none;
-    border-radius: 5px; /* 角の丸みを増やす */
-    cursor: pointer;
-    width: 100px;
-    font-size: 20px;
-}
-
-/* ナビゲーション下の点線 */
-.header-line {
-    border: none;
-    border-top: dashed 2px black; /* 点線に変更 */
-    height: 1px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 30px auto; /* 上下の余白と中央揃え */
 }
 
 /* エリア選択ボタンのリストのマーカーを消す */
@@ -101,24 +55,6 @@
 
 .area-checkboxes label input {
     margin-right: 10px;
-}
-
-/* search-button-container */
-.search-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px; /* 上に少し余白を追加 */
-}
-
-.search-button {
-    padding: 12px 20px; /* ボタン内の余白を増やす */
-    background-color: #4598eb; /* ボタンの色 */
-    color: white;
-    border: none;
-    border-radius: 5px; /* 角の丸みを増やす */
-    cursor: pointer;
-    width: 100px; /* ボタンの幅 */
-    font-size: 20px;
 }
 
 /* エリア選択セクション全体 */

@@ -160,3 +160,6 @@ class Subscription_doneView(TemplateView):
 
 class Filter_BenefitsView(TemplateView):
     template_name = 'filter_benefits.html'
+
+class Filter_IndustryView(TemplateView):
+    template_name = 'filter_industry.html'

@@ -11,6 +11,7 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('filter_area/',views.Filter_AreaView.as_view(), name='filter_area'),
     path('filter_benefits/',views.Filter_BenefitsView.as_view(), name='filter_benefits'),
+    path('filter_industry/',views.Filter_IndustryView.as_view(), name='filter_industry'),
     path('adm_base/', views.AdmBaseView.as_view(), name='adm_base'),
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),
     path('adm_login/', views.AdmLoginView.as_view(), name='adm_login'),

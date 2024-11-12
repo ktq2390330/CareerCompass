@@ -1,0 +1,54 @@
+<!-- base.htmlを継承 -->
+{% extends "base.html" %}
+
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- top page用のタイトル -->
+{% block title %}filter area{% endblock %}
+
+<!-- top page用のcssを読み込む -->
+{% block head %}
+    <link href="{% static 'css/filter_base.css' %}" rel="stylesheet">
+{% endblock %}
+
+<!-- base.htmlにぶち込む部分 -->
+{% block content %}
+    <!-- search-box -->
+    <div class="container">
+        <div class="search-field">
+            <!-- 検索バー-->
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="企業名や業種で探す" required>
+                <button type="submit">検索</button>
+            </form>
+
+            <!-- Navigation -->
+            <nav class="navigation">
+                <ul class="navigation-button">
+                    <li><a href="{% url 'CCapp:filter_industry' %}">業界</a></li>
+                    <li><a href="#job_category">職種</a></li>
+                    <li><a href="{% url 'CCapp:filter_area' %}">エリア</a></li>
+                    <li><a href="#employee_scale">従業員規模</a></li>
+                    <li><a href="{% url 'CCapp:filter_benefits' %}">福利厚生</a></li>
+                </ul>
+            </nav>
+
+            <!-- 点線 -->
+            <div class="header-line"></div>
+
+            <!-- 各種検索機能をここにぶち込む -->
+            {% block content2 %}{% endblock %}   
+            
+        </div>
+
+        <!-- 検索ボタン（枠外の下に配置） -->
+        <!-- 検索実行時にsession storageのデータをクリアする処理 -->
+        <div class="search-button-container">
+            <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
+                <button type="submit" class="search-button">検索</button>
+            </form>
+        </div>
+
+    </div>        
+{% endblock %}
