@@ -35,9 +35,9 @@ body {
 
 /* brand横のh1タグの体裁 */
 #brand h1 {
-    /* margin-right: 50px; */
-    margin: 0px;
-    margin-left: 520px;
+    margin: 0 auto; /* 左右のマージンを自動調整 */
+    text-align: center; /* テキストの中央揃え */
+    transform: translateX(-75px); /* 20px分左にずらす */
 }
 
 .brands {
@@ -57,11 +57,6 @@ body {
     font-size: 20px;
     position: relative;
     top: 30px; /* 文字をさらに下にずらす */
-}
-
-h1 {
-    margin-bottom: 0;
-    margin-top: 10px;
 }
 
 h2 {

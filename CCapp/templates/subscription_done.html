@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>求人応募完了</title>
+    <title>求人応募完了ページ</title>
     <link href="{% static 'css/subscription_done.css' %}" rel="stylesheet"/>
 </head>
 <body>
@@ -15,11 +15,26 @@
             <a class="brand" href="#"><i>Career
                 <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
         </div>
+        <!-- ナビゲーション下の実線 -->
+        <hr class="header-line">
 </header>
 <hr>
 <form action="#" method="post">
+    <div class="container">
+        <div class="profile-box"> <!-- 外枠 -->
+            <h1 class="h1">求人情報への応募を受け付けました。</h1>
+            <p class="email">example1@gmail.com</p>
+            <p class="text">上記のメールアドレスから確認メールが届かない場合は、下記のお問い合わせ先までご連絡ください。</h2>
+            <div class="contact-info">
+                <p class="inquiry_target">■お問い合わせ先</p>
+                <p class="responsible_person">担当者: ◯◯◯◯</p>
+                <p class="tel">TEL: ◯◯◯◯◯◯◯◯◯</p>
+                <p class="e-mail">メールアドレス: example2@gmail.com</p>
+            </div>
+        </div>
+    </div>
     <div class="button-group">
-        <button type="button" onclick="history.back()">戻る</button>
+        <button type="button" onclick="history.back()">Topへ戻る</button>
     </div>
 </form>
 
