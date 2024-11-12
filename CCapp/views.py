@@ -155,5 +155,8 @@ class AdmLoginView(TemplateView):
 class SubscriptionView(TemplateView):
     template_name = 'subscription.html'
 
+class Subscription_doneView(TemplateView):
+    template_name = 'subscription_done.html'
+
 class Filter_BenefitsView(TemplateView):
     template_name = 'filter_benefits.html'
