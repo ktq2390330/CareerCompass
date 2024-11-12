@@ -15,5 +15,6 @@ urlpatterns = [
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),
     path('adm_login/', views.AdmLoginView.as_view(), name='adm_login'),
     path('subscription/', views.SubscriptionView.as_view(), name='subscription'),
+    path('subscription_done/', views.Subscription_doneView.as_view(), name='subscription_done'),
     path('signin/', views.SigninView.as_view(), name='signin'),
 ]
