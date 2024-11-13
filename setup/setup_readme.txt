@@ -13,7 +13,4 @@ pip install -r requirements.txt
 4.DBの設定
 mysqlをダウンロードする(port:3307,name:root,password:password)
 DBを作成(name:careercompassdb,host:127.0.0.1)
-python manage.py shell
-exec(open('setup/py/import_data.py').read())
-
-
+python setup/py/import_data.py
