@@ -9,19 +9,33 @@ class Base(models.Model):
     class Meta:
         abstract=True
 
-class Category1(Base):
+class Category00(Base):
     class Meta:
-        db_table='Category1'
-        verbose_name='カテゴリ1'
+        db_table='Category00'
+        verbose_name='カテゴリ00'
 
-class Category2(Base):
-    category1=models.ForeignKey(Category1,on_delete=models.CASCADE,verbose_name="カテゴリ1",related_name="category2_category1")
+class Category01(Base):
+    category00=models.ForeignKey(Category00,on_delete=models.CASCADE,verbose_name="カテゴリ00",related_name="category01_category00")
 
     class Meta:
-        db_table='Category2'
-        verbose_name='カテゴリ2'
+        db_table='Category01'
+        verbose_name='カテゴリ01'
+
+class Category10(Base):
+    class Meta:
+        db_table='Category10'
+        verbose_name='カテゴリ10'
+
+class Category11(Base):
+    category10=models.ForeignKey(Category10,on_delete=models.CASCADE,verbose_name="カテゴリ10",related_name="category11_category10")
+
+class Area0(Base):
+    class Meta:
+        db_table='Area0'
+        verbose_name='エリア0'
 
 class Area1(Base):
+    area0=models.ForeignKey(Area0,on_delete=models.CASCADE,verbose_name="エリア0",related_name="area1_area0")
     class Meta:
         db_table='Area1'
         verbose_name='エリア1'
@@ -54,8 +68,10 @@ class Profile(models.Model):
     department=models.CharField(max_length=31,verbose_name="学科名")
     uTel=models.CharField(max_length=15,verbose_name="電話番号")
     uAddress=models.CharField(max_length=255,verbose_name="住所")
-    category1=models.ForeignKey(Category1,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ1",related_name="profile_category1")
-    category2=models.ForeignKey(Category2,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ2",related_name="profile_category2")
+    category00=models.ForeignKey(Category00,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ00",related_name="profile_category00")
+    category01=models.ForeignKey(Category01,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ01",related_name="profile_category01")
+    category10=models.ForeignKey(Category10,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ10",related_name="profile_category10")
+    category11=models.ForeignKey(Category11,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ11",related_name="profile_category11")
     area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="profile_area1")
     uOffer=models.CharField(max_length=255,verbose_name="内定先")
     jOffer_l=models.CharField(max_length=255,verbose_name="応募求人リスト")
@@ -75,6 +91,7 @@ class Assessment(models.Model):
 class Corporation(models.Model):
     corp=models.IntegerField(primary_key=True,unique=True,verbose_name="法人番号")
     cName=models.CharField(max_length=255,verbose_name="法人名")
+    size=models.IntegerField(verbose_name="従業員規模")
     address=models.CharField(max_length=255,verbose_name="住所")
     cMail=models.CharField(max_length=255,unique=True,verbose_name="メールアドレス")
     cTel=models.CharField(max_length=15,verbose_name="電話番号")
@@ -103,9 +120,11 @@ class Offer(Base):
     holiday=models.TextField(verbose_name="休日休暇")
     welfare=models.TextField(verbose_name="福利厚生")
     workingHours=models.CharField(max_length=255,verbose_name="勤務時間")
-    area2=models.ForeignKey(Area2,on_delete=models.SET_NULL,null=True,verbose_name="エリア2",related_name="offer_area2")
-    category1=models.ForeignKey(Category1,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ1",related_name="offer_category1")
-    category2=models.ForeignKey(Category2,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ2",related_name="offer_category2")
+    area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="offer_area1")
+    category00=models.ForeignKey(Category00,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ00",related_name="offer_category00")
+    category01=models.ForeignKey(Category01,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ01",related_name="offer_category01")
+    category10=models.ForeignKey(Category10,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ10",related_name="offer_category10")
+    category11=models.ForeignKey(Category11,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ11",related_name="offer_category11")
     tag_l=models.TextField(verbose_name="タグリスト")
     corporation=models.ForeignKey(Corporation,on_delete=models.CASCADE,verbose_name="法人")
     user_l=models.TextField(verbose_name="応募者リスト")
