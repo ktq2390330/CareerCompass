@@ -4,7 +4,7 @@ from django.db import models
 
 class Base(models.Model):
     id=models.AutoField(primary_key=True,verbose_name="ID")
-    name=models.CharField(max_length=15,default="DefaultName",verbose_name="名前")
+    name=models.CharField(max_length=15,verbose_name="名前")
 
     class Meta:
         abstract=True
@@ -14,7 +14,7 @@ class Category1(Base):
         db_table='Category1'
         verbose_name='カテゴリ1'
 
-class Category2(Category1):
+class Category2(Base):
     category1=models.ForeignKey(Category1,on_delete=models.CASCADE,verbose_name="カテゴリ1",related_name="category2_category1")
 
     class Meta:
@@ -26,7 +26,7 @@ class Area1(Base):
         db_table='Area1'
         verbose_name='エリア1'
 
-class Area2(Area1):
+class Area2(Base):
     area1=models.ForeignKey(Area1,on_delete=models.CASCADE,verbose_name="エリア1",related_name="area2_area1")
 
     class Meta:
