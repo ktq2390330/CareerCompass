@@ -4,12 +4,14 @@
 <!-- staticタグを使うために追加 -->
 {% load static %}
 
-<!-- top page用のタイトル -->
-{% block title %}filter area{% endblock %}
+<!-- 埋め込む用のタイトル -->
+{% block title %}filter base{% endblock %}
 
-<!-- top page用のcssを読み込む -->
+<!-- 埋め込む用のcssを読み込むコード -->
 {% block head %}
     <link href="{% static 'css/filter_base.css' %}" rel="stylesheet">
+    <!-- 各検索フィルター画面用のcss埋め込みエリア -->
+    {% block head2 %}{% endblock %}
 {% endblock %}
 
 <!-- base.htmlにぶち込む部分 -->
@@ -35,7 +37,7 @@
             </nav>
 
             <!-- 点線 -->
-            <div class="header-line"></div>
+            <div class="under_navigation-line"></div>
 
             <!-- 各種検索機能をここにぶち込む -->
             {% block content2 %}{% endblock %}   
@@ -49,6 +51,49 @@
                 <button type="submit" class="search-button">検索</button>
             </form>
         </div>
+    </div>
+    
+    <!-- JavaScript: エリアの表示切り替えとすべて選択・解除 -->
+    <script>
+        function showArea(areaId) {
+            // すべてのエリア詳細を非表示にする
+            const allAreas = document.querySelectorAll('.area-details');
+            allAreas.forEach(area => area.style.display = 'none');
 
-    </div>        
+            // 選択されたエリアのみ表示
+            document.getElementById(areaId).style.display = 'block';
+        }
+
+        function selectAll(areaId, select) {
+            // 指定したエリアのチェックボックスを取得
+            const checkboxes = document.getElementById(areaId).querySelectorAll('input[type="checkbox"]');
+            
+            // すべてのチェックボックスを選択または解除
+            checkboxes.forEach(checkbox => checkbox.checked = select);
+        }
+
+        // 業種を切り替える関数
+    function showIndustry(industryId) {
+        // スクロール位置を保存
+        const currentScroll = window.scrollY;
+        sessionStorage.setItem('scrollPosition', currentScroll);
+
+        // すべての業種詳細を非表示にしてから、選択された業種のみ表示
+        const allIndustries = document.querySelectorAll('.industry-details');
+        allIndustries.forEach(industry => industry.style.display = 'none');
+        document.getElementById(industryId).style.display = 'block';
+    }
+
+    // ページ読み込み時にスクロール位置を復元
+    window.addEventListener('load', function() {
+        if (sessionStorage.getItem('scrollPosition')) {
+            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+        }
+    });
+
+    // スクロール位置を保存
+    window.addEventListener('scroll', function() {
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+    });
+    </script>
 {% endblock %}

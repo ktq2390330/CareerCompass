@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CCapp.apps.CcappConfig',
-    "django_cleanup",
+    # "django_cleanup",
 ]
 
 MIDDLEWARE = [

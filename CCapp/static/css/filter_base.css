@@ -5,7 +5,19 @@
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    
 }
+
+/* search-field */
+.search-field {
+    background-color: #ffffff; /* 背景色 */
+    border: 2px solid #000000; /* 枠線 */
+    padding: 60px 40px; /* 内側の余白を上下60px、左右40pxに増やす */
+    margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
+    max-width: 1000px; /* 幅を制限 */
+    text-align: center; /* テキストとボタンを中央揃え */
+}
+
 
 /* search-field form */
 .search-field form {
@@ -30,21 +42,13 @@
     background-color: #4598eb; /* ボタンの色 */
     color: white;
     border: none;
-    border-radius: 5px; /* 角の丸みを増やす */
+    border-radius: 0px; /* 角の丸みを増やす */
     cursor: pointer;
     width: 100px;
     font-size: 20px;
 }
 
-/* ナビゲーション下の点線 */
-.header-line {
-    border: none;
-    border-top: dashed 2px black; /* 点線に変更 */
-    height: 1px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 30px auto; /* 上下の余白と中央揃え */
-}
+
 
 /* search-button-container */
 .search-button-container {
