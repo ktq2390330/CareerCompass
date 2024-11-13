@@ -152,6 +152,9 @@ class AdmBaseView(TemplateView):
 class AdmLoginView(TemplateView):
     template_name = 'adm_login.html'
 
+class AdmPostListView(TemplateView):
+    template_name = 'adm_post_list.html'
+
 class SubscriptionView(TemplateView):
     template_name = 'subscription.html'
 
