@@ -91,7 +91,6 @@ class Assessment(models.Model):
 class Corporation(models.Model):
     corp=models.IntegerField(primary_key=True,unique=True,verbose_name="法人番号")
     cName=models.CharField(max_length=255,verbose_name="法人名")
-    size=models.IntegerField(verbose_name="従業員規模")
     address=models.CharField(max_length=255,verbose_name="住所")
     cMail=models.CharField(max_length=255,unique=True,verbose_name="メールアドレス")
     cTel=models.CharField(max_length=15,verbose_name="電話番号")

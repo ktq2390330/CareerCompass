@@ -5,7 +5,7 @@ import csv
 sys.path.append(os.path.join(os.path.dirname(__file__), "/CareerCompass"))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CareerCompassProject.settings')
 django.setup()
-from CCapp.models import Area1, Area2
+from CCapp.models import *
 from django.db import transaction
 
 def makePath(fileName):
@@ -13,29 +13,45 @@ def makePath(fileName):
     filePath=os.path.join(os.path.dirname(__file__),f'{csvFilePath}{fileName}.csv')
     return filePath
 
+def returnPrint(instanceDict):
+    for instance,created in instanceDict.items():
+        if created==None:
+            print(f"作成されたデータ: {instance.name}")
+        if created:
+            print(f"新規作成: {instance.name}")
+        else:
+            print(f"既存データ取得: {instance.name}")
+
 def area0(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.DictReader(csvFile)
             with transaction.atomic():
                 for row in reader:
                     regionName = row['name']
-                    Area1.objects.get_or_create(name=regionName)
+                    instance,created=Area0.objects.get_or_create(name=regionName)
+                    instanceDict[instance]=created
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def area1(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.reader(csvFile)
             next(reader)
             with transaction.atomic():
                 for row in reader:
-                    region,prefecture = row['region'], row['name']
-                    region, created = Area1.objects.get_or_create(name=region)
-                    Area2.objects.create(name=prefecture, area0=region)
+                    regionName,prefecture = row['region'], row['name']
+                    region = Area0.objects.get(name=regionName)
+                    Area1.objects.create(name=prefecture, area0=region)
+                    
+    except Area0.DoesNotExist:
+        print(f"{region} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -45,14 +61,14 @@ def area2(filePath):
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.reader(csvFile)
-            next(reader)  # ヘッダー行をスキップ
-            with transaction.atomic():  # トランザクションで一括処理
+            next(reader)
+            with transaction.atomic():
                 for row in reader:
-                    prefecture_name, city_name = row[0], row[1]
-                    # Area1の都道府県が存在するか確認、なければ作成
-                    prefecture, created = Area1.objects.get_or_create(name=prefecture_name)
-                    # Area2に市区町村データを挿入
+                    prefecture_name, city_name = row['都道府県名（漢字）'], row['市区町村名（漢字）']
+                    prefecture= Area1.objects.get(name=prefecture_name)
                     Area2.objects.create(name=city_name, area1=prefecture)
+    except Area1.DoesNotExist:
+        print(f"{prefecture_name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -62,10 +78,14 @@ def tag(filePath):
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.DictReader(csvFile)
-            with transaction.atomic():  # トランザクションで一括処理
+            with transaction.atomic():
                 for row in reader:
                     tagName = row['name']
-                    Area1.objects.get_or_create(name=tagName)
+                    instance,created=Tag.objects.get_or_create(name=tagName)
+                    if created:
+                        print(f"新規作成: {instance.name}")
+                    else:
+                        print(f"既存データ取得: {instance.name}")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -77,37 +97,88 @@ def category00(filePath):
             reader = csv.DictReader(csvFile)
             with transaction.atomic():
                 for row in reader:
-                    tagName = row['name']
-                    Area1.objects.get_or_create(name=tagName)
+                    categoryName = row['name']
+                    instance,created=Category00.objects.get_or_create(name=categoryName)
+                    if created:
+                        print(f"新規作成: {instance.name}")
+                    else:
+                        print(f"既存データ取得: {instance.name}")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
 
+def category01(filePath):
+    try:
+        with open(filePath, newline='', encoding='utf-8') as csvFile:
+            reader = csv.reader(csvFile)
+            next(reader)
+            with transaction.atomic():
+                for row in reader:
+                    category00Name, category01Name = row['category00name'], row['name']
+                    category00= Category00.objects.get(name=category00Name)
+                    Category01.objects.create(name=category01Name, category00=category00)
+    except Category00.DoesNotExist:
+        print(f"{category00Name} は存在しません")
+    except FileNotFoundError:
+        print(f"ファイルが見つかりません: {filePath}")
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+
+def category10(filePath):
+    try:
+        with open(filePath, newline='', encoding='utf-8') as csvFile:
+            reader = csv.DictReader(csvFile)
+            with transaction.atomic():
+                for row in reader:
+                    categoryName = row['name']
+                    instance,created=Category10.objects.get_or_create(name=categoryName)
+                    if created:
+                        print(f"新規作成: {instance.name}")
+                    else:
+                        print(f"既存データ取得: {instance.name}")
+    except FileNotFoundError:
+        print(f"ファイルが見つかりません: {filePath}")
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+
+def category11(filePath):
+    try:
+        with open(filePath, newline='', encoding='utf-8') as csvFile:
+            reader = csv.reader(csvFile)
+            next(reader)
+            with transaction.atomic():
+                for row in reader:
+                    category10Name, category11Name = row['category10name'], row['name']
+                    category10 = Category10.objects.get(name=category10Name)
+                    Category11.objects.create(name=category11Name, category10=category10)
+    except Category10.DoesNotExist:
+        print(f"{category10Name} は存在しません")
+    except FileNotFoundError:
+        print(f"ファイルが見つかりません: {filePath}")
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")    
+
 # 実行
-fileList=[
-    'area0',
-    'area1',
-    'area2',
-    # 'category00',
-    # 'category01',
-    # 'category10',
-    # 'category11',
-    # 'corporation',
-    # 'DM',
-    # 'offer',
-    # 'profile',
-    # 'supportDM',
-    'tag',
-    # 'user',
-]
+functionMap={
+    'area0':area0,
+    'area1':area1,
+    'area2':area2,
+    'category00':category00,
+    'category01':category01,
+    'category10':category10,
+    'category11':category11,
+    # 'corporation':corporation,
+    # 'DM':dm,
+    # 'offer':offer,
+    # 'profile':profile,
+    # 'supportDM':supportDM,
+    'tag':tag,
+    # 'user':user,
+}
 
-pathList=[]
-
-for i in fileList:
-    pathList.append(makePath(i))
-
-area0()
-area1()
-area2()
-tag()
+for file_key, function in functionMap.items():
+    file_path = makePath(file_key)
+    print(f"{file_key}のデータを {file_path} から読み込み中...")
+    function(file_path)
+    print(f"{file_key}のデータの読み込みが完了しました。\n")
