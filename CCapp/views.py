@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .models import User
+from .models import User, Area0
 from .forms import LoginForm
 
 # TemplateViewをインポート
@@ -140,8 +140,24 @@ class Edit_acView(TemplateView):
 class ProfileView(TemplateView):
     template_name = 'profile.html'
 
-class Filter_AreaView(TemplateView):
-    template_name = 'filter_area.html'
+# filter検索
+
+# filter_area
+def filter_area_view(request):
+    # データベースからArea0の情報を取得
+    area0_list = Area0.objects.all()
+    # テンプレートにデータを渡す
+    return render(request, 'filter_area.html', {'area0_list': area0_list})
+
+class Filter_BenefitsView(TemplateView):
+    template_name = 'filter_benefits.html'
+
+class Filter_IndustryView(TemplateView):
+    template_name = 'filter_industry.html'
+
+class Filter_JobtypeView(TemplateView):
+    template_name = 'filter_jobtype.html'
+
 
 class AdmTopView(TemplateView):
     template_name = 'adm_dashboard.html'
@@ -160,15 +176,6 @@ class SubscriptionView(TemplateView):
 
 class Subscription_doneView(TemplateView):
     template_name = 'subscription_done.html'
-
-class Filter_BenefitsView(TemplateView):
-    template_name = 'filter_benefits.html'
-
-class Filter_IndustryView(TemplateView):
-    template_name = 'filter_industry.html'
-
-class Filter_JobtypeView(TemplateView):
-    template_name = 'filter_jobtype.html'
 
 class AboutView(TemplateView):
     template_name = 'about.html'

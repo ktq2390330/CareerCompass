@@ -16,17 +16,15 @@
 {% block content2 %}
     <!-- エリア選択ボタンとエリア詳細を横並びにするためのラッパー -->
     <div class="area-selection-wrapper">
-        <!-- エリア選択ボタン -->
+        
+        <!-- エリア選択ボタンを動的に生成 -->
         <nav class="selection">
             <ul class="selection-button">
-                <li><a href="javascript:void(0);" onclick="showArea('hokkaido_tohoku')">北海道・東北</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('kanto')">関東</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('koshinetsu_hokuriku')">甲信越・北陸</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('tokai_chubu')">東海・中部</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('kinki')">近畿</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('chugoku_shikoku')">中国・四国</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('kyushu_okinawa')">九州・沖縄</a></li>
-                <li><a href="javascript:void(0);" onclick="showArea('overseas')">海外</a></li>
+                
+                    <li>
+                        <a href="javascript:void(0);" onclick="showArea('hokaido')">{{ Area0.id }}</a>
+                    </li>
+                
             </ul>
         </nav>
 
