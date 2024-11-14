@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}自己分析{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/soliloquizing_self_analy.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    
+    <div class="soliloquizing_self_analy-box">
+        <div class="container">
+            <div class="nav-buttons">
+                <button class="nav-btn self-analysis active">自己分析</button>
+                <button class="nav-btn axis">就活の軸</button>
+                <button class="nav-btn industry">業種研究</button>
+                <button class="nav-btn sector-study">業界研究</button>
+            </div>
+        <form>
+            {% for question in questions %}
+                <label for="question{{ forloop.counter }}">Q{{ forloop.counter }}: {{ question }}</label>
+                <textarea id="question{{ forloop.counter }}" name="question{{ forloop.counter }}" class="question-input"></textarea>
+            {% endfor %}
+
+            <div class="save-button-container">
+                <button type="submit" class="save-button">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

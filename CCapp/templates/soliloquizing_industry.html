@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}業界研究{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/soliloquizing_industry.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    
+<div class="soliloquizing_industry-box">
+        <div class="container">
+            <div class="nav-buttons">
+                <button class="nav-btn self-analysis">自己分析</button>
+                <button class="nav-btn axis">就活の軸</button>
+                <button class="nav-btn industry active">業種研究</button>
+                <button class="nav-btn sector-study">業界研究</button>
+            </div>
+        <form>
+            {% for question in questions %}
+                <label for="question{{ forloop.counter }}">Q{{ forloop.counter }}: {{ question }}</label>
+                <textarea id="question{{ forloop.counter }}" name="question{{ forloop.counter }}" class="question-input"></textarea>
+            {% endfor %}
+
+            <div class="save-button-container">
+                <button type="submit" class="save-button">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
