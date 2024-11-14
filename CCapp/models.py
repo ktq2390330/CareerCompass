@@ -9,11 +9,34 @@ class Base(models.Model):
     class Meta:
         abstract=True
 
+# エリアの大分類
+class Area0(Base):
+    class Meta:
+        db_table='Area0'
+        verbose_name='エリア0'
+
+# エリアの中分類
+class Area1(Base):
+    area0=models.ForeignKey(Area0,on_delete=models.CASCADE,verbose_name="エリア0",related_name="area1_area0")
+    class Meta:
+        db_table='Area1'
+        verbose_name='エリア1'
+
+# エリアの小分類（市町村のため使用しない）
+class Area2(Base):
+    area1=models.ForeignKey(Area1,on_delete=models.CASCADE,verbose_name="エリア1",related_name="area2_area1")
+
+    class Meta:
+        db_table='Area2'
+        verbose_name='エリア2'
+
+# 業界の大分類
 class Category00(Base):
     class Meta:
         db_table='Category00'
         verbose_name='カテゴリ00'
 
+# 業界の中分類
 class Category01(Base):
     category00=models.ForeignKey(Category00,on_delete=models.CASCADE,verbose_name="カテゴリ00",related_name="category01_category00")
 
@@ -21,31 +44,21 @@ class Category01(Base):
         db_table='Category01'
         verbose_name='カテゴリ01'
 
+# 職種の大分類
 class Category10(Base):
     class Meta:
         db_table='Category10'
         verbose_name='カテゴリ10'
 
+# 職種の中分類
 class Category11(Base):
     category10=models.ForeignKey(Category10,on_delete=models.CASCADE,verbose_name="カテゴリ10",related_name="category11_category10")
 
-class Area0(Base):
+# 福利厚生の中分類
+class Tag(Base):
     class Meta:
-        db_table='Area0'
-        verbose_name='エリア0'
-
-class Area1(Base):
-    area0=models.ForeignKey(Area0,on_delete=models.CASCADE,verbose_name="エリア0",related_name="area1_area0")
-    class Meta:
-        db_table='Area1'
-        verbose_name='エリア1'
-
-class Area2(Base):
-    area1=models.ForeignKey(Area1,on_delete=models.CASCADE,verbose_name="エリア1",related_name="area2_area1")
-
-    class Meta:
-        db_table='Area2'
-        verbose_name='エリア2'
+        db_table='Tag'
+        verbose_name='タグ'
 
 class User(Base):
     mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
@@ -157,7 +170,3 @@ class SupportDM(BaseDM):
         db_table='supportDM'
         verbose_name='サポートDM'
 
-class Tag(Base):
-    class Meta:
-        db_table='Tag'
-        verbose_name='タグ'

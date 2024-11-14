@@ -73,27 +73,27 @@
         }
 
         // 業種を切り替える関数
-    function showIndustry(industryId) {
-        // スクロール位置を保存
-        const currentScroll = window.scrollY;
-        sessionStorage.setItem('scrollPosition', currentScroll);
+        function showIndustry(industryId) {
+            // スクロール位置を保存
+            const currentScroll = window.scrollY;
+            sessionStorage.setItem('scrollPosition', currentScroll);
 
-        // すべての業種詳細を非表示にしてから、選択された業種のみ表示
-        const allIndustries = document.querySelectorAll('.industry-details');
-        allIndustries.forEach(industry => industry.style.display = 'none');
-        document.getElementById(industryId).style.display = 'block';
-    }
-
-    // ページ読み込み時にスクロール位置を復元
-    window.addEventListener('load', function() {
-        if (sessionStorage.getItem('scrollPosition')) {
-            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+            // すべての業種詳細を非表示にしてから、選択された業種のみ表示
+            const allIndustries = document.querySelectorAll('.industry-details');
+            allIndustries.forEach(industry => industry.style.display = 'none');
+            document.getElementById(industryId).style.display = 'block';
         }
-    });
 
-    // スクロール位置を保存
-    window.addEventListener('scroll', function() {
-        sessionStorage.setItem('scrollPosition', window.scrollY);
-    });
+        // ページ読み込み時にスクロール位置を復元
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('scrollPosition')) {
+                window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+            }
+        });
+
+        // スクロール位置を保存
+        window.addEventListener('scroll', function() {
+            sessionStorage.setItem('scrollPosition', window.scrollY);
+        });
     </script>
 {% endblock %}

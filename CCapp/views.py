@@ -172,3 +172,6 @@ class Filter_JobtypeView(TemplateView):
 
 class AboutView(TemplateView):
     template_name = 'about.html'
+
+class SelfAnalyView(TemplateView):
+    template_name = 'soliloquizing_self_analy.html'

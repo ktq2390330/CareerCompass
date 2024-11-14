@@ -14,32 +14,24 @@
 
 <!-- base.htmlにぶち込む部分 -->
 {% block content2 %}
-    <!-- 福利厚生チェックボックスエリア -->
-    <div id="welfare_jobtype" class="jobtype-details">
-        <div class="jobtype-container">
-            <button type="button" onclick="selectAll('jobtype-list', true)">すべて選択</button>
-            <button type="button" onclick="selectAll('jobtype-list', false)">選択解除</button>
+    <div class="jobtype-selection-wrapper">
+        <!-- 業界選択ボタン -->
+        <nav class="selection">
+            <ul class="selection-button">
+                <li><a href="javascript:void(0);" onclick="showIndustry('manufacturer')">事務・管理系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('trading')">企画・マーケティング系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('retail')">営業系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('finance')">技術・研究系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('service_infrastructure')">販売・サービス系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('software_communication')">専門系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('media')">医療・福祉系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('government')">金融系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('government')">クリエイティブ系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('government')">IT系</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('government')">教育・保育・公共サービス系</a></li>
+            </ul>
+        </nav>
 
-            <!-- 福利厚生のチェックボックスリスト -->
-            <div id="jobtype-list">
-                <label><input type="checkbox" name="benefits[]" value="high_salary">30歳平均年収が600万円以上</label>
-                <label><input type="checkbox" name="benefits[]" value="merit_based">実力主義の給与体系・評価制度を導入</label>
-                <label><input type="checkbox" name="benefits[]" value="annual_leave">年間休日120日以上</label>
-                <label><input type="checkbox" name="benefits[]" value="welfare">福利厚生が充実</label>
-                <label><input type="checkbox" name="benefits[]" value="job_rotation">ジョブローテーションで様々な職種を体験できる</label>
-                <label><input type="checkbox" name="benefits[]" value="training">教育・研修制度が充実</label>
-                <label><input type="checkbox" name="benefits[]" value="qualification_support">資格取得支援制度あり</label>
-                <label><input type="checkbox" name="benefits[]" value="independent_training">独立・研修制度が充実</label>
-                <label><input type="checkbox" name="benefits[]" value="short_working_hours">時短勤務制度あり</label>
-                <label><input type="checkbox" name="benefits[]" value="maternity_leave">産休・育児休暇取得制度あり</label>
-                <label><input type="checkbox" name="benefits[]" value="two_days_off">完全週休2日制</label>
-                <label><input type="checkbox" name="benefits[]" value="overtime">平均残業時間が月20時間以内</label>
-                <label><input type="checkbox" name="benefits[]" value="housing">社宅・家賃補助制度あり</label>
-                <label><input type="checkbox" name="benefits[]" value="remote_work">リモートワーク・在宅勤務</label>
-                <label><input type="checkbox" name="benefits[]" value="face_to_face_training">対面の研修あり</label>
-                <label><input type="checkbox" name="benefits[]" value="flex_time">フレックス制度あり</label>
-                <label><input type="checkbox" name="benefits[]" value="side_jobs">副業可</label>
-            </div>
-        </div>
+        
     </div>
 {% endblock %}
