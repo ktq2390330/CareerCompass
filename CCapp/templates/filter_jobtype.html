@@ -5,23 +5,23 @@
 {% load static %}
 
 <!-- top page用のタイトル -->
-{% block title %}filter benefits{% endblock %}
+{% block title %}filter jobtype{% endblock %}
 
 <!-- top page用のcssを読み込む -->
 {% block head2 %}
-    <link href="{% static 'css/filter_benefits.css' %}" rel="stylesheet">
+    <link href="{% static 'css/filter_jobtype.css' %}" rel="stylesheet">
 {% endblock %}
 
 <!-- base.htmlにぶち込む部分 -->
 {% block content2 %}
     <!-- 福利厚生チェックボックスエリア -->
-    <div id="welfare_benefits" class="benefits-details">
-        <div class="benefits-container">
-            <button type="button" onclick="selectAll('benefits-list', true)">すべて選択</button>
-            <button type="button" onclick="selectAll('benefits-list', false)">選択解除</button>
+    <div id="welfare_jobtype" class="jobtype-details">
+        <div class="jobtype-container">
+            <button type="button" onclick="selectAll('jobtype-list', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('jobtype-list', false)">選択解除</button>
 
             <!-- 福利厚生のチェックボックスリスト -->
-            <div id="benefits-list">
+            <div id="jobtype-list">
                 <label><input type="checkbox" name="benefits[]" value="high_salary">30歳平均年収が600万円以上</label>
                 <label><input type="checkbox" name="benefits[]" value="merit_based">実力主義の給与体系・評価制度を導入</label>
                 <label><input type="checkbox" name="benefits[]" value="annual_leave">年間休日120日以上</label>

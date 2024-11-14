@@ -22,16 +22,15 @@
             <!-- 検索バー-->
             <form action="/search" method="GET">
                 <input type="text" name="query" placeholder="企業名や業種で探す" required>
-                <button type="submit">検索</button>
+                <button type="submit" id="search-button">検索</button>
             </form>
 
-            <!-- Navigation -->
-            <nav class="navigation">
-                <ul class="navigation-button">
-                    <li><a href="{% url 'CCapp:filter_industry' %}">業界</a></li>
-                    <li><a href="#job_category">職種</a></li>
+            <!-- filter-avigation -->
+            <nav class="filter-navigation">
+                <ul class="filter-navigation-button">
                     <li><a href="{% url 'CCapp:filter_area' %}">エリア</a></li>
-                    <li><a href="#employee_scale">従業員規模</a></li>
+                    <li><a href="{% url 'CCapp:filter_industry' %}">業界</a></li>
+                    <li><a href="{% url 'CCapp:filter_jobtype' %}">職種</a></li>
                     <li><a href="{% url 'CCapp:filter_benefits' %}">福利厚生</a></li>
                 </ul>
             </nav>
@@ -46,6 +45,7 @@
 
         <!-- 検索ボタン（枠外の下に配置） -->
         <!-- 検索実行時にsession storageのデータをクリアする処理 -->
+        {% comment %} ここの検索ボタンと上の検索ボタンが同じものとして機能するのか？ {% endcomment %}
         <div class="search-button-container">
             <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
                 <button type="submit" class="search-button">検索</button>

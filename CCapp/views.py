@@ -166,3 +166,6 @@ class Filter_BenefitsView(TemplateView):
 
 class Filter_IndustryView(TemplateView):
     template_name = 'filter_industry.html'
+
+class Filter_JobtypeView(TemplateView):
+    template_name = 'filter_jobtype.html'

@@ -37,6 +37,7 @@ body {
     padding: 0;
     display: inline-flex; /* 横並びに配置 */
     gap: 10px; /* 各ボタンの間にスペースを追加 */
+    margin-top: 20px;
 }
 
 .navigation-button li a {

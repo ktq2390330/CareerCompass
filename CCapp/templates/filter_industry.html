@@ -1,5 +1,5 @@
 <!-- base.htmlを継承 -->
-{% extends "base.html" %}
+{% extends "filter_base.html" %}
 
 <!-- staticタグを使うために追加 -->
 {% load static %}
@@ -8,204 +8,131 @@
 {% block title %}filter industry{% endblock %}
 
 <!-- top page用のcssを読み込む -->
-{% block head %}
-    <link href="{% static 'css/filter_area.css' %}" rel="stylesheet">
+{% block head2 %}
+    <link href="{% static 'css/filter_industry.css' %}" rel="stylesheet">
 {% endblock %}
 
 <!-- base.htmlにぶち込む部分 -->
-{% block content %}
+{% block content2 %}
+    <div class="industry-selection-wrapper">
+        <!-- エリア選択ボタン -->
+        <nav class="industryselection">
+            <ul class="industryselection-button">
+                <li><a href="javascript:void(0);" onclick="showIndustry('manufacturer')">メーカー</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('trading')">商社</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('retail')">流通・小売</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('finance')">金融</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('service_infrastructure')">サービス・インフラ</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('software_communication')">ソフトウェア・通信</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('media')">広告・出版・マスコミ</a></li>
+                <li><a href="javascript:void(0);" onclick="showIndustry('government')">官公庁・公社・団体</a></li>   
+            </ul>
+        </nav>
 
-        <div class="search-field">
-            <!-- 検索バー-->
-            <form action="/search" method="GET">
-                <input type="text" name="query" placeholder="企業名や業種で探す" required>
-                <button type="submit">検索</button>
-            </form>
-
-            <!-- Navigation -->
-            <nav class="navigation">
-                <ul class="navigation-button">
-                    <li><a href="{% url 'CCapp:filter_industry' %}">業界</a></li>
-                    <li><a href="#job_category">職種</a></li>
-                    <li><a href="{% url 'CCapp:filter_area' %}">エリア</a></li>
-                    <li><a href="#employee_scale">従業員規模</a></li>
-                    <li><a href="{% url 'CCapp:filter_benefits' %}">福利厚生</a></li>
-                </ul>
-            </nav>
-
-            <div class="header-line"></div> <!-- 点線 -->
-
-            <!-- area_selection -->
-            <div class="container">
-                <div class="search-field1">
-                    <!-- エリア選択ボタンとエリア詳細を横並びにするためのラッパー -->
-                    <div class="industry-selection-wrapper">
-                        <!-- エリア選択ボタン -->
-                        <nav class="industryselection">
-                            <ul class="industryselection-button">
-                                <li><a href="javascript:void(0);" onclick="showIndustry('manufacturer')">メーカー</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('trading')">商社</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('retail')">流通・小売</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('finance')">金融</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('service_infrastructure')">サービス・インフラ</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('software_communication')">ソフトウェア・通信</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('media')">広告・出版・マスコミ</a></li>
-                                <li><a href="javascript:void(0);" onclick="showIndustry('government')">官公庁・公社・団体</a></li>   
-                            </ul>
-                        </nav>
+        <!-- エリア詳細（初期は非表示） -->
+        <!-- 北海道・東北エリア -->
+        <div id="hokkaido_tohoku" class="area-details" style="display: none;">
             
-                        <!-- エリア詳細（初期は非表示） -->
-                        <!-- 北海道・東北エリア -->
-                        <div id="hokkaido_tohoku" class="area-details" style="display: none;">
-                            
-                            <button type="button" onclick="selectAll('hokkaido_tohoku', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('hokkaido_tohoku', false)">選択解除</button>
-                           
-                            <label><input type="checkbox" id="hokkaido" name="area[]" value="hokkaido">北海道</label>
-                            <label><input type="checkbox" id="aomori" name="area[]" value="aomori">青森</label>
-                            <label><input type="checkbox" id="iwate" name="area[]" value="iwate">岩手</label>
-                            <label><input type="checkbox" id="miyagi" name="area[]" value="miyagi">宮城</label>
-                            <label><input type="checkbox" id="akita" name="area[]" value="akita">秋田</label>
-                            <label><input type="checkbox" id="yamagata" name="area[]" value="yamagata">山形</label>
-                            <label><input type="checkbox" id="fukushima" name="area[]" value="fukushima">福島</label>
-                        </div>
+            <button type="button" onclick="selectAll('hokkaido_tohoku', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('hokkaido_tohoku', false)">選択解除</button>
             
-                        <!-- 関東エリア -->
-                        <div id="kanto" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('kanto', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('kanto', false)">選択解除</button>
-                            
-                            <label><input type="checkbox" id="tokyo" name="area[]" value="tokyo">東京</label>
-                            <label><input type="checkbox" id="kanagawa" name="area[]" value="kanagawa">神奈川</label>
-                            <label><input type="checkbox" id="chiba" name="area[]" value="chiba">千葉</label>
-                            <label><input type="checkbox" id="saitama" name="area[]" value="saitama">埼玉</label>
-                            <label><input type="checkbox" id="ibaraki" name="area[]" value="ibaraki">茨城</label>
-                            <label><input type="checkbox" id="tochigi" name="area[]" value="tochigi">栃木</label>
-                            <label><input type="checkbox" id="gunma" name="area[]" value="gunma">群馬</label>
-                        </div>
-            
-                        <!-- 甲信越・北陸エリア -->
-                        <div id="koshinetsu_hokuriku" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('koshinetsu_hokuriku', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('koshinetsu_hokuriku', false)">選択解除</button>
-                            
-                            <label><input type="checkbox" id="niigata" name="area[]" value="niigata">新潟</label>
-                            <label><input type="checkbox" id="toyama" name="area[]" value="toyama">富山</label>
-                            <label><input type="checkbox" id="ishikawa" name="area[]" value="ishikawa">石川</label>
-                            <label><input type="checkbox" id="fukui" name="area[]" value="fukui">福井</label>
-                            <label><input type="checkbox" id="yamanashi" name="area[]" value="yamanashi">山梨</label>
-                            <label><input type="checkbox" id="nagano" name="area[]" value="nagano">長野</label>
-                        </div>
-            
-                        <!-- 東海・中部エリア -->
-                        <div id="tokai_chubu" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('tokai_chubu', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('tokai_chubu', false)">選択解除</button>
-                            
-                            <label><input type="checkbox" id="aichi" name="area[]" value="aichi">愛知</label>
-                            <label><input type="checkbox" id="gifu" name="area[]" value="gifu">岐阜</label>
-                            <label><input type="checkbox" id="shizuoka" name="area[]" value="shizuoka">静岡</label>
-                            <label><input type="checkbox" id="mie" name="area[]" value="mie">三重</label>
-                        </div>
-            
-                        <!-- 近畿エリア -->
-                        <div id="kinki" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('kinki', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('kinki', false)">選択解除</button>
-                            
-                            <label><input type="checkbox" id="osaka" name="area[]" value="osaka">大阪</label>
-                            <label><input type="checkbox" id="kyoto" name="area[]" value="kyoto">京都</label>
-                            <label><input type="checkbox" id="hyogo" name="area[]" value="hyogo">兵庫</label>
-                            <label><input type="checkbox" id="nara" name="area[]" value="nara">奈良</label>
-                            <label><input type="checkbox" id="wakayama" name="area[]" value="wakayama">和歌山</label>
-                            <label><input type="checkbox" id="shiga" name="area[]" value="shiga">滋賀</label>
-                        </div>
-            
-                        <!-- 中国・四国エリア -->
-                        <div id="chugoku_shikoku" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('chugoku_shikoku', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('chugoku_shikoku', false)">選択解除</button>
-                            
-                            <label><input type="checkbox" id="okayama" name="area[]" value="okayama">岡山</label>
-                            <label><input type="checkbox" id="hiroshima" name="area[]" value="hiroshima">広島</label>
-                            <label><input type="checkbox" id="yamaguchi" name="area[]" value="yamaguchi">山口</label>
-                            <label><input type="checkbox" id="tottori" name="area[]" value="tottori">鳥取</label>
-                            <label><input type="checkbox" id="shimane" name="area[]" value="shimane">島根</label>
-                            <label><input type="checkbox" id="kagawa" name="area[]" value="kagawa">香川</label>
-                            <label><input type="checkbox" id="ehime" name="area[]" value="ehime">愛媛</label>
-                            <label><input type="checkbox" id="kochi" name="area[]" value="kochi">高知</label>
-                            <label><input type="checkbox" id="tokushima" name="area[]" value="tokushima">徳島</label>
-                        </div>
-                        
-                        <!-- 九州・沖縄エリア -->
-                        <div id="kyushu_okinawa" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('kyushu_okinawa', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('kyushu_okinawa', false)">選択解除</button>
-                            
-                            <label><input type="checkbox" id="fukuoka" name="area[]" value="fukuoka">福岡</label>
-                            <label><input type="checkbox" id="saga" name="area[]" value="saga">佐賀</label>
-                            <label><input type="checkbox" id="nagasaki" name="area[]" value="nagasaki">長崎</label>
-                            <label><input type="checkbox" id="kumamoto" name="area[]" value="kumamoto">熊本</label>
-                            <label><input type="checkbox" id="oita" name="area[]" value="oita">大分</label>
-                            <label><input type="checkbox" id="miyazaki" name="area[]" value="miyazaki">宮崎</label>
-                            <label><input type="checkbox" id="kagoshima" name="area[]" value="kagoshima">鹿児島</label>
-                            <label><input type="checkbox" id="okinawa" name="area[]" value="okinawa">沖縄</label>
-                        </div>
-
-                        <!-- 海外エリア -->
-                        <div id="overseas" class="area-details" style="display: none;">
-                            <button type="button" onclick="selectAll('overseas', true)">すべて選択</button>
-                            <button type="button" onclick="selectAll('overseas', false)">選択解除</button>
-
-                            <label><input type="checkbox" id="overseas" name="area[]" value="overseas">海外</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <label><input type="checkbox" id="hokkaido" name="area[]" value="hokkaido">北海道</label>
+            <label><input type="checkbox" id="aomori" name="area[]" value="aomori">青森</label>
+            <label><input type="checkbox" id="iwate" name="area[]" value="iwate">岩手</label>
+            <label><input type="checkbox" id="miyagi" name="area[]" value="miyagi">宮城</label>
+            <label><input type="checkbox" id="akita" name="area[]" value="akita">秋田</label>
+            <label><input type="checkbox" id="yamagata" name="area[]" value="yamagata">山形</label>
+            <label><input type="checkbox" id="fukushima" name="area[]" value="fukushima">福島</label>
         </div>
 
-    <!-- JavaScript: エリアの表示切り替えとすべて選択・解除 -->
-    <script>
-        function showArea(areaId) {
-            // すべてのエリア詳細を非表示にする
-            const allAreas = document.querySelectorAll('.area-details');
-            allAreas.forEach(area => area.style.display = 'none');
-
-            // 選択されたエリアのみ表示
-            document.getElementById(areaId).style.display = 'block';
-        }
-
-        function selectAll(areaId, select) {
-            // 指定したエリアのチェックボックスを取得
-            const checkboxes = document.getElementById(areaId).querySelectorAll('input[type="checkbox"]');
+        <!-- 関東エリア -->
+        <div id="kanto" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('kanto', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('kanto', false)">選択解除</button>
             
-            // すべてのチェックボックスを選択または解除
-            checkboxes.forEach(checkbox => checkbox.checked = select);
-        }
+            <label><input type="checkbox" id="tokyo" name="area[]" value="tokyo">東京</label>
+            <label><input type="checkbox" id="kanagawa" name="area[]" value="kanagawa">神奈川</label>
+            <label><input type="checkbox" id="chiba" name="area[]" value="chiba">千葉</label>
+            <label><input type="checkbox" id="saitama" name="area[]" value="saitama">埼玉</label>
+            <label><input type="checkbox" id="ibaraki" name="area[]" value="ibaraki">茨城</label>
+            <label><input type="checkbox" id="tochigi" name="area[]" value="tochigi">栃木</label>
+            <label><input type="checkbox" id="gunma" name="area[]" value="gunma">群馬</label>
+        </div>
 
-        // 業種を切り替える関数
-    function showIndustry(industryId) {
-        // スクロール位置を保存
-        const currentScroll = window.scrollY;
-        sessionStorage.setItem('scrollPosition', currentScroll);
+        <!-- 甲信越・北陸エリア -->
+        <div id="koshinetsu_hokuriku" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('koshinetsu_hokuriku', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('koshinetsu_hokuriku', false)">選択解除</button>
+            
+            <label><input type="checkbox" id="niigata" name="area[]" value="niigata">新潟</label>
+            <label><input type="checkbox" id="toyama" name="area[]" value="toyama">富山</label>
+            <label><input type="checkbox" id="ishikawa" name="area[]" value="ishikawa">石川</label>
+            <label><input type="checkbox" id="fukui" name="area[]" value="fukui">福井</label>
+            <label><input type="checkbox" id="yamanashi" name="area[]" value="yamanashi">山梨</label>
+            <label><input type="checkbox" id="nagano" name="area[]" value="nagano">長野</label>
+        </div>
 
-        // すべての業種詳細を非表示にしてから、選択された業種のみ表示
-        const allIndustries = document.querySelectorAll('.industry-details');
-        allIndustries.forEach(industry => industry.style.display = 'none');
-        document.getElementById(industryId).style.display = 'block';
-    }
+        <!-- 東海・中部エリア -->
+        <div id="tokai_chubu" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('tokai_chubu', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('tokai_chubu', false)">選択解除</button>
+            
+            <label><input type="checkbox" id="aichi" name="area[]" value="aichi">愛知</label>
+            <label><input type="checkbox" id="gifu" name="area[]" value="gifu">岐阜</label>
+            <label><input type="checkbox" id="shizuoka" name="area[]" value="shizuoka">静岡</label>
+            <label><input type="checkbox" id="mie" name="area[]" value="mie">三重</label>
+        </div>
 
-    // ページ読み込み時にスクロール位置を復元
-    window.addEventListener('load', function() {
-        if (sessionStorage.getItem('scrollPosition')) {
-            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
-        }
-    });
+        <!-- 近畿エリア -->
+        <div id="kinki" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('kinki', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('kinki', false)">選択解除</button>
+            
+            <label><input type="checkbox" id="osaka" name="area[]" value="osaka">大阪</label>
+            <label><input type="checkbox" id="kyoto" name="area[]" value="kyoto">京都</label>
+            <label><input type="checkbox" id="hyogo" name="area[]" value="hyogo">兵庫</label>
+            <label><input type="checkbox" id="nara" name="area[]" value="nara">奈良</label>
+            <label><input type="checkbox" id="wakayama" name="area[]" value="wakayama">和歌山</label>
+            <label><input type="checkbox" id="shiga" name="area[]" value="shiga">滋賀</label>
+        </div>
 
-    // スクロール位置を保存
-    window.addEventListener('scroll', function() {
-        sessionStorage.setItem('scrollPosition', window.scrollY);
-    });
-    </script>
+        <!-- 中国・四国エリア -->
+        <div id="chugoku_shikoku" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('chugoku_shikoku', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('chugoku_shikoku', false)">選択解除</button>
+            
+            <label><input type="checkbox" id="okayama" name="area[]" value="okayama">岡山</label>
+            <label><input type="checkbox" id="hiroshima" name="area[]" value="hiroshima">広島</label>
+            <label><input type="checkbox" id="yamaguchi" name="area[]" value="yamaguchi">山口</label>
+            <label><input type="checkbox" id="tottori" name="area[]" value="tottori">鳥取</label>
+            <label><input type="checkbox" id="shimane" name="area[]" value="shimane">島根</label>
+            <label><input type="checkbox" id="kagawa" name="area[]" value="kagawa">香川</label>
+            <label><input type="checkbox" id="ehime" name="area[]" value="ehime">愛媛</label>
+            <label><input type="checkbox" id="kochi" name="area[]" value="kochi">高知</label>
+            <label><input type="checkbox" id="tokushima" name="area[]" value="tokushima">徳島</label>
+        </div>
+        
+        <!-- 九州・沖縄エリア -->
+        <div id="kyushu_okinawa" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('kyushu_okinawa', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('kyushu_okinawa', false)">選択解除</button>
+            
+            <label><input type="checkbox" id="fukuoka" name="area[]" value="fukuoka">福岡</label>
+            <label><input type="checkbox" id="saga" name="area[]" value="saga">佐賀</label>
+            <label><input type="checkbox" id="nagasaki" name="area[]" value="nagasaki">長崎</label>
+            <label><input type="checkbox" id="kumamoto" name="area[]" value="kumamoto">熊本</label>
+            <label><input type="checkbox" id="oita" name="area[]" value="oita">大分</label>
+            <label><input type="checkbox" id="miyazaki" name="area[]" value="miyazaki">宮崎</label>
+            <label><input type="checkbox" id="kagoshima" name="area[]" value="kagoshima">鹿児島</label>
+            <label><input type="checkbox" id="okinawa" name="area[]" value="okinawa">沖縄</label>
+        </div>
 
+        <!-- 海外エリア -->
+        <div id="overseas" class="area-details" style="display: none;">
+            <button type="button" onclick="selectAll('overseas', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('overseas', false)">選択解除</button>
+
+            <label><input type="checkbox" id="overseas" name="area[]" value="overseas">海外</label>
+        </div>
+    </div>
 {% endblock %}
