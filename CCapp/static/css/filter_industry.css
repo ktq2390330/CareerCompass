@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+/* エリア選択ボタンのリストのマーカーを消す */
+.selection-button {
+    list-style-type: none;  /* 箇条書きの点を消す */
+}
+
+/* エリア選択ボタンを左寄せにし、ボタンの幅を統一 */
+.selection-button {
+    display: flex;
+    flex-direction: column;  /* ボタンを縦に並べる */
+    align-items: flex-start;  /* 左寄せ */
+    gap: 10px;  /* ボタン間のスペース */
+}
+
+/* ボタンを四角枠で囲み、デザインを整え、幅を統一 */
+.selection-button a {
+    display: inline-block;  /* ボタンをインラインブロックに */
+    padding: 10px 20px;  /* 内側の余白 */
+    border: 2px solid #ccc;  /* 四角枠の色 */
+    text-decoration: none;  /* 下線を削除 */
+    color: #000;  /* 文字色 */
+    font-size: 16px;  /* フォントサイズ */
+    background-color: #ffffff;  /* 背景色を白に */
+    width: 200px;  /* ボタンの幅を統一 */
+    box-sizing: border-box;  /* パディングとボーダーを含めてサイズを決定 */
+}
+
+/* ボタンにホバーしたときのスタイル */
+.selection-button a:hover {
+    background-color: #f0f0f0;  /* ホバー時の背景色 */
+    border-color: #4598eb;  /* 枠線の色を変更 */
+}
+
+/* ボタン内の選択肢のデザイン */
+.area-details {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.area-checkboxes label input {
+    margin-right: 10px;
+}
+
+/* エリア選択セクション全体 */
+.area-selection-section {
+    display: flex;
+    justify-content: space-between;  /* エリア選択ボタンと右側のボタンを分ける */
+}
+
+
+/* エリア選択ボタンとエリア詳細を横並びに配置 */
+.area-selection-wrapper {
+    display: flex;
+    gap: 20px; /* ボタンと詳細エリアの間にスペースを追加 */
+    align-items: flex-start; /* 上部揃え */
+}
+
+/* エリア詳細のスタイル */
+.area-details {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    width: 250px; /* 適宜調整 */
+    background-color: #f9f9f9;
+}
+
+/* 「すべて選択」「選択解除」ボタン */
+.area-details button {
+    background: none; /* 背景色をなくす */
+    border: none; /* 枠線を消す */
+    color: #000; /* テキスト色を青に設定（必要に応じて変更） */
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0; /* 余白をなくす */
+    text-decoration: underline; /* 必要に応じて追加 */
+}
+
+/* ホバー時のスタイル */
+.area-details button:hover {
+    text-decoration: underline; /* ホバー時に下線を追加 */
+}
+
+/* 「すべて選択」「選択解除」ボタンを横並びに */
+.select-buttons {
+    display: flex;
+    gap: 10px; /* ボタン間のスペース */
+    margin-bottom: 10px; /* ボタンとチェックボックスリストの間の余白 */
+}
+
+.select-buttons button {
+    background: none;
+    border: none;
+    color: #4598eb;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.select-buttons button:hover {
+    text-decoration: underline;
+}
+

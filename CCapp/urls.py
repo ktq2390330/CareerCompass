@@ -21,4 +21,5 @@ urlpatterns = [
     path('subscription_done/', views.Subscription_doneView.as_view(), name='subscription_done'),
     path('signin/', views.SigninView.as_view(), name='signin'),
     path('about/', views.AboutView.as_view(), name='about'),
+    path('self_analy/', views.SelfAnalyView.as_view(), name='self_analy'),
 ]

@@ -26,7 +26,7 @@
         <header class="header">
             <!-- brand name -->
             <div id="brand">
-                <a class="brand" href="#"><i>Career
+                <a class="brand" href="{% url 'CCapp:top' %}"><i>Career
                     <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
             </div>
 
@@ -39,7 +39,7 @@
                     <li><a href="{% url 'CCapp:top' %}">トップ</a></li>
                     <li><a href="{% url 'CCapp:profile' %}">プロフィール</a></li>
                     <li><a href="{% url 'CCapp:filter_area' %}">絞り込み検索</a></li>
-                    <li><a href="#self-reflection">自問自答</a></li>
+                    <li><a href="{% url 'CCapp:self_analy' %}">自問自答</a></li>
                     <li><a href="{% url 'CCapp:about' %}">サービス概要</a></li>
                     <li><a href="{% url 'CCapp:contact' %}">お問い合わせ</a></li>
                     <li><a href="{% url 'CCapp:logout' %}">ログアウト</a></li>
