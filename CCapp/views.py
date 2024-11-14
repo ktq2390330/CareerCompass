@@ -125,59 +125,68 @@ class UserUpdateView(FormView):
         # フォームが無効な場合、エラーメッセージを表示
         messages.error(self.request, '入力内容に誤りがあります。')
         return super().form_invalid(form)
-        
+
+# accout
+# signin
 class SigninView(TemplateView):
     template_name = 'signin.html'
-
+# logout
 class LogoutView(TemplateView):
     template_name = 'logout.html'
-
+# delete_ac
 class Delete_acView(TemplateView):
     template_name = 'delete_ac.html'
-
+# edit_ac
 class Edit_acView(TemplateView):
     template_name = 'edit_ac.html'
 
+
+# profile
 class ProfileView(TemplateView):
     template_name = 'profile.html'
 
-# filter検索
 
+# filter
 # filter_area
 class Filter_AreaView(ListView):
     model = Area1
     template_name = 'filter_area.html'
-
+# filter_industry
+class Filter_IndustryView(TemplateView):
+    template_name = 'filter_industry.html'
+# filter_jobtype
+class Filter_JobtypeView(TemplateView):
+    template_name = 'filter_jobtype.html'
+# filter_benefits
 class Filter_BenefitsView(TemplateView):
     template_name = 'filter_benefits.html'
 
-class Filter_IndustryView(TemplateView):
-    template_name = 'filter_industry.html'
 
-class Filter_JobtypeView(TemplateView):
-    template_name = 'filter_jobtype.html'
-
-
+# admin
+# dashboard
 class AdmTopView(TemplateView):
     template_name = 'adm_dashboard.html'
-
-class AdmBaseView(TemplateView):
-    template_name = 'adm_base.html'
-
+# login
 class AdmLoginView(TemplateView):
     template_name = 'adm_login.html'
-
+# post_list
 class AdmPostListView(TemplateView):
     template_name = 'adm_post_list.html'
 
+
+# subscription
 class SubscriptionView(TemplateView):
     template_name = 'subscription.html'
-
+# subscription_done
 class Subscription_doneView(TemplateView):
     template_name = 'subscription_done.html'
 
+
+# about
 class AboutView(TemplateView):
     template_name = 'about.html'
 
+
+# self
 class SelfAnalyView(TemplateView):
     template_name = 'soliloquizing_self_analy.html'
