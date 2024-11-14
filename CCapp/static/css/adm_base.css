@@ -43,8 +43,9 @@ body {
 /* brand横のh1タグの体裁 */
 #brand h1 {
     /* margin-right: 50px; */
-    margin: 0px auto;
-    margin-left: 350px;
+    margin: 0 auto; /* 左右のマージンを自動調整 */
+    text-align: center; /* テキストの中央揃え */
+    transform: translateX(-85px); /* 左にずらす */
 }
 
 /* navigation */
