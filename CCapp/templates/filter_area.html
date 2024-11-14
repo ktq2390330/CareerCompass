@@ -21,12 +21,14 @@
         <nav class="selection">
             <ul class="selection-button">
                 
-                    <li>
-                        <a href="javascript:void(0);" onclick="showArea('hokaido')">{{ Area0.id }}</a>
-                    </li>
-                
             </ul>
         </nav>
+        
+        {% for area in Area1 %}
+        <tr>
+            <td>{{ area.name }}</td>
+        </tr>
+        {% endfor %}
 
         <!-- エリア詳細（初期は非表示） -->
         <!-- 北海道・東北エリア -->

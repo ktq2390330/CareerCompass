@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .models import User, Area0
+from .models import User, Area1
 from .forms import LoginForm
+from django.views.generic import TemplateView, ListView
 
 # TemplateViewをインポート
 from django.views.generic.base import TemplateView
@@ -143,11 +144,9 @@ class ProfileView(TemplateView):
 # filter検索
 
 # filter_area
-def filter_area_view(request):
-    # データベースからArea0の情報を取得
-    area0_list = Area0.objects.all()
-    # テンプレートにデータを渡す
-    return render(request, 'filter_area.html', {'area0_list': area0_list})
+class Filter_AreaView(ListView):
+    model = Area1
+    template_name = 'filter_area.html'
 
 class Filter_BenefitsView(TemplateView):
     template_name = 'filter_benefits.html'
