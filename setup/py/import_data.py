@@ -48,16 +48,18 @@ def area1(filePath):
                 for row in reader:
                     regionName,prefecture = row['region'], row['name']
                     region = Area0.objects.get(name=regionName)
-                    Area1.objects.create(name=prefecture, area0=region)
-                    
+                    instance=Area1.objects.create(name=prefecture, area0=region)
+                    instanceDict[instance]=None
     except Area0.DoesNotExist:
         print(f"{region} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def area2(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.reader(csvFile)
@@ -66,15 +68,18 @@ def area2(filePath):
                 for row in reader:
                     prefecture_name, city_name = row['都道府県名（漢字）'], row['市区町村名（漢字）']
                     prefecture= Area1.objects.get(name=prefecture_name)
-                    Area2.objects.create(name=city_name, area1=prefecture)
+                    instance=Area2.objects.create(name=city_name, area1=prefecture)
+                    instanceDict[instance]=None
     except Area1.DoesNotExist:
         print(f"{prefecture_name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def tag(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.DictReader(csvFile)
@@ -82,16 +87,15 @@ def tag(filePath):
                 for row in reader:
                     tagName = row['name']
                     instance,created=Tag.objects.get_or_create(name=tagName)
-                    if created:
-                        print(f"新規作成: {instance.name}")
-                    else:
-                        print(f"既存データ取得: {instance.name}")
+                    instanceDict[instance]=created
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def category00(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.DictReader(csvFile)
@@ -99,16 +103,15 @@ def category00(filePath):
                 for row in reader:
                     categoryName = row['name']
                     instance,created=Category00.objects.get_or_create(name=categoryName)
-                    if created:
-                        print(f"新規作成: {instance.name}")
-                    else:
-                        print(f"既存データ取得: {instance.name}")
+                    instanceDict[instance]=created
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def category01(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.reader(csvFile)
@@ -117,15 +120,18 @@ def category01(filePath):
                 for row in reader:
                     category00Name, category01Name = row['category00name'], row['name']
                     category00= Category00.objects.get(name=category00Name)
-                    Category01.objects.create(name=category01Name, category00=category00)
+                    instance=Category01.objects.create(name=category01Name, category00=category00)
+                    instanceDict[instance]=None
     except Category00.DoesNotExist:
         print(f"{category00Name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def category10(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.DictReader(csvFile)
@@ -133,16 +139,15 @@ def category10(filePath):
                 for row in reader:
                     categoryName = row['name']
                     instance,created=Category10.objects.get_or_create(name=categoryName)
-                    if created:
-                        print(f"新規作成: {instance.name}")
-                    else:
-                        print(f"既存データ取得: {instance.name}")
+                    instanceDict[instance]=created
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
 
 def category11(filePath):
+    instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
             reader = csv.reader(csvFile)
@@ -151,13 +156,33 @@ def category11(filePath):
                 for row in reader:
                     category10Name, category11Name = row['category10name'], row['name']
                     category10 = Category10.objects.get(name=category10Name)
-                    Category11.objects.create(name=category11Name, category10=category10)
+                    instance=Category11.objects.create(name=category11Name, category10=category10)
+                    instanceDict[instance]=None
     except Category10.DoesNotExist:
         print(f"{category10Name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
-        print(f"エラーが発生しました: {e}")    
+        print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
+
+def corporation(filePath):
+    instanceDict={}
+    try:
+        with open(filePath, newline='', encoding='utf-8') as csvFile:
+            reader = csv.DictReader(csvFile)
+            with transaction.atomic():
+                for row in reader:
+                    cId,name,address,mail,tel,url=row['cId'],row['name'],row['address'],row['tel'],row['url']
+                    instance,created=Corporation.objects.get_or_create(corp=cId,cName=name,address=address,cMail=mail,cTel=tel,url=url)
+                    instanceDict[instance]=created
+    except FileNotFoundError:
+        print(f"ファイルが見つかりません: {filePath}")
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+    returnPrint(instanceDict)
+
+
 
 # 実行
 functionMap={
@@ -179,6 +204,6 @@ functionMap={
 
 for file_key, function in functionMap.items():
     file_path = makePath(file_key)
-    print(f"{file_key}のデータを {file_path} から読み込み中...")
+    print(f"Loading data for {file_key} from {file_path}...")
     function(file_path)
-    print(f"{file_key}のデータの読み込みが完了しました。\n")
+    print(f"Data for {file_key} loaded successfully.\n")
