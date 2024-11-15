@@ -186,6 +186,10 @@ class Subscription_doneView(TemplateView):
 class AboutView(TemplateView):
     template_name = 'about.html'
 
+# jobs
+class JobsView(TemplateView):
+    template_name = 'jobs.html'
+
 
 # self
 class SelfAnalyView(TemplateView):

@@ -36,6 +36,9 @@ urlpatterns = [
     # about
     path('about/', views.AboutView.as_view(), name='about'),
 
+    # jobs
+    path('jobs/', views.JobsView.as_view(), name='jobs.html'),
+
     # self
     path('self_analy/', views.SelfAnalyView.as_view(), name='self_analy'),
 ]
