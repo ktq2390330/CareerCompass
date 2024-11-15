@@ -37,6 +37,7 @@
     border: 2px solid;
     padding: 60 40px;
     max-width: 1000px;
+    margin: 100px auto;
 }
 
 .question-input {

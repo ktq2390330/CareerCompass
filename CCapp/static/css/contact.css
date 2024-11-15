@@ -1,46 +1,44 @@
 /* コンテナのスタイル */
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* 上寄せに変更 */
-    height: 100vh; /* 高さを画面全体に */
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* プロフィールボックスのスタイル */
 .profile-box {
-    border: 1px solid;
-    padding: 20px; /* パディングを調整 */
-    width: 100%; /* 幅を100%にして外枠を広げる */
+    border: 2px solid;
+    padding: 60 40px; /* パディングを調整 */
+    max-width: 1000px;
+    margin: 100px auto;
 }
 
 /* お問い合わせタイトルのスタイル */
 .contact-title {
-    font-size: 32px; /* フォントサイズを大きく */
-    color: black; /* 色を黒に変更 */
+    font-size: 32px;
     text-align: left;
     margin-bottom: 10px;
+    margin-left: 60px;
 }
 
 /* お問い合わせ説明文のスタイル */
 .contact-description {
     font-size: 14px;
-    text-align: center;
     margin-bottom: 20px;
+    margin-left: 60px;
 }
 
 /* フォームグループのスタイル */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     display: flex; /* フレックスボックスを使用 */
     flex-direction: column; /* 縦方向に配置 */
-    align-items: flex-start; /* 左揃え */
 }
 
 .form-group label {
-    margin-bottom: 5px; /* ラベルと入力欄の間に余白を追加 */
+    margin-top: 15px; /* ラベルと入力欄の間に余白を追加 */
     font-size: 16px; /* フォントサイズを調整 */
+    margin-left: 200px;
 }
 
 .form-group input,
@@ -51,6 +49,8 @@
     border: 1px solid;
     border-radius: 5px;
     font-size: 14px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* お問い合わせ内容の入力欄を大きくするスタイル */
@@ -62,7 +62,8 @@
 .button-group {
     display: flex;
     justify-content: center; /* 中央揃え */
-    margin-top: 20px;
+    margin-top: 80px;
+    margin-bottom: 40px;
 }
 
 .button-group button {
