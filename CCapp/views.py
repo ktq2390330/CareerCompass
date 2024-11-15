@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .models import User, Area1
+from .models import User, Area0, Area1, Category00, Category01, Category10, Category11, Tag
 from .forms import LoginForm
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
 
 # TemplateViewをインポート
 from django.views.generic.base import TemplateView
@@ -148,18 +148,42 @@ class ProfileView(TemplateView):
 
 # filter
 # filter_area
-class Filter_AreaView(ListView):
-    model = Area1
-    template_name = 'filter_area.html'
+def filter_area_view(request):
+    # データベースからエリアの情報を取得
+    area0_list = Area0.objects.all()
+    area1_list = Area1.objects.all()
+    # テンプレートにデータを渡す
+    return render(request, 'filter_area.html', {
+        'area0_list': area0_list,
+        'area1_list': area1_list
+    })
 # filter_industry
-class Filter_IndustryView(TemplateView):
-    template_name = 'filter_industry.html'
+def filter_industry_view(request):
+    # データベースから業界の情報を取得
+    category00_list = Category00.objects.all()
+    category01_list = Category01.objects.all()
+    # テンプレートにデータを渡す
+    return render(request, 'filter_industry.html', {
+        'category00_list': category00_list,
+        'category01_list': category01_list
+    })
 # filter_jobtype
-class Filter_JobtypeView(TemplateView):
-    template_name = 'filter_jobtype.html'
+def filter_jobtype_view(request):
+    # データベースから職種の情報を取得
+    category10_list = Category10.objects.all()
+    category11_list = Category11.objects.all()
+    # テンプレートにデータを渡す
+    return render(request, 'filter_jobtype.html', {
+        'category10_list': category10_list,
+        'category11_list': category11_list
+    })
 # filter_benefits
-class Filter_BenefitsView(TemplateView):
-    template_name = 'filter_benefits.html'
+def filter_benefits_view(request):
+    # データベースから福利厚生の情報を取得
+    tag_list = Tag.objects.all()
+    print(tag_list)
+    # テンプレートにデータを渡す
+    return render(request, 'filter_benefits.html', {'tag_list': tag_list })
 
 
 # admin

@@ -51,9 +51,8 @@
     justify-content: space-between;  /* エリア選択ボタンと右側のボタンを分ける */
 }
 
-
 /* エリア選択ボタンとエリア詳細を横並びに配置 */
-.area-selection-wrapper {
+.selection-wrapper {
     display: flex;
     gap: 20px; /* ボタンと詳細エリアの間にスペースを追加 */
     align-items: flex-start; /* 上部揃え */

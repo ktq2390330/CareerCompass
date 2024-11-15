@@ -31,3 +31,10 @@
     background-color: #f0f0f0;  /* ホバー時の背景色 */
     border-color: #4598eb;  /* 枠線の色を変更 */
 }
+
+/* エリア選択ボタンとエリア詳細を横並びに配置 */
+.selection-wrapper {
+    display: flex;
+    gap: 20px; /* ボタンと詳細エリアの間にスペースを追加 */
+    align-items: flex-start; /* 上部揃え */
+}

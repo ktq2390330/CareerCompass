@@ -19,10 +19,10 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
 
     # filter
-    path('filter_area/', views.Filter_AreaView.as_view(), name='filter_area'),
-    path('filter_benefits/',views.Filter_BenefitsView.as_view(), name='filter_benefits'),
-    path('filter_industry/',views.Filter_IndustryView.as_view(), name='filter_industry'),
-    path('filter_jobtype/',views.Filter_JobtypeView.as_view(), name='filter_jobtype'),
+    path('filter_area/', views.filter_area_view, name='filter_area'),
+    path('filter_industry/',views.filter_industry_view, name='filter_industry'),
+    path('filter_jobtype/',views.filter_jobtype_view, name='filter_jobtype'),
+    path('filter_benefits/',views.filter_benefits_view, name='filter_benefits'),
 
     # admin
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),

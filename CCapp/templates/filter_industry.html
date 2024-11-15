@@ -4,31 +4,70 @@
 <!-- staticタグを使うために追加 -->
 {% load static %}
 
-<!-- top page用のタイトル -->
+<!-- filter_industry用のタイトル -->
 {% block title %}filter industry{% endblock %}
 
-<!-- top page用のcssを読み込む -->
+<!-- 埋め込む用のcssを読み込む -->
 {% block head2 %}
     <link href="{% static 'css/filter_industry.css' %}" rel="stylesheet">
 {% endblock %}
 
-<!-- base.htmlにぶち込む部分 -->
+<!-- filter_base.htmlにぶち込む部分 -->
 {% block content2 %}
-    <div class="industry-selection-wrapper">
-        <!-- 業界選択ボタン -->
+    <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
+    <div class="selection-wrapper">
+        <!-- 大分類ボタン -->
         <nav class="selection">
             <ul class="selection-button">
-                <li><a href="javascript:void(0);" onclick="showIndustry('manufacturer')">メーカー</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('trading')">商社</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('retail')">流通・小売</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('finance')">金融</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('service_infrastructure')">サービス・インフラ</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('software_communication')">ソフトウェア・通信</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('media')">広告・出版・マスコミ</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('government')">官公庁・公社・団体</a></li>   
+                {% for category00 in category00_list %}
+                <li>
+                    <!-- 各ボタンに onclick で業界IDを渡す -->
+                    <a href="javascript:void(0);" onclick="showIndustry('industry{{ category00.id }}')">
+                        {{ category00.name }}
+                    </a>
+                </li>
+                {% endfor %}
             </ul>
         </nav>
 
-        
+        <!-- 各業界のチェックボックス -->
+        {% for category00 in category00_list %}
+        <div id="industry{{ category00.id }}" class="industry-details" style="display: none;">
+            <button type="button" onclick="selectAll('industry{{ category00.id }}', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('industry{{ category00.id }}', false)">選択解除</button>
+            
+            <!-- category01 のチェックボックスを動的に生成 -->
+            {% for category01 in category01_list %}
+                {% if category01.category00_id == category00.id %}
+                <label>
+                    <input type="checkbox" name="industry[]" value="{{ category01.id }}"> {{ category01.name }}
+                </label>
+                <br>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
     </div>
+
+    <script>
+        // ボタンをクリックして対応するチェックボックスを表示
+        function showIndustry(industryId) {
+            // すべての業界詳細を非表示にする
+            const allIndustry = document.querySelectorAll('.industry-details');
+            allIndustry.forEach(industry => industry.style.display = 'none');
+        
+            // 該当する業界詳細を表示
+            const targetIndustry = document.getElementById(industryId);
+            if (targetIndustry) {
+                targetInudustry.style.display = 'block';
+            }
+        }
+        
+        // すべて選択/解除
+        function selectAll(industryId, isChecked) {
+            const checkboxes = document.querySelectorAll('#' + industryId + ' input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+        }
+    </script>
+         
 {% endblock %}

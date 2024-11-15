@@ -4,34 +4,70 @@
 <!-- staticタグを使うために追加 -->
 {% load static %}
 
-<!-- top page用のタイトル -->
+<!-- filter_jobtype用のタイトル -->
 {% block title %}filter jobtype{% endblock %}
 
-<!-- top page用のcssを読み込む -->
+<!-- 埋め込む用のcssを読み込む -->
 {% block head2 %}
     <link href="{% static 'css/filter_jobtype.css' %}" rel="stylesheet">
 {% endblock %}
 
-<!-- base.htmlにぶち込む部分 -->
+<!-- filter_base.htmlにぶち込む部分 -->
 {% block content2 %}
-    <div class="jobtype-selection-wrapper">
-        <!-- 業界選択ボタン -->
+    <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
+    <div class="selection-wrapper">
+        <!-- 大分類ボタン -->
         <nav class="selection">
             <ul class="selection-button">
-                <li><a href="javascript:void(0);" onclick="showIndustry('manufacturer')">事務・管理系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('trading')">企画・マーケティング系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('retail')">営業系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('finance')">技術・研究系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('service_infrastructure')">販売・サービス系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('software_communication')">専門系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('media')">医療・福祉系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('government')">金融系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('government')">クリエイティブ系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('government')">IT系</a></li>
-                <li><a href="javascript:void(0);" onclick="showIndustry('government')">教育・保育・公共サービス系</a></li>
+                {% for category10 in category10_list %}
+                <li>
+                    <!-- 各ボタンに onclick で業界IDを渡す -->
+                    <a href="javascript:void(0);" onclick="showJobtype('jobtype{{ category10.id }}')">
+                        {{ category10.name }}
+                    </a>
+                </li>
+                {% endfor %}
             </ul>
         </nav>
 
-        
+        <!-- 各業界のチェックボックス -->
+        {% for category10 in category10_list %}
+        <div id="jobtype{{ category10.id }}" class="jobtype-details" style="display: none;">
+            <button type="button" onclick="selectAll('jobtype{{ category10.id }}', true)">すべて選択</button>
+            <button type="button" onclick="selectAll('jobtype{{ category10.id }}', false)">選択解除</button>
+            
+            <!-- category11 のチェックボックスを動的に生成 -->
+            {% for category11 in category11_list %}
+                {% if category11.category10_id == category10.id %}
+                <label>
+                    <input type="checkbox" name="jobtype[]" value="{{ category11.id }}"> {{ category11.name }}
+                </label>
+                <br>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
     </div>
+
+    <script>
+        // ボタンをクリックして対応するチェックボックスを表示
+        function showJobtype(jobtypeId) {
+            // すべての業界詳細を非表示にする
+            const allJobtype = document.querySelectorAll('.jobtype-details');
+            allJobtype.forEach(jobtype => jobtype.style.display = 'none');
+        
+            // 該当する業界詳細を表示
+            const targetJobtype = document.getElementById(jobtypeId);
+            if (targetJobtype) {
+                targetJobtype.style.display = 'block';
+            }
+        }
+        
+        // すべて選択/解除
+        function selectAll(jobtypeId, isChecked) {
+            const checkboxes = document.querySelectorAll('#' + jobtypeId + ' input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+        }
+    </script>
+         
 {% endblock %}
