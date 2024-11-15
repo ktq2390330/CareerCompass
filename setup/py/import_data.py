@@ -12,7 +12,7 @@ from django.db import transaction
 import datetime
 
 def makePath(fileName):
-    basePath='/CareerCompass/setup/data/'
+    basePath='../data/'
     filePath=os.path.join(os.path.dirname(__file__),f'{basePath}{fileName}')
     return filePath
 
