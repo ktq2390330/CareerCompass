@@ -2,7 +2,7 @@ import os
 import sys
 import django
 import csv
-sys.path.append(os.path.join(os.path.dirname(__file__), "/CareerCompass"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "/CareerCompass")) #Cドライブ直下の場合
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CareerCompassProject.settings')
 django.setup()
 from CCapp.models import *
@@ -42,7 +42,7 @@ def area1(filePath):
     instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
-            reader = csv.reader(csvFile)
+            reader = csv.DictReader(csvFile)
             next(reader)
             with transaction.atomic():
                 for row in reader:
@@ -62,7 +62,7 @@ def area2(filePath):
     instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
-            reader = csv.reader(csvFile)
+            reader = csv.DictReader(csvFile)
             next(reader)
             with transaction.atomic():
                 for row in reader:
@@ -114,7 +114,7 @@ def category01(filePath):
     instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
-            reader = csv.reader(csvFile)
+            reader = csv.DictReader(csvFile)
             next(reader)
             with transaction.atomic():
                 for row in reader:
@@ -150,7 +150,7 @@ def category11(filePath):
     instanceDict={}
     try:
         with open(filePath, newline='', encoding='utf-8') as csvFile:
-            reader = csv.reader(csvFile)
+            reader = csv.DictReader(csvFile)
             next(reader)
             with transaction.atomic():
                 for row in reader:
@@ -181,6 +181,22 @@ def corporation(filePath):
     except Exception as e:
         print(f"エラーが発生しました: {e}")
     returnPrint(instanceDict)
+
+# def dm(filePath):
+#     instanceDict={}
+#     try:
+#         with open(filePath, newline='', encoding='utf-8') as csvFile:
+#             reader = csv.DictReader(csvFile)
+#             with transaction.atomic():
+#                 for row in reader:
+#                     title,detail,read,userId,tel,url=row['title'],row['detail'],row['read'],row['userID'],row['corporationID']
+#                     instance,created=Corporation.objects.get_or_create(corp=cId,cName=name,address=address,cMail=mail,cTel=tel,url=url)
+#                     instanceDict[instance]=created
+#     except FileNotFoundError:
+#         print(f"ファイルが見つかりません: {filePath}")
+#     except Exception as e:
+#         print(f"エラーが発生しました: {e}")
+#     returnPrint(instanceDict)
 
 
 
