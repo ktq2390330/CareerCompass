@@ -53,6 +53,9 @@ class Category10(Base):
 # 職種の中分類
 class Category11(Base):
     category10=models.ForeignKey(Category10,on_delete=models.CASCADE,verbose_name="カテゴリ10",related_name="category11_category10")
+    class Meta:
+        db_table='Category11'
+        verbose_name='カテゴリ11'
 
 # 福利厚生の中分類
 class Tag(Base):

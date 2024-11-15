@@ -17,7 +17,7 @@ def returnPrint(instanceDict):
     for instance,created in instanceDict.items():
         if created==None:
             print(f"作成されたデータ: {instance.name}")
-        if created:
+        elif created:
             print(f"新規作成: {instance.name}")
         else:
             print(f"既存データ取得: {instance.name}")
@@ -49,7 +49,7 @@ def area1(filePath):
                     regionName,prefecture = row['region'], row['name']
                     region = Area0.objects.get(name=regionName)
                     instance=Area1.objects.create(name=prefecture, area0=region)
-                    instanceDict[instance]=None
+                    instanceDict[instance]=''
     except Area0.DoesNotExist:
         print(f"{region} は存在しません")
     except FileNotFoundError:
@@ -222,4 +222,3 @@ for file_key, function in functionMap.items():
     file_path = makePath(file_key)
     print(f"Loading data for {file_key} from {file_path}...")
     function(file_path)
-    print(f"Data for {file_key} loaded successfully.\n")
