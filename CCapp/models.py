@@ -90,7 +90,6 @@ class Profile(models.Model):
     category11=models.ForeignKey(Category11,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ11",related_name="profile_category11")
     area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="profile_area1")
     uOffer=models.CharField(max_length=255,verbose_name="内定先")
-    jOffer_l=models.CharField(max_length=255,verbose_name="応募求人リスト")
 
     class Meta:
         db_table="profile"
@@ -133,18 +132,21 @@ class Offer(Base):
     salaryRaise=models.CharField(max_length=63,verbose_name="昇給")
     bonus=models.CharField(max_length=31,verbose_name="賞与")
     holiday=models.TextField(verbose_name="休日休暇")
-    welfare=models.TextField(verbose_name="福利厚生")
+    welfare=models.ForeignKey(Tag,on_delete=models.SET_NULL,null=True,verbose_name="福利厚生")
     workingHours=models.CharField(max_length=255,verbose_name="勤務時間")
     area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="offer_area1")
     category00=models.ForeignKey(Category00,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ00",related_name="offer_category00")
     category01=models.ForeignKey(Category01,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ01",related_name="offer_category01")
     category10=models.ForeignKey(Category10,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ10",related_name="offer_category10")
     category11=models.ForeignKey(Category11,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ11",related_name="offer_category11")
-    tag_l=models.TextField(verbose_name="タグリスト")
-    corporation=models.ForeignKey(Corporation,on_delete=models.CASCADE,verbose_name="法人")
-    user_l=models.TextField(verbose_name="応募者リスト")
+    corporation=models.ForeignKey(Corporation,on_delete=models.CASCADE,null=True,verbose_name="法人")
+    applicants=models.ManyToManyField(User,through="offerEntry",verbose_name="応募者リスト",related_name="offer_offerEntry")
     period=models.DateTimeField(verbose_name="公開期限")
     status=models.BooleanField(default=False,verbose_name="公開状況")
+
+class OfferEntry(models.Model):
+    offer=models.ForeignKey(Offer,on_delete=models.CASCADE,verbose_name="求人",related_name="offerApp_offer")
+    user=models.ForeignKey(User,on_delete=models.CASCADE,verbose_name="ユーザ",related_name="offerApp_user")
 
     class Meta:
         db_table='offer'

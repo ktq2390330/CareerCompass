@@ -14,19 +14,19 @@ class ContactForm(forms.Form):
         super().__init__(*args, **kwargs)
         # nameフィールドのplaceholderにメッセージを登録
         self.fields['name'].widget.attrs['placeholder'] = \
-         'お名前を入力してください'
+        'お名前を入力してください'
         # nameフィールドを出力する<input>タグのclass属性を設定
         self.fields['name'].widget.attrs['class'] = 'form-control'
 
         # emailフィールドのplaceholderにメッセージを登録
         self.fields['email'].widget.attrs['placeholder'] = \
-         'メールアドレスを入力してください'
+        'メールアドレスを入力してください'
         # emailフィールドを出力する<input>タグのclass属性を設定
         self.fields['email'].widget.attrs['class'] = 'form-control'
 
         # messageフィールドのplaceholderにメッセージを登録
         self.fields['message'].widget.attrs['placeholder'] = \
-         'お問い合わせ内容を入力してください'
+        'お問い合わせ内容を入力してください'
         # messageフィールドの出力する<input>タグのclass属性を設定
         self.fields['message'].widget.attrs['class'] = 'form-control'
 
