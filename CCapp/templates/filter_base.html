@@ -26,14 +26,40 @@
             </form>
 
             <!-- filter-avigation -->
+            {% url 'CCapp:filter_area' as filter_area_url %}
             <nav class="filter-navigation">
                 <ul class="filter-navigation-button">
-                    <li><a href="{% url 'CCapp:filter_area' %}">エリア</a></li>
-                    <li><a href="{% url 'CCapp:filter_industry' %}">業界</a></li>
-                    <li><a href="{% url 'CCapp:filter_jobtype' %}">職種</a></li>
-                    <li><a href="{% url 'CCapp:filter_benefits' %}">福利厚生</a></li>
+                    <li>
+                        <a href="{{ filter_area_url }}" 
+                        class="{% if request.path == filter_area_url %}active{% endif %}">
+                            エリア
+                        </a>
+                    </li>
+                    {% url 'CCapp:filter_industry' as filter_industry_url %}
+                    <li>
+                        <a href="{{ filter_industry_url }}" 
+                        class="{% if request.path == filter_industry_url %}active{% endif %}">
+                            業界
+                        </a>
+                    </li>
+                    {% url 'CCapp:filter_jobtype' as filter_jobtype_url %}
+                    <li>
+                        <a href="{{ filter_jobtype_url }}" 
+                        class="{% if request.path == filter_jobtype_url %}active{% endif %}">
+                            職種
+                        </a>
+                    </li>
+                    {% url 'CCapp:filter_benefits' as filter_benefits_url %}
+                    <li>
+                        <a href="{{ filter_benefits_url }}" 
+                        class="{% if request.path == filter_benefits_url %}active{% endif %}">
+                            福利厚生
+                        </a>
+                    </li>
                 </ul>
             </nav>
+
+            
 
             <!-- 点線 -->
             <div class="under_navigation-line"></div>

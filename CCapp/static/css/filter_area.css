@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
-/* エリア選択ボタンのリストのマーカーを消す */
+/* 選択ボタンのリストのマーカーを消す */
 .selection-button {
     list-style-type: none;  /* 箇条書きの点を消す */
 }
 
-/* エリア選択ボタンを左寄せにし、ボタンの幅を統一 */
+/* 選択ボタンを左寄せにし、ボタンの幅を統一 */
 .selection-button {
     display: flex;
     flex-direction: column;  /* ボタンを縦に並べる */
@@ -28,8 +28,7 @@
 
 /* ボタンにホバーしたときのスタイル */
 .selection-button a:hover {
-    background-color: #f0f0f0;  /* ホバー時の背景色 */
-    border-color: #4598eb;  /* 枠線の色を変更 */
+    background-color: #d0eaff; /* ホバー時の背景色 */
 }
 
 /* ボタン内の選択肢のデザイン */
