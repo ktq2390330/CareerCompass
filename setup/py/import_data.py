@@ -3,30 +3,34 @@ import sys
 import django
 import csv
 import json
-project_root=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+import datetime
+#Djangoプロジェクトの設定
+project_root=os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..'))
 sys.path.append(project_root)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CareerCompassProject.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','CareerCompassProject.settings')
 django.setup()
 from CCapp.models import *
 from django.db import transaction
-import datetime
 
+#ファイルパス生成関数
 def makePath(fileName):
     basePath='../data/'
     filePath=os.path.join(os.path.dirname(__file__),f'{basePath}{fileName}')
     return filePath
 
+#ファイルの内容を読み取る関数（CSVまたはJSON対応）
 def read_file(filePath):
     if filePath.endswith('.csv'):
-        with open(filePath, newline='', encoding='utf-8') as file:
-            if filePath.find('.csv') != -1:
+        with open(filePath,newline='',encoding='utf-8') as file:
+            if filePath.find('.csv')!=-1:
                 return list(csv.DictReader(file))
     elif filePath.endswith('.json'):
-        with open(filePath, 'r', encoding='utf-8') as file:
+        with open(filePath,'r',encoding='utf-8') as file:
             return json.load(file)
     else:
         raise ValueError("サポートされていないファイル形式です。CSVまたはJSONファイルを使用してください。")
 
+#インスタンスの作成または取得結果をログに出力
 def returnPrint(instanceDict):
     for instance,created in instanceDict.items():
         if created:
@@ -40,7 +44,7 @@ def area0(filePath):
         data=read_file(filePath)
         with transaction.atomic():
             for row in data:
-                regionName = row['name']
+                regionName=row['name']
                 instance,created=Area0.objects.get_or_create(name=regionName)
                 instanceDict[instance]=created
     except FileNotFoundError:
@@ -55,12 +59,12 @@ def area1(filePath):
         data=read_file(filePath)
         with transaction.atomic():
             for row in data:
-                regionName,prefecture = row['region'], row['name']
-                region = Area0.objects.get(name=regionName)
-                instance,created=Area1.objects.get_or_create(name=prefecture, area0=region)
+                regionName,prefecture=row['region'], row['name']
+                region=Area0.objects.get(name=regionName)
+                instance,created=Area1.objects.get_or_create(name=prefecture,area0=region)
                 instanceDict[instance]=created
     except Area0.DoesNotExist:
-        print(f"{region} は存在しません")
+        print(f"area0: {region} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -73,12 +77,12 @@ def area1(filePath):
 #         data=read_file(filePath)
 #         with transaction.atomic():
 #             for row in data:
-#                 prefecture_name, city_name = row['都道府県名（漢字）'], row['市区町村名（漢字）']
-#                 prefecture= Area1.objects.get(name=prefecture_name)
-#                 instance,created=Area2.objects.get_or_create(name=city_name, area1=prefecture)
+#                 prefecture_name,city_name=row['都道府県名（漢字）'],row['市区町村名（漢字）']
+#                 prefecture=Area1.objects.get(name=prefecture_name)
+#                 instance,created=Area2.objects.get_or_create(name=city_name,area1=prefecture)
 #                 instanceDict[instance]=created
 #     except Area1.DoesNotExist:
-#         print(f"{prefecture_name} は存在しません")
+#         print(f"area1: {prefecture_name} は存在しません")
 #     except FileNotFoundError:
 #         print(f"ファイルが見つかりません: {filePath}")
 #     except Exception as e:
@@ -91,7 +95,7 @@ def tag(filePath):
         data=read_file(filePath)
         with transaction.atomic():
             for row in data:
-                tagName = row['name']
+                tagName=row['name']
                 instance,created=Tag.objects.get_or_create(name=tagName)
                 instanceDict[instance]=created
     except FileNotFoundError:
@@ -106,7 +110,7 @@ def category00(filePath):
         data=read_file(filePath)
         with transaction.atomic():
             for row in data:
-                categoryName = row['name']
+                categoryName=row['name']
                 instance,created=Category00.objects.get_or_create(name=categoryName)
                 instanceDict[instance]=created
     except FileNotFoundError:
@@ -123,10 +127,10 @@ def category01(filePath):
             for row in data:
                 category00Name, category01Name = row['category00name'], row['name']
                 category00= Category00.objects.get(name=category00Name)
-                instance,created=Category01.objects.get_or_create(name=category01Name, category00=category00)
+                instance,created=Category01.objects.get_or_create(name=category01Name,category00=category00)
                 instanceDict[instance]=created
     except Category00.DoesNotExist:
-        print(f"{category00Name} は存在しません")
+        print(f"category00: {category00Name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -155,8 +159,8 @@ def category11(filePath):
         with transaction.atomic():
             for row in data:
                 category10Name, category11Name = row['category10name'], row['name']
-                category10 = Category10.objects.get(name=category10Name)
-                instance,created=Category11.objects.get_or_create(name=category11Name, category10=category10)
+                category10=Category10.objects.get(name=category10Name)
+                instance,created=Category11.objects.get_or_create(name=category11Name,category10=category10)
                 instanceDict[instance]=created
     except Category10.DoesNotExist:
         print(f"{category10Name} は存在しません")
@@ -187,15 +191,26 @@ def profile(filePath):
         data=read_file(filePath)
         with transaction.atomic():
             for row in data:
-                userId,nationality,birth,gender,graduation,school,sClass,sol,departments,tel,address,category00name,category01name,category10name,category11name,area1name,uOffer=row['userId'],row['nationality'],row['birth'],row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row['category00name'],row['category01name'],row['category10name'],row['category11name'],row['area1name'],row['uOffer']
+                userId,nationality,birth,gender,graduation,school,sClass,sol,departments,tel,address,category00name,category01name,category10name,category11name,area1name,uOffer=row
+                ['userId'],row['nationality'],row['birth'],row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row
+                ['category00name'],row['category01name'],row['category10name'],row['category11name'],row['area1name'],row['uOffer']
                 user=User.objects.get(id=userId)
                 area1=Area1.objects.get(name=area1name)
                 category00=Category00.objects.get(name=category00name)
                 category01=Category01.objects.get(name=category01name)
                 category10=Category10.objects.get(name=category10name)
                 category11=Category11.objects.get(name=category11name)
-                instance,created=Profile.objects.get_or_create(user=user,nationality=nationality,birth=birth,gender=gender,graduation=graduation,uSchool=school,sClass=sClass,sol=sol,departments=departments,uTel=tel,uAddress=address,category00=category00,category01=category01,category10=category10,category11=category11,area1=area1,uOffer=uOffer)
+                instance,created=Profile.objects.get_or_create(user=user,nationality=nationality,birth=birth,gender=gender,graduation=graduation,uSchool=school,sClass=sClass,sol=sol,
+                departments=departments,uTel=tel,uAddress=address,category00=category00,category01=category01,category10=category10,category11=category11,area1=area1,uOffer=uOffer)
                 instanceDict[instance]=created
+    except Category00.DoesNotExist:
+        print(f"category00: {category00name} は存在しません")
+    except Category01.DoesNotExist:
+        print(f"category01: {category01name} は存在しません")
+    except Category10.DoesNotExist:
+        print(f"category10: {category10name} は存在しません")
+    except Category10.DoesNotExist:
+        print(f"category11: {category11name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -212,6 +227,8 @@ def assessment(filePath):
                 user=User.objects.get(id=userId)
                 instance,created=User.objects.get_or_create(user=user,QA_l=qa_l)
                 instanceDict[instance]=created
+    except User.DoesNotExist:
+        print(f"userID: {userId} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -272,7 +289,10 @@ def offer(filePath):
         data=read_file(filePath)
         with transaction.atomic():
             for row in data:
-                title,detail,solicitation,course,forms,roles,CoB,subject,NoP,departments,characteristic,pes,giving,allowances,salaryRaise,bonus,holiday,welfare,workingHours,area1name,category00name,category01name,category10name,category11name,corporationId,user_l,period,status=row['title'],row['detail'],row['solicitation'],row['course'],row['forms'],row['roles'],row['CoB'],row['subject'],row['NoP'],row['departments'],row['characteristic'],row['PES'],row['giving'],row['allowances'],row['salaryRaise'],row['bonus'],row['holiday'],row['welfare'],row['workingHours'],row['area0name'],row['area1name'],row['category00name'],row['category01name'],row['category10name'],row['category11name'],row['corporationID'],row['applicants'],row['period'],row['status']
+                title,detail,solicitation,course,forms,roles,CoB,subject,NoP,departments,characteristic,pes,giving,allowances,salaryRaise,bonus,holiday,welfare,workingHours,area1name,category00name,category01name,category10name,category11name,corporationId,period,status=row
+                ['title'],row['detail'],row['solicitation'],row['course'],row['forms'],row['roles'],row['CoB'],row['subject'],row['NoP'],row['departments'],row['characteristic'],row
+                ['PES'],row['giving'],row['allowances'],row['salaryRaise'],row['bonus'],row['holiday'],row['welfare'],row['workingHours'],row['area0name'],row['area1name'],row
+                ['category00name'],row['category01name'],row['category10name'],row['category11name'],row['corporationID'],row['applicants'],row['period'],row['status']
                 area1=Area1.objects.get(name=area1name)
                 category00=Category00.objects.get(name=category00name)
                 category01=Category01.objects.get(name=category01name)
@@ -280,8 +300,21 @@ def offer(filePath):
                 category11=Category11.objects.get(name=category11name)
                 corporation=Corporation.objects.get(name=corporationId)
                 period=datetime.strptime(period,"%Y-%m-%d %H:%M")
-                instance,created=Corporation.objects.get_or_create(name=title,detail=detail,solicitation=solicitation,course=course,forms=forms,roles=roles,CoB=CoB,subject=subject,NoP=NoP,departments=departments,characteristic=characteristic,PES=pes,giving=giving,allowances=allowances,salaryRaise=salaryRaise,bonus=bonus,holiday=holiday,welfare=welfare,workingHours=workingHours,area1=area1,category00=category00,category01=category01,category10=category10,category11=category11,corporation=corporation,applicants=None,period=period,status=status)
+                instance,created=Corporation.objects.get_or_create(name=title,detail=detail,solicitation=solicitation,course=course,forms=forms,roles=roles,CoB=CoB,subject=subject,
+                NoP=NoP,departments=departments,characteristic=characteristic,PES=pes,giving=giving,allowances=allowances,salaryRaise=salaryRaise,bonus=bonus,holiday=holiday,
+                welfare=welfare,workingHours=workingHours,area1=area1,category00=category00,category01=category01,category10=category10,category11=category11,corporation=corporation,
+                applicants=None,period=period,status=status)
                 instanceDict[instance]=created
+    except Area1.DoesNotExist:
+        print(f"area1: {area1name} は存在しません")
+    except Category00.DoesNotExist:
+        print(f"category00: {category00name} は存在しません")
+    except Category01.DoesNotExist:
+        print(f"category01: {category01name} は存在しません")
+    except Category10.DoesNotExist:
+        print(f"category10: {category10name} は存在しません")
+    except Category11.DoesNotExist:
+        print(f"category11: {category11name} は存在しません")
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Exception as e:
@@ -289,24 +322,24 @@ def offer(filePath):
     returnPrint(instanceDict)
 
 def offerEntry(filePath):
-    instanceDict = {}
+    instanceDict={}
     try:
-        data = read_file(filePath)
+        data=read_file(filePath)
         with transaction.atomic():
             for offerData in data:
-                offerId = offerData['offerId']
-                offer = Offer.objects.get(id=offerId)
+                offerId=offerData['offerId']
+                offer=Offer.objects.get(id=offerId)
                 for userData in offerData['users']:
-                    userId = userData['userId']
-                    user = User.objects.get(id=userId)
+                    userId=userData['userId']
+                    user=User.objects.get(id=userId)
                     offer.users.add(user)
-                    instanceDict[(offer, user)] = f"User {userId} added to Offer {offerId}"
+                    instanceDict[(offer, user)]=f"User {userId} added to Offer {offerId}"
     except FileNotFoundError:
         print(f"ファイルが見つかりません: {filePath}")
     except Offer.DoesNotExist:
-        print(f"Offer ID {offerId} は存在しません")
+        print(f"offerID: {offerId} は存在しません")
     except User.DoesNotExist:
-        print(f"User ID {userId} は存在しません")
+        print(f"userID: {userId} は存在しません")
     except Exception as e:
         print(f"エラーが発生しました: {e}")
     returnPrint(instanceDict)
@@ -332,6 +365,6 @@ functionMap={
 }
 
 for file_key, function in functionMap.items():
-    file_path = makePath(file_key)
+    file_path=makePath(file_key)
     print(f"Loading data for {file_key} from {file_path}...")
     function(file_path)
