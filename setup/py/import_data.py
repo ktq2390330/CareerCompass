@@ -8,7 +8,7 @@ sys.path.append(project_root)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE','CareerCompassProject.settings')
 django.setup()
 from CCapp.models import *
-from CCapp.defs import prints,readFile,displayExecutionResults
+from CCapp.defs import prints,readFile,executeFunction
 from django.db import transaction
 
 #ファイルパス生成関数
@@ -19,22 +19,17 @@ def makeImportPath(fileName):
 
 #インスタンスの作成または取得結果
 def queryResults(instanceDict):
-    results=[]
+    results=['処理結果\n']
     for instance,created in instanceDict.items():
         if created:
-            results.append(f"新規作成: {instance.name}")
+            results.append(f"新規作成: {instance.name}\n")
         else:
-            results.append(f"既存データ取得: {instance.name}")
+            results.append(f"既存データ取得: {instance.name}\n")
     return results
 
 def displayQueryResults(instanceDict):
     results=queryResults(instanceDict)
     prints(*results)
-
-def executeQuery(function,filePath,instanceDict):
-    displayExecutionResults(function,filePath)
-    queryResults(instanceDict)
-
 
 def area0(filePath):
     instanceDict={}
@@ -50,7 +45,8 @@ def area0(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def area1(filePath):
     instanceDict={}
@@ -69,7 +65,8 @@ def area1(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def area2(filePath):
     instanceDict={}
@@ -88,7 +85,8 @@ def area2(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def tag(filePath):
     instanceDict={}
@@ -104,7 +102,8 @@ def tag(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def category00(filePath):
     instanceDict={}
@@ -120,7 +119,8 @@ def category00(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def category01(filePath):
     instanceDict={}
@@ -139,7 +139,8 @@ def category01(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def category10(filePath):
     instanceDict={}
@@ -155,7 +156,8 @@ def category10(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def category11(filePath):
     instanceDict={}
@@ -174,7 +176,8 @@ def category11(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def user(filePath):
     instanceDict={}
@@ -190,7 +193,8 @@ def user(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def profile(filePath):
     instanceDict={}
@@ -227,7 +231,8 @@ def profile(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def assessment(filePath):
     instanceDict={}
@@ -246,7 +251,8 @@ def assessment(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def corporation(filePath):
     instanceDict={}
@@ -262,7 +268,8 @@ def corporation(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def dm(filePath):
     instanceDict={}
@@ -284,7 +291,8 @@ def dm(filePath):
             print(f'法人番号: {corpId} は存在しません')
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def supportDM(filePath):
     instanceDict={}
@@ -303,7 +311,8 @@ def supportDM(filePath):
                 print(f"userID: {userSend} または、userID: {userReceive} は存在しません")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def offer(filePath):
     instanceDict={}
@@ -342,11 +351,12 @@ def offer(filePath):
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 def offerEntry(filePath):
     instanceDict={}
-    def function(filePath):
+    def function():
         try:
             data=readFile(filePath)
             with transaction.atomic():
@@ -366,18 +376,19 @@ def offerEntry(filePath):
             print(f"userID: {userId} は存在しません")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
-    executeQuery(function,filePath,instanceDict)
+    executeFunction(function)
+    displayQueryResults(instanceDict)
 
 # 実行
 functionMap={
     'area0.csv':area0,
-    'area1.csv':area1,
+    # 'area1.csv':area1,
     # 'area2.csv':area2,
-    'category00.csv':category00,
-    'category01.csv':category01,
-    'category10.csv':category10,
-    'category11.csv':category11,
-    'tag.csv':tag,
+    # 'category00.csv':category00,
+    # 'category01.csv':category01,
+    # 'category10.csv':category10,
+    # 'category11.csv':category11,
+    # 'tag.csv':tag,
     # 'user.csv':user,
     # 'profile.csv':profile,
     # 'assessment.csv':assessment,
@@ -388,7 +399,7 @@ functionMap={
     # 'supportDM.csv':supportDM,
 }
 
-for file_key, function in functionMap.items():
+for file_key,function in functionMap.items():
     file_path=makeImportPath(file_key)
     print(f"Loading data for {file_key} from {file_path}...")
     function(file_path)

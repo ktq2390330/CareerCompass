@@ -7,13 +7,16 @@ def prints(*args,**kwargs):
     print(*args,**kwargs)
 
 def measureExecutionTime(function,*args,**kwargs):
-	startTime=time.time()
-	result=function(*args,**kwargs)
-	endTime=time.time()
-	return endTime-startTime,result
+    start_time=time.time()
+    if args or kwargs:
+        result=function(*args, **kwargs)
+    else:
+        result=function()
+    elapsed_time=time.time()-start_time
+    return elapsed_time,result
 
-def displayExecutionResults(function,filePath):
-    elapsedTime,_=measureExecutionTime(function,filePath)
+def executeFunction(function,*args,**kwargs):
+    elapsedTime,_=measureExecutionTime(function,*args,**kwargs)
     print(f'実行時間: {elapsedTime:.4f} 秒')
 
 #ファイルの内容を読み取る関数（CSVまたはJSON対応）
