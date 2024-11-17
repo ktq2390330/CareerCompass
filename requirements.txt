@@ -2,3 +2,6 @@ Django
 mysqlclient
 pillow
 django-cleanup
+openai
+pandas
+textblob
