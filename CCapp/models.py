@@ -95,9 +95,15 @@ class Profile(models.Model):
         db_table="profile"
         verbose_name="プロフィール"
 
+class Question(Base):
+    class Meta:
+        db_table="question"
+        verbose_name="質問"
+
 class Assessment(models.Model):
     user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID")
-    QA_l=models.TextField(verbose_name="自己分析リスト")
+    question=models.ForeignKey(Question,on_delete=models.CASCADE,verbose_name="質問",related_name="assessment_question")
+    response=models.TextField(verbose_name="回答")
 
     class Meta:
         db_table='assessment'
