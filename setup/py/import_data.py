@@ -1,12 +1,7 @@
 import os
-import sys
-import django
 import datetime
-#Djangoプロジェクトの設定
-project_root=os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..'))
-sys.path.append(project_root)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','CareerCompassProject.settings')
-django.setup()
+from django_setup_def import djangoSetup
+djangoSetup()
 from CCapp.models import *
 from CCapp.defs import prints,readFile,executeFunction
 from django.db import transaction

@@ -13,5 +13,5 @@ pip install -r requirements.txt
 4.DBの設定
 mysqlをダウンロードする(port:3307,name:root,password:password)
 DBを作成(name:careercompassdb,host:127.0.0.1)
-ターミナルのパスをCareerCompassかどうか確認し、以下のコマンドを実行
+※DB設定を変更したい場合(その他の設定の変更や追加も可): python setup/py/change_setting.py
 python setup/py/import_data.py
