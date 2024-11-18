@@ -95,14 +95,20 @@ class Profile(models.Model):
         db_table="profile"
         verbose_name="プロフィール"
 
-class Question(Base):
+class Question00(Base):
     class Meta:
-        db_table="question"
-        verbose_name="質問"
+        db_table="question00"
+        verbose_name="質問00"
+
+class Question01(Base):
+    question00=models.ForeignKey(Question00,on_delete=models.CASCADE,verbose_name="質問00",related_name="question01_question00")
+    class Meta:
+        db_table="question01"
+        verbose_name="質問01"
 
 class Assessment(models.Model):
     user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID")
-    question=models.ForeignKey(Question,on_delete=models.CASCADE,verbose_name="質問",related_name="assessment_question")
+    question01=models.ForeignKey(Question01,on_delete=models.CASCADE,verbose_name="質問",related_name="assessment_question01")
     response=models.TextField(verbose_name="回答")
 
     class Meta:
