@@ -14,12 +14,10 @@
     margin-bottom: 20px; /* 下に余白を追加 */
 }
 
-/* プロフィールボックスのスタイル */
 .profile-box {
-    border: 1px solid; /* 外枠を維持 */
-    padding: 20px; /* パディングを調整 */
-    width: 50%; /* 幅を100%にして外枠を広げる */
+    border: 2px solid; /* 外枠を維持 */
+    padding: 60 40px; /* パディングを調整 */
     border-radius: 35px;
-    margin: 0 auto;
-    margin-top: 20px;
+    margin: 100px auto;
+    max-width: 1000px;
 }
