@@ -1,5 +1,5 @@
 .container {
-    width: 80px;
+    width: 80%;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -36,8 +36,8 @@
 .soliloquizing_jobtype-box {
     border: 2px solid;
     padding: 60 40px;
-    max-width: 1000px;
     margin: 100px auto;
+    max-width: 1000px;
 }
 
 .question-input {
@@ -52,7 +52,6 @@
     white-space: pre-wrap; /* 改行を有効に */
 }
 
-/* 保存ボタンのみ、カーソルを当てたときに灰色に */
 .save-button-container {
     display: flex;
     justify-content: center;
@@ -60,11 +59,12 @@
 }
 
 .save-button {
-    padding: 10px 30px;
+    padding: 20px 40px;
     border: 1px solid;
     border-radius: 4px;
     cursor: pointer;
     background-color: white;
+    font-size: large;
 }
 
 /* 保存ボタンにカーソルを当てたときの色設定 */

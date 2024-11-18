@@ -42,4 +42,7 @@ urlpatterns = [
 
     # self
     path('self_analy/', views.SelfAnalyView.as_view(), name='self_analy'),
+    path('axis/', views.AxisView.as_view(), name='axis'),
+    path('industry/', views.IndustryView.as_view(), name='industry'),
+    path('jobtype/', views.JobtypeView.as_view(), name='jobtype'),
 ]

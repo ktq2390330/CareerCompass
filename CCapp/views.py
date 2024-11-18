@@ -221,3 +221,12 @@ class JobsView(TemplateView):
 # self
 class SelfAnalyView(TemplateView):
     template_name = 'soliloquizing_self_analy.html'
+
+class AxisView(TemplateView):
+    template_name = 'soliloquizing_axis.html'
+
+class IndustryView(TemplateView):
+    template_name = 'soliloquizing_industry.html'
+
+class JobtypeView(TemplateView):
+    template_name = 'soliloquizing_jobtype.html'
