@@ -31,35 +31,45 @@
         </nav>
 
         <!-- 各業界のチェックボックス -->
-        {% for category10 in category10_list %}
-        <div id="jobtype{{ category10.id }}" class="jobtype-details" style="display: none;">
-            <button type="button" onclick="selectAll('jobtype{{ category10.id }}', true)">すべて選択</button>
-            <button type="button" onclick="selectAll('jobtype{{ category10.id }}', false)">選択解除</button>
-            
-            <!-- category11 のチェックボックスを動的に生成 -->
-            {% for category11 in category11_list %}
-                {% if category11.category10_id == category10.id %}
-                <label>
-                    <input type="checkbox" name="jobtype[]" value="{{ category11.id }}"> {{ category11.name }}
-                </label>
-                <br>
-                {% endif %}
+        <div class="checkbox-field">
+            {% for category10 in category10_list %}
+            <!-- 初期表示する業界に 'active' クラスを追加 -->
+            <div id="jobtype{{ category10.id }}" class="jobtype-details {% if forloop.first %}active{% endif %}">
+                <button type="button" onclick="selectAll('jobtype{{ category10.id }}', true)">すべて選択</button>
+                <button type="button" onclick="selectAll('jobtype{{ category10.id }}', false)">選択解除</button>
+                
+                <!-- category11 のチェックボックスを動的に生成 -->
+                {% for category11 in category11_list %}
+                    {% if category11.category10_id == category10.id %}
+                    <label>
+                        <input type="checkbox" name="jobtype[]" value="{{ category11.id }}"> {{ category11.name }}
+                    </label><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
     <script>
-        // ボタンをクリックして対応するチェックボックスを表示
+        // ページ読み込み時に最初の業界を表示
+        window.onload = function() {
+            const firstJobtype = document.querySelector('.jobtype-details');
+            if (firstJobtype) {
+                firstJobtype.classList.add('active');
+            }
+        };
+
+        // 業界ボタンをクリックして対応するチェックボックスを表示
         function showJobtype(jobtypeId) {
             // すべての業界詳細を非表示にする
-            const allJobtype = document.querySelectorAll('.jobtype-details');
-            allJobtype.forEach(jobtype => jobtype.style.display = 'none');
+            const allJobtypes = document.querySelectorAll('.jobtype-details');
+            allJobtypes.forEach(jobtype => jobtype.classList.remove('active'));
         
             // 該当する業界詳細を表示
             const targetJobtype = document.getElementById(jobtypeId);
             if (targetJobtype) {
-                targetJobtype.style.display = 'block';
+                targetJobtype.classList.add('active');
             }
         }
         
@@ -68,6 +78,5 @@
             const checkboxes = document.querySelectorAll('#' + jobtypeId + ' input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
         }
-    </script>
-         
+    </script>    
 {% endblock %}

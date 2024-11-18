@@ -28,7 +28,8 @@
         </nav>
 
         <!-- Tagのチェックボックス -->
-        <div id="tag{{ tag.id }}" class="tag-details" style="display: none;">
+        <div class="checkbox-field">
+        <div id="tag{{ tag.id }}" class="tag-details {% if forloop.first %}active{% endif %}">
             <button type="button" onclick="selectAll('tag{{ tag.id }}', true)">すべて選択</button>
             <button type="button" onclick="selectAll('tag{{ tag.id }}', false)">選択解除</button>
             
@@ -42,16 +43,24 @@
     </div>
     
     <script>
+        // ページ読み込み時に最初の業界を表示
+        window.onload = function() {
+            const firstTag = document.querySelector('.tag-details');
+            if (firstTag) {
+                firstTag.classList.add('active');
+            }
+        };
+
         // ボタンをクリックして対応するチェックボックスを表示
         function showTag(tagId) {
             // すべての業界詳細を非表示にする
             const allTag = document.querySelectorAll('.tag-details');
-            allTag.forEach(tag => tag.style.display = 'none');
+            allTag.forEach(tag => tag.classList.remove('active'));
         
             // 該当する業界詳細を表示
             const targetTag = document.getElementById(tagId);
             if (targetTag) {
-                targetTag.style.display = 'block';
+                targetTag.classList.add('active');
             }
         }
         

@@ -16,13 +16,11 @@
 {% block content2 %}
     <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
     <div class="selection-wrapper">
-        
         <!-- 大分類ボタン -->
         <nav class="selection">
             <ul class="selection-button">
                 {% for area0 in area0_list %}
                 <li>
-                    <!-- 各ボタンに onclick でエリアIDを渡す -->
                     <a href="javascript:void(0);" onclick="showArea('area{{ area0.id }}')">
                         {{ area0.name }}
                     </a>
@@ -31,44 +29,50 @@
             </ul>
         </nav>
 
-        <!-- 各エリアのチェックボックス -->
-        {% for area0 in area0_list %}
-        <div id="area{{ area0.id }}" class="area-details" style="display: none;">
-            <button type="button" onclick="selectAll('area{{ area0.id }}', true)">すべて選択</button>
-            <button type="button" onclick="selectAll('area{{ area0.id }}', false)">選択解除</button>
-            
-            <!-- Area1 のチェックボックスを動的に生成 -->
-            {% for area1 in area1_list %}
-                {% if area1.area0_id == area0.id %}
-                <label>
-                    <input type="checkbox" name="area[]" value="{{ area1.id }}"> {{ area1.name }}
-                </label>
-                <br>
-                {% endif %}
+        <div class="checkbox-field">
+            <!-- 各エリアのチェックボックス -->
+            {% for area0 in area0_list %}
+            <!-- 初期表示したいエリアに 'active' クラスを追加 -->
+            <div id="area{{ area0.id }}" class="area-details {% if forloop.first %}active{% endif %}">
+                <button type="button" onclick="selectAll('area{{ area0.id }}', true)">すべて選択</button>
+                <button type="button" onclick="selectAll('area{{ area0.id }}', false)">選択解除</button>
+                
+                {% for area1 in area1_list %}
+                    {% if area1.area0_id == area0.id %}
+                    <label>
+                        <input type="checkbox" name="area[]" value="{{ area1.id }}"> {{ area1.name }}
+                    </label><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
     <script>
+        // ページ読み込み時に最初のエリアを表示
+        window.onload = function() {
+            const firstArea = document.querySelector('.area-details');
+            if (firstArea) {
+                firstArea.classList.add('active');
+            }
+        };
+
         // ボタンをクリックして対応するチェックボックスを表示
         function showArea(areaId) {
-            // すべてのエリア詳細を非表示にする
             const allAreas = document.querySelectorAll('.area-details');
-            allAreas.forEach(area => area.style.display = 'none');
-        
-            // 該当するエリア詳細を表示
+            allAreas.forEach(area => area.classList.remove('active'));
+            
             const targetArea = document.getElementById(areaId);
             if (targetArea) {
-                targetArea.style.display = 'block';
+                targetArea.classList.add('active');
             }
         }
-        
+
         // すべて選択/解除
         function selectAll(areaId, isChecked) {
             const checkboxes = document.querySelectorAll('#' + areaId + ' input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
         }
     </script>
-         
 {% endblock %}

@@ -7,7 +7,7 @@
 <!-- filter_industry用のタイトル -->
 {% block title %}filter industry{% endblock %}
 
-<!-- 埋め込む用のcssを読み込む -->
+<!-- 埋め込む用のCSSを読み込む -->
 {% block head2 %}
     <link href="{% static 'css/filter_industry.css' %}" rel="stylesheet">
 {% endblock %}
@@ -31,43 +31,55 @@
         </nav>
 
         <!-- 各業界のチェックボックス -->
-        {% for category00 in category00_list %}
-        <div id="industry{{ category00.id }}" class="industry-details" style="display: none;">
-            <button type="button" onclick="selectAll('industry{{ category00.id }}', true)">すべて選択</button>
-            <button type="button" onclick="selectAll('industry{{ category00.id }}', false)">選択解除</button>
-            
-            <!-- category01 のチェックボックスを動的に生成 -->
-            {% for category01 in category01_list %}
-                {% if category01.category00_id == category00.id %}
-                <label>
-                    <input type="checkbox" name="industry[]" value="{{ category01.id }}"> {{ category01.name }}
-                </label>
-                <br>
-                {% endif %}
+        <div class="checkbox-field">
+            {% for category00 in category00_list %}
+            <!-- 初期表示する業界に 'active' クラスを追加 -->
+            <div id="industry{{ category00.id }}" class="industry-details {% if forloop.first %}active{% endif %}">
+                <button type="button" onclick="selectAll('industry{{ category00.id }}', true)">すべて選択</button>
+                <button type="button" onclick="selectAll('industry{{ category00.id }}', false)">選択解除</button>
+
+                <!-- category01 のチェックボックスを動的に生成 -->
+                {% for category01 in category01_list %}
+                    {% if category01.category00_id == category00.id %}
+                    <label>
+                        <input type="checkbox" name="industry[]" value="{{ category01.id }}"> {{ category01.name }}
+                    </label>
+                    <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
+    <!-- JavaScript部分 -->
     <script>
-        // ボタンをクリックして対応するチェックボックスを表示
+        // ページ読み込み時に最初の業界を表示
+        window.onload = function() {
+            // 最初の業界要素に 'active' クラスを追加
+            const firstIndustry = document.querySelector('.industry-details');
+            if (firstIndustry) {
+                firstIndustry.classList.add('active');
+            }
+        };
+
+        // 業界ボタンをクリックして対応するチェックボックスを表示
         function showIndustry(industryId) {
             // すべての業界詳細を非表示にする
-            const allIndustry = document.querySelectorAll('.industry-details');
-            allIndustry.forEach(industry => industry.style.display = 'none');
-        
+            const allIndustries = document.querySelectorAll('.industry-details');
+            allIndustries.forEach(industry => industry.classList.remove('active'));
+
             // 該当する業界詳細を表示
             const targetIndustry = document.getElementById(industryId);
             if (targetIndustry) {
-                targetInudustry.style.display = 'block';
+                targetIndustry.classList.add('active');
             }
         }
-        
+
         // すべて選択/解除
         function selectAll(industryId, isChecked) {
             const checkboxes = document.querySelectorAll('#' + industryId + ' input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
         }
     </script>
-         
 {% endblock %}

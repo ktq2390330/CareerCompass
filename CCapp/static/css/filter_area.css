@@ -1,94 +1,78 @@
 @charset "UTF-8";
 
-/* 選択ボタンのリストのマーカーを消す */
-.selection-button {
-    list-style-type: none;  /* 箇条書きの点を消す */
-}
-
-/* 選択ボタンを左寄せにし、ボタンの幅を統一 */
-.selection-button {
-    display: flex;
-    flex-direction: column;  /* ボタンを縦に並べる */
-    align-items: flex-start;  /* 左寄せ */
-    gap: 10px;  /* ボタン間のスペース */
-}
-
-/* ボタンを四角枠で囲み、デザインを整え、幅を統一 */
-.selection-button a {
-    display: inline-block;  /* ボタンをインラインブロックに */
-    padding: 10px 20px;  /* 内側の余白 */
-    border: 2px solid #ccc;  /* 四角枠の色 */
-    text-decoration: none;  /* 下線を削除 */
-    color: #000;  /* 文字色 */
-    font-size: 16px;  /* フォントサイズ */
-    background-color: #ffffff;  /* 背景色を白に */
-    width: 200px;  /* ボタンの幅を統一 */
-    box-sizing: border-box;  /* パディングとボーダーを含めてサイズを決定 */
-}
-
-/* ボタンにホバーしたときのスタイル */
-.selection-button a:hover {
-    background-color: #d0eaff; /* ホバー時の背景色 */
-}
-
-/* ボタン内の選択肢のデザイン */
-.area-details {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* エリア選択ボタンとエリア詳細を横並びに配置 */
+/* 1. 全体レイアウト */
 .selection-wrapper {
     display: flex;
-    gap: 20px; /* ボタンと詳細エリアの間にスペースを追加 */
-    align-items: flex-start; /* 上部揃え */
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+    margin-bottom: 20px;
 }
 
-.area-checkboxes label input {
-    margin-right: 10px;
-}
-
-/* エリア選択セクション全体 */
-.area-selection-section {
+/* 2. 大分類ボタンエリア */
+.selection-button {
+    list-style-type: none;
     display: flex;
-    justify-content: space-between;  /* エリア選択ボタンと右側のボタンを分ける */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
 }
 
-/* エリア詳細のスタイル */
-.area-details {
-    border: 1px solid #ccc;
+.selection-button li {
+    margin: 0;
+    padding: 0;
+}
+
+.selection-button a {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
     border-radius: 5px;
-    padding: 15px;
-    width: 250px; /* 適宜調整 */
-    background-color: #f9f9f9;
-}
-
-/* 「すべて選択」「選択解除」ボタン */
-.area-details button {
-    background: none; /* 背景色をなくす */
-    border: none; /* 枠線を消す */
-    color: #000; /* テキスト色を青に設定（必要に応じて変更） */
-    cursor: pointer;
+    text-decoration: none;
+    color: #000;
     font-size: 16px;
-    padding: 0; /* 余白をなくす */
-    text-decoration: underline; /* 必要に応じて追加 */
+    background-color: #ffffff;
+    width: 200px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
-/* ホバー時のスタイル */
-.area-details button:hover {
-    text-decoration: underline; /* ホバー時に下線を追加 */
+.selection-button a:hover {
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
 }
 
-/* 「すべて選択」「選択解除」ボタンを横並びに */
-.select-buttons {
-    display: flex;
-    gap: 10px; /* ボタン間のスペース */
-    margin-bottom: 10px; /* ボタンとチェックボックスリストの間の余白 */
+.selection-button a.active {
+    background-color: #4598eb;
+    color: #ffffff;
+    border-color: #4598eb;
 }
 
-.select-buttons button {
+/* 3. エリア詳細部分 */
+.checkbox-field {
+    flex-grow: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 600px;
+}
+
+.area-details {
+    display: none; /* 初期は非表示 */
+    margin-bottom: 20px;
+}
+
+.area-details.active {
+    display: block; /* 表示する際に使用 */
+}
+
+/* 4. 「すべて選択」「選択解除」ボタン */
+.area-details button {
     background: none;
     border: none;
     color: #4598eb;
@@ -96,9 +80,43 @@
     font-size: 16px;
     padding: 0;
     text-decoration: underline;
+    transition: color 0.3s ease;
+    margin-right: 10px;
 }
 
-.select-buttons button:hover {
-    text-decoration: underline;
+.area-details button:hover {
+    color: #ff7f50;
 }
 
+/* 5. チェックボックス部分のスタイル */
+.checkbox-field label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.checkbox-field label input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.checkbox-field label span {
+    font-size: 14px;
+}
+
+/* 6. レスポンシブ対応 */
+@media (max-width: 768px) {
+    .selection-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .selection-button a {
+        width: 100%;
+    }
+
+    .checkbox-field {
+        max-width: 100%;
+    }
+}
