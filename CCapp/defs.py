@@ -4,11 +4,11 @@ import json
 import csv
 import logging
 
-def makeDirFile(dir,file):
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-    if not os.path.exists(file):
-        with open(file,'w',encoding='utf-8') as f:
+def makeDirFile(file_name):
+    file_path=os.path.join(file_name)
+    print(file_path)
+    if not os.path.exists(file_path):
+        with open(file_path,'w',encoding='utf-8') as f:
             pass
     return logging.getLogger(__name__)
 
@@ -27,12 +27,11 @@ def logconfig(log_file):
     )
 
 def logException(logger,file_key,exception):
-    """例外をログに記録する"""
     logger.error(f"{file_key}: エラーが発生しました - {exception}")
 
-def logsPrints(*args,**kwargs):
-    logging.info(*args,**kwargs)
-    prints(*args,**kwargs)
+def logsOutput(*args,**kwargs):
+    message="\n".join(str(arg) for arg in args)
+    logging.info(message,**kwargs)
 
 def measureExecutionTime(function,*args,**kwargs):
     start_time=time.time()
@@ -45,7 +44,7 @@ def measureExecutionTime(function,*args,**kwargs):
 
 def executeFunction(function,*args,**kwargs):
     elapsedTime,_=measureExecutionTime(function,*args,**kwargs)
-    print(f'実行時間: {elapsedTime:.4f} 秒')
+    logging.info(f'実行時間: {elapsedTime:.4f} 秒')
 
 #ファイルの内容を読み取る関数（CSVまたはJSON対応）
 def readFile(filePath):
