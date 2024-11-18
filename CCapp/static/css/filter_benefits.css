@@ -1,42 +1,55 @@
 @charset "UTF-8";
 
-/* エリア選択ボタンのリストのマーカーを消す */
-.selection-button {
-    list-style-type: none;  /* 箇条書きの点を消す */
-}
-
-/* エリア選択ボタンを左寄せにし、ボタンの幅を統一 */
-.selection-button {
-    display: flex;
-    flex-direction: column;  /* ボタンを縦に並べる */
-    align-items: flex-start;  /* 左寄せ */
-    gap: 10px;  /* ボタン間のスペース */
-}
-
-/* ボタンを四角枠で囲み、デザインを整え、幅を統一 */
-.selection-button a {
-    display: inline-block;  /* ボタンをインラインブロックに */
-    padding: 10px 20px;  /* 内側の余白 */
-    border: 2px solid #ccc;  /* 四角枠の色 */
-    text-decoration: none;  /* 下線を削除 */
-    color: #000;  /* 文字色 */
-    font-size: 16px;  /* フォントサイズ */
-    background-color: #ffffff;  /* 背景色を白に */
-    width: 200px;  /* ボタンの幅を統一 */
-    box-sizing: border-box;  /* パディングとボーダーを含めてサイズを決定 */
-}
-
-/* ボタンにホバーしたときのスタイル */
-.selection-button a:hover {
-    background-color: #f0f0f0;  /* ホバー時の背景色 */
-    border-color: #4598eb;  /* 枠線の色を変更 */
-}
-
-/* エリア選択ボタンとエリア詳細を横並びに配置 */
+/* 1. 全体レイアウト */
 .selection-wrapper {
     display: flex;
-    gap: 20px; /* ボタンと詳細エリアの間にスペースを追加 */
-    align-items: flex-start; /* 上部揃え */
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+    margin-bottom: 20px;
+}
+
+/* 2. 大分類ボタンエリア */
+.selection-button {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.selection-button li {
+    margin: 0;
+    padding: 0;
+}
+
+.selection-button a {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    background-color: #ffffff;
+    width: 200px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.selection-button a:hover {
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
+}
+
+.selection-button a.active {
+    background-color: #4598eb;
+    color: #ffffff;
+    border-color: #4598eb;
 }
 
 /* 3. エリア詳細部分 */
@@ -65,7 +78,7 @@
     color: #4598eb;
     cursor: pointer;
     font-size: 16px;
-    padding: 0;
+    padding: 10px;
     text-decoration: underline;
     transition: color 0.3s ease;
     margin-right: 10px;
