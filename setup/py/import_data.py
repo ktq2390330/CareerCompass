@@ -1,10 +1,22 @@
 import os
+import logging
 import datetime
 from django_setup_def import djangoSetup
 djangoSetup()
 from CCapp.models import *
-from CCapp.defs import prints,readFile,executeFunction
+from CCapp.defs import makeDirFile,logsPrints,readFile,executeFunction
 from django.db import transaction
+
+# ログの設定
+logDir='../../logs'
+logFile=os.path.join(logDir,'data_import.log')
+logger=makeDirFile(logDir,logFile)
+
+def logExecutionResults(instanceDict,file_key):
+    """インスタンスの作成または取得結果をログに記録する"""
+    results=queryResults(instanceDict)
+    for line in results:
+        logger.info(f"{file_key}: {line.strip()}")
 
 #ファイルパス生成関数
 def makeImportPath(fileName):
@@ -22,9 +34,9 @@ def queryResults(instanceDict):
             results.append(f"既存データ取得: {instance.name}\n")
     return results
 
-def displayQueryResults(instanceDict):
+def outputQueryResults(instanceDict):
     results=queryResults(instanceDict)
-    prints(*results)
+    logsPrints(*results)
 
 def area0(filePath):
     instanceDict={}
@@ -41,7 +53,7 @@ def area0(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def area1(filePath):
     instanceDict={}
@@ -61,7 +73,7 @@ def area1(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def area2(filePath):
     instanceDict={}
@@ -81,7 +93,7 @@ def area2(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def tag(filePath):
     instanceDict={}
@@ -98,7 +110,7 @@ def tag(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def category00(filePath):
     instanceDict={}
@@ -115,7 +127,7 @@ def category00(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def category01(filePath):
     instanceDict={}
@@ -135,7 +147,7 @@ def category01(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def category10(filePath):
     instanceDict={}
@@ -152,7 +164,7 @@ def category10(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def category11(filePath):
     instanceDict={}
@@ -172,7 +184,7 @@ def category11(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def user(filePath):
     instanceDict={}
@@ -189,7 +201,7 @@ def user(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def profile(filePath):
     instanceDict={}
@@ -227,7 +239,7 @@ def profile(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def assessment(filePath):
     instanceDict={}
@@ -247,7 +259,7 @@ def assessment(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def corporation(filePath):
     instanceDict={}
@@ -264,7 +276,7 @@ def corporation(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def dm(filePath):
     instanceDict={}
@@ -287,7 +299,7 @@ def dm(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def supportDM(filePath):
     instanceDict={}
@@ -307,7 +319,7 @@ def supportDM(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def offer(filePath):
     instanceDict={}
@@ -347,7 +359,7 @@ def offer(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 def offerEntry(filePath):
     instanceDict={}
@@ -372,7 +384,7 @@ def offerEntry(filePath):
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
-    displayQueryResults(instanceDict)
+    outputQueryResults(instanceDict)
 
 # 実行
 functionMap={
@@ -396,5 +408,9 @@ functionMap={
 
 for file_key,function in functionMap.items():
     file_path=makeImportPath(file_key)
+    logger.info(f"Loading data for {file_key} from {file_path}...")
     print(f"Loading data for {file_key} from {file_path}...")
     function(file_path)
+
+logging.info('Executed all.')
+print('Executed all.')
