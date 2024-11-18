@@ -193,6 +193,9 @@ class AdmTopView(TemplateView):
 # login
 class AdmLoginView(TemplateView):
     template_name = 'adm_login.html'
+# logout
+class AdmLogoutView(TemplateView):
+    template_name = 'adm_logout.html'
 # post_list
 class AdmPostListView(TemplateView):
     template_name = 'adm_post_list.html'
