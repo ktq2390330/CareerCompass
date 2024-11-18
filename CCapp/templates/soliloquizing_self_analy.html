@@ -12,10 +12,10 @@
     <div class="soliloquizing_self_analy-box">
         <div class="container">
             <div class="nav-buttons">
-                <button class="nav-btn self-analysis active">自己分析</button>
-                <button class="nav-btn axis">就活の軸</button>
-                <button class="nav-btn industry">業種研究</button>
-                <button class="nav-btn sector-study">業界研究</button>
+                <a href="{% url 'CCapp:self_analy' %}" class="nav-btn self-analy active">自己分析</a>
+                <a href="{}" class="nav-btn axis">就活の軸</a>
+                <a href="soliloquizing_industry.html" class="nav-btn industry">業界研究</a>
+                <a href="soliloquizing_jobtype.html" class="nav-btn jobtype">業種研究</a>
             </div>
         <form>
             {% for question in questions %}
