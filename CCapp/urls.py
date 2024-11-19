@@ -41,7 +41,7 @@ urlpatterns = [
     path('jobs/', views.JobsView.as_view(), name='jobs'),
 
     # search
-    path('search_result/', views.Search_resultView.as_view(), name='search_result'),
+    path('search_result/', views.SearchresultView.as_view(), name='search_result'),
 
     # self
     path('self_analy/', views.SelfAnalyView.as_view(), name='self_analy'),

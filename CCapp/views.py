@@ -218,8 +218,8 @@ class JobsView(TemplateView):
     template_name = 'jobs.html'
 
 # search
-class Search_resultView(TemplateView):
-    template_name = 'search_result'
+class SearchresultView(TemplateView):
+    template_name = 'search_result.html'
 
 
 # self
