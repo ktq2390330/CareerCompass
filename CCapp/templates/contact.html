@@ -15,6 +15,7 @@
         <p class="contact-description">以下のフォームの項目を入力し、よろしければ「この内容で問い合わせる」ボタンをクリックしてください</p>
         
         <form action="#" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="UName">お名前</label>
                 <input type="text" id="UName" name="UName" required>
