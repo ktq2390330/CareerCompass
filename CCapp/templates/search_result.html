@@ -9,5 +9,80 @@
 {% endblock %}
 
 {% block content %}
+<div class="container-box">
+ <!-- ページネーションの情報表示部分 -->
+ <section class="pagination-info">
+    <!-- 全件数と表示範囲 -->
+    <p>全250社 1 - 50件表示</p>
+    
+    <!-- ページネーションリンク -->
+    <div class="pagination">
+        <!-- 前のページへのリンク（最初のページが表示されていないときのみ表示） -->
+        {% if page_obj.has_previous %}
+            <a href="?page=1">前の50社</a>
+        {% endif %}
+        
+        <!-- 各ページ番号のリンク -->
+        {% for page_num in page_obj.paginator.page_range %}
+            <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %}">
+                {{ page_num }}
+            </a>
+        {% endfor %}
+        
+        <!-- 次のページへのリンク（最後のページが表示されていないときのみ表示） -->
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">次の50社</a>
+        {% endif %}
+    </div>
+</section>
 
+<!-- 各会社の情報を表示 -->
+<article class="company-card">
+    <!-- 会社名の表示 -->
+    <h2>株式会社ソリューションズ</h2>
+    
+    <!-- 会社の内容（説明と画像） -->
+    <div class="company-content">
+        <!-- 会社の説明文 -->
+        <p class="description">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        
+        <!-- 会社の画像（データベースに画像がない場合はデフォルト画像） -->
+        <div class="job-item">
+        {% if company.image %}
+            <img src="{{ company.image.url }}" alt="会社の画像">
+        {% else %}
+            <img src="{% static 'images/no_image.png' %}" alt="画像なし">
+        {% endif %}
+        </div>
+    </div>
+    
+    <!-- 応募ボタン -->
+    <div class="controls">
+        <button class="apply-button">応募する</button>
+    </div>
+</article>
+<!-- ページネーションリンク -->
+<div class="pagination">
+    <!-- 前のページへのリンク（最初のページが表示されていないときのみ表示） -->
+    {% if page_obj.has_previous %}
+        <a href="?page=1">前の50社</a>
+    {% endif %}
+    
+    <!-- 各ページ番号のリンク -->
+    {% for page_num in page_obj.paginator.page_range %}
+        <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %}">
+            {{ page_num }}
+        </a>
+    {% endfor %}
+    
+    <!-- 次のページへのリンク（最後のページが表示されていないときのみ表示） -->
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.paginator.num_pages }}">次の50社</a>
+    {% endif %}
+</div>
+</div>
+<div id="brands">
+    <a class="brands" href="#"><i>Career
+        <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
+</div>
 {% endblock %}

@@ -49,7 +49,6 @@ h2::after {
     height: 2px; /* 下線の太さ */
     background-color: black; /* 下線の色 */
     position: absolute;
-    bottom: -5px; /* 下線を少し下に配置 */
     left: 0;
 }
 

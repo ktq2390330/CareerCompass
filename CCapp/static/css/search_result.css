@@ -1,0 +1,165 @@
+h2 {
+    display: inline-block;
+    position: relative;
+    margin-top: 20px;
+}
+
+h2::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    position: absolute;
+    left: 0;
+}
+
+.job-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    width: 260px;
+}
+
+.job-item img {
+    padding: 10px;
+    border: 3px solid #000;
+    width: 300px;
+    height: 140px;
+}
+
+.container-box {
+    margin: 20px auto;
+    padding: 20px;
+    border: 3px solid #333;
+    max-width: 1000px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-info {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.pagination a {
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;
+    border: 1px solid #333;
+}
+
+.company-card {
+    margin: 20px auto;
+    padding: 5px 15px;
+    border: 2px solid #050505;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(5, 0, 0, 0.05);
+    max-width: 90%;
+}
+
+.company-card h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.company-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* 小さな画面で折り返し */
+    gap: 20px;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word; /* テキストを折り返す */
+    overflow-wrap: break-word; /* 長い単語も折り返して表示 */
+    max-width: 260px; /* 画像と同じ幅に合わせる */
+    margin-right: auto; /* 中央寄せ */
+    margin-left: 15px; /* 文字を少し右に寄せる */
+    flex: 1; /* 空きスペースを占める */
+}
+
+.company-content img {
+    width: 330px;
+    height: 200px;
+    object-fit: cover;
+    border: 1px solid #060606;
+    margin-right: 70px; /* 中央寄せ */
+}
+
+.controls {
+    margin-top: 10px;
+    text-align: center; /* 応募ボタンの中央揃え */
+}
+
+/* 応募ボタンのスタイル */
+.apply-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: 2px solid rgb(11, 0, 0);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+    margin-top: 20px;
+}
+
+.apply-button:hover {
+    background-color: #0056b3;
+}
+
+.brands {
+    font-size: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    color: black;
+    text-align: center;
+    position: relative;
+    top: 30px;
+    width: 100%;
+    display: block;
+    margin-bottom: 50px;
+    padding-bottom: 10px;
+}
+
+/* メディアクエリで画面幅が小さい場合のスタイル調整 */
+@media (max-width: 768px) {
+    /* 画像と説明を縦に並べる */
+    .company-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    /* 説明文の幅を調整 */
+    .description {
+        text-align: center;
+        margin: 0;
+    }
+    /* 画像のサイズ調整 */
+    .company-content img {
+        max-width: 90%;
+        height: auto;
+    }
+    /* ページネーションのリンクサイズ */
+    .pagination a {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+}
