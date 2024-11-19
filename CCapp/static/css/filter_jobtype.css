@@ -29,7 +29,7 @@
     display: inline-block;
     padding: 12px 20px;
     border: 2px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     text-decoration: none;
     color: #000;
     font-size: 16px;
@@ -47,9 +47,9 @@
 }
 
 .selection-button a.active {
-    background-color: #4598eb;
-    color: #ffffff;
-    border-color: #4598eb;
+    background-color: #ffffff;
+    color: #000;
+    border: 2px solid #4598eb;  /* 四角枠の色 */
 }
 
 /* 3. エリア詳細部分 */

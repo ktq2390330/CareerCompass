@@ -58,6 +58,12 @@
             if (firstJobtype) {
                 firstJobtype.classList.add('active');
             }
+
+            // 最初のボタンをアクティブにする
+            const firstButton = document.querySelector('.selection-button a');
+            if (firstButton) {
+                firstButton.classList.add('active');
+            }
         };
 
         // 業界ボタンをクリックして対応するチェックボックスを表示
@@ -66,10 +72,20 @@
             const allJobtypes = document.querySelectorAll('.jobtype-details');
             allJobtypes.forEach(jobtype => jobtype.classList.remove('active'));
         
-            // 該当する業界詳細を表示
+            // 該当するチェックボックスを表示
             const targetJobtype = document.getElementById(jobtypeId);
             if (targetJobtype) {
                 targetJobtype.classList.add('active');
+            }
+
+            // すべてのボタンから 'active' クラスを削除
+            const allButtons = document.querySelectorAll('.selection-button a');
+            allButtons.forEach(button => button.classList.remove('active'));
+    
+            // クリックしたボタンに 'active' クラスを追加
+            const clickedButton = document.querySelector(`.selection-button a[onclick="showJobtype('${jobtypeId}')"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
             }
         }
         
