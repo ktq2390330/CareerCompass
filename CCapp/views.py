@@ -217,6 +217,10 @@ class AboutView(TemplateView):
 class JobsView(TemplateView):
     template_name = 'jobs.html'
 
+# search
+class Search_resultView(TemplateView):
+    template_name = 'search_result'
+
 
 # self
 class SelfAnalyView(TemplateView):
