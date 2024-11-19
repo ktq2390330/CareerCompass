@@ -8,7 +8,8 @@ from CCapp.defs import makeDirFile,logconfig,logException,logsOutput,readFile,ex
 from django.db import transaction
 
 # ログの設定
-logFile=os.path.join('logs/data_import.log')
+logDir=os.path.join('logs')
+logFile=os.path.join(f'{logDir}/data_import.log')
 logconfig(logFile)
 logger=makeDirFile(logFile)
 

@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,3 +137,6 @@ EMAIL_PORT = 587                            # SMTPサーバーのポート番号
 EMAIL_HOST_USER = 'tyotyotyo112@gmail.com'   # Gmailのアドレス
 EMAIL_HOST_PASSWORD = 'zcvh ieai pcpc kdru'      # Gmailのアプリ用パスワード
 EMAIL_USE_TLS = True                        # SMTPサーバーと通信する際にTLS（セキュア）接続を使う
+
+load_dotenv()
+OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
