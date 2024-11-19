@@ -21,7 +21,8 @@
         {% block head %}{% endblock %}
 
     </head>
-    <body>
+    <body data-page-key="{{ page_key }}">
+
         <!-- header -->
         <header class="header">
             <!-- brand name -->
@@ -67,7 +68,7 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        {% comment %} <script src="js/scripts.js"></script> {% endcomment %}
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->

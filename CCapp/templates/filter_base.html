@@ -10,9 +10,13 @@
 <!-- 埋め込む用のcssを読み込むコード -->
 {% block head %}
     <link href="{% static 'css/filter_base.css' %}" rel="stylesheet">
+    <script src="{% static 'js/filter_state.js' %}"></script>
     <!-- 各検索フィルター画面用のcss埋め込みエリア -->
     {% block head2 %}{% endblock %}
 {% endblock %}
+
+<!-- pagekeyをぶち込む -->
+{% block page_key %}filter_base{% endblock %}
 
 <!-- base.htmlにぶち込む部分 -->
 {% block content %}
