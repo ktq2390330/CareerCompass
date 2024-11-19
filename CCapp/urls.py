@@ -14,6 +14,7 @@ urlpatterns = [
 
     # contact
     path('contact/',views.ContactView.as_view(), name='contact'),
+    path('contact/done/', views.ContactView.as_view(template_name='contact_done.html'), name='contact_done'),
 
     # profile
     path('profile/', views.ProfileView.as_view(), name='profile'),

@@ -14,19 +14,19 @@
         <h1 class="contact-title">お問い合わせ</h1>
         <p class="contact-description">以下のフォームの項目を入力し、よろしければ「この内容で問い合わせる」ボタンをクリックしてください</p>
         
-        <form action="#" method="post">
+        <form action="{% url 'CCapp:contact' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="UName">お名前</label>
-                <input type="text" id="UName" name="UName" required>
+                <label for="name">お名前</label>
+                <input type="text" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="Mail">メールアドレス</label>
-                <input type="email" id="Mail" name="Mail" required>
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="Inquiry">お問い合わせ内容</label>
-                <textarea id="Inquiry" name="Inquiry" required class="large-input"></textarea> <!-- textareaに変更 -->
+                <label for="message">お問い合わせ内容</label>
+                <textarea id="message" name="message" required class="large-input"></textarea> <!-- textareaに変更 -->
             </div>
             
             <div class="button-group">
