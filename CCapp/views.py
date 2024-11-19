@@ -234,3 +234,10 @@ class IndustryView(TemplateView):
 
 class JobtypeView(TemplateView):
     template_name = 'soliloquizing_jobtype.html'
+
+class AdmPostView(TemplateView):
+    template_name = 'adm_post.html'
+
+class AdmPostDoneView(TemplateView):
+    template_name = 'adm_post_done.html'
+

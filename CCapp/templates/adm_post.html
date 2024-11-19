@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録</title>
+    <link href="{% static 'css/signin.css' %}" rel="stylesheet"/>
+</head>
+<body>
+
+<h1>新規登録</h1>
+<hr>
+<form action="#" method="post">
+    <table>
+        <tr>
+            <td class="form-group"><label for="Company_Name">会社名</label></td>
+            <td><input type="text" id="Company_Name" name="Company_Name" required style="width: 120px;"></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="Job_Title">職種名</label></td>
+            <td><input type="text" id="Job_Title" name="Job_Title" required style="width: 120px;"></td>
+        </tr>        
+        <tr>
+            <td class="form-group"><label for="Number_of_Employee">従業員数</label></td>
+            <td><input type="text" id="Number_of_Employee" name="Number_of_Employee" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="Work_Location">勤務地</label></td>
+            <td>
+                <select id="Work_Location" name="Work_Location" required>
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="tokyo">東京</option>
+                    <option value="osaka">大阪</option>
+                    <option value="nagoya">名古屋</option>
+                    <!-- 他の勤務地を追加することができます -->
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="Planned_Recruits">採用予定人数</label></td>
+            <td><input type="text" id="Planned_Recruits" name="Planned_Recruits" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="Employment_Status">雇用形態</label></td>
+            <td>
+                <input type="text" id="Employment_Status" name="Employment_Status" required>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="Salary">給与</label></td>
+            <td>
+                <input type="text" id="Salary" name="Salary" required>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="Overtime_pay">固定残業代の有無</label></td>
+            <td><input type="text" id="Overtime_pay" name="Overtime_pay" required></td>
+        </tr>
+    </table>
+    <div class="button-group">
+
+        <button type="submit">登録</button>
+    </div>
+</form>
+</body>
+</html>

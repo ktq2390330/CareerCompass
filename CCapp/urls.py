@@ -30,6 +30,8 @@ urlpatterns = [
     path('adm_login/', views.AdmLoginView.as_view(), name='adm_login'),
     path('adm_logout/', views.AdmLogoutView.as_view(), name='adm_logout'),
     path('adm_post_list/', views.AdmPostListView.as_view(), name='adm_post_list'),
+    path('adm_post/', views.AdmPostView.as_view(), name='adm_post'),
+    path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
 
     # subscription
     path('subscription/', views.SubscriptionView.as_view(), name='subscription'),
