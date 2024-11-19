@@ -4,7 +4,7 @@ import datetime
 from django_setup_def import djangoSetup
 djangoSetup()
 from CCapp.models import *
-from CCapp.defs import makeDirFile,logconfig,logException,logsOutput,readFile,executeFunction
+from CCapp.defs import makeDirFile,makeImportPath,logconfig,logException,logsOutput,readFile,executeFunction
 from django.db import transaction
 
 # ログの設定
@@ -12,12 +12,6 @@ logDir=os.path.join('logs')
 logFile=os.path.join(f'{logDir}/data_import.log')
 logconfig(logFile)
 logger=makeDirFile(logFile)
-
-#ファイルパス生成関数
-def makeImportPath(fileName):
-    basePath='../data/'
-    filePath=os.path.join(os.path.dirname(__file__),f'{basePath}{fileName}')
-    return filePath
 
 #インスタンスの作成または取得結果
 def queryResults(instanceDict):
@@ -404,7 +398,8 @@ functionMap={
 }
 
 for file_key,function in functionMap.items():
-    file_path=makeImportPath(file_key)
+    basePath='../data/'
+    file_path=makeImportPath(basePath,file_key)
     logger.info(f"Loading data for {file_key} from {file_path}...")
     function(file_path)
 

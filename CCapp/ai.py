@@ -1,6 +1,6 @@
 import os
 import google.generativeai as genai
-from defs import readFile
+from defs import readFile,makeImportPath,djangoSetup
 
 # Google Generative AIの設定
 def configure_genai():
@@ -11,12 +11,12 @@ def configure_genai():
     except Exception as e:
         print(f'Error in configuring Generative AI: {e}')
 
-# Gemini Proモデルを使用したコンテンツ生成
+# Gemini-1.5-flashモデルを使用したコンテンツ生成
 def generate_content(prompt, text_content):
     try:
         combined_prompt = f"{prompt}\n処理するテキストは以下の通り\n{text_content}"
-        model_gemini_pro = genai.GenerativeModel('gemini-pro')
-        response = model_gemini_pro.generate_content(
+        model_gemini= genai.GenerativeModel('gemini-1.5-flash')
+        response = model_gemini.generate_content(
             combined_prompt,
             generation_config=genai.types.GenerationConfig()
         )
@@ -27,28 +27,30 @@ def generate_content(prompt, text_content):
 
 # テキストファイルの処理
 def process_text_file():
+    djangoSetup()
     configure_genai()
-    prompt = readFile()
+    basePath='ai/'
+    promptPath=f'{basePath}prompt.txt'
+    prompt=readFile(promptPath)
 
     if prompt:
-        text_file = '未処理.txt'
+        filePath=makeImportPath(basePath,'prompt.txt')
         try:
-            with open(text_file, 'r', encoding='utf-8') as file:
-                text_content = file.read()
+            text_content=readFile(filePath)
         except UnicodeDecodeError:
             try:
-                with open(text_file, 'r', encoding='latin1') as file:
+                with open(filePath, 'r', encoding='latin1') as file:
                     text_content = file.read()
             except Exception as e:
-                print(f'Error reading file {text_file}: {e}')
+                print(f'Error reading file {filePath}: {e}')
                 return
         except Exception as e:
-            print(f'Error processing file {text_file}: {e}')
+            print(f'Error processing file {filePath}: {e}')
             return
 
         generated_content = generate_content(prompt, text_content)
         if generated_content:
-            output_file_path = '完成.txt'
+            output_file_path = '../ai/output.txt'
             with open(output_file_path, 'w', encoding='utf-8') as output_file:
                 output_file.write(generated_content)
             print(f'Generated content written to {output_file_path}')
