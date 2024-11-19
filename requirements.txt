@@ -7,4 +7,4 @@ pandas
 textblob
 python-dotenv
 google-generativeai
-pathliib
+pathlib
