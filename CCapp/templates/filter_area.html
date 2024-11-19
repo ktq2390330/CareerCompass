@@ -29,6 +29,7 @@
             </ul>
         </nav>
 
+
         <div class="checkbox-field">
             <!-- 各エリアのチェックボックス -->
             {% for area0 in area0_list %}
@@ -52,27 +53,46 @@
     <script>
         // ページ読み込み時に最初のエリアを表示
         window.onload = function() {
+            // 最初のエリアを表示
             const firstArea = document.querySelector('.area-details');
             if (firstArea) {
                 firstArea.classList.add('active');
             }
+    
+            // 最初のボタンをアクティブにする
+            const firstButton = document.querySelector('.selection-button a');
+            if (firstButton) {
+                firstButton.classList.add('active');
+            }
         };
-
+    
         // ボタンをクリックして対応するチェックボックスを表示
         function showArea(areaId) {
+            // すべてのエリア詳細を非表示にする
             const allAreas = document.querySelectorAll('.area-details');
             allAreas.forEach(area => area.classList.remove('active'));
             
+            // 該当するチェックボックスを表示
             const targetArea = document.getElementById(areaId);
             if (targetArea) {
                 targetArea.classList.add('active');
             }
+    
+            // すべてのボタンから 'active' クラスを削除
+            const allButtons = document.querySelectorAll('.selection-button a');
+            allButtons.forEach(button => button.classList.remove('active'));
+    
+            // クリックしたボタンに 'active' クラスを追加
+            const clickedButton = document.querySelector(`.selection-button a[onclick="showArea('${areaId}')"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
         }
-
+    
         // すべて選択/解除
         function selectAll(areaId, isChecked) {
             const checkboxes = document.querySelectorAll('#' + areaId + ' input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
         }
-    </script>
+    </script>     
 {% endblock %}

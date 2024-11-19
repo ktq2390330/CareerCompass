@@ -45,7 +45,7 @@ body {
     width: 150px; /* ボタンの固定幅を設定 */
     padding: 10px 0; /* 上下のスペースのみを設定 */
     text-align: center; /* テキストを中央揃え */
-    border: 1px solid #000000;
+    border: 2px solid #ccc;  /* 四角枠の色 */
     border-radius: 8px; /* 角丸四角にする */
     background-color: #ffffff; /* ボタンの背景色 */
     text-decoration: none; /* リンクの下線を消す */
@@ -55,7 +55,15 @@ body {
 }
 
 .navigation-button li a:hover {
-    background-color: #d0eaff; /* ホバー時の背景色 */
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
+}
+
+.navigation-button li a.active {
+    background-color: #ffffff;
+    color: #000;
+    border: 2px solid #4598eb;  /* 四角枠の色 */
 }
 
 /* ナビゲーション下の実線 */
