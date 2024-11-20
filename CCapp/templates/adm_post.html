@@ -11,6 +11,12 @@
         <!-- ナビゲーション下の実線 -->
         <hr class="header-line">
     </header>
+    <div class="button-group">
+        <button onclick="location.href='top.html'">TOPページ</button>
+        <button onclick="location.href='add_job.html'">求人追加</button>
+        <button onclick="location.href='logout.html'">ログアウト</button>
+    </div>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,20 +29,20 @@
     <table>
         <tr>
             <td class="form-group"><label for="Company_Name">会社名</label></td>
-            <td><input type="text" id="Company_Name" name="Company_Name" required style="width: 120px;"></td>
+            <td><input type="text" id="Company_Name" name="Company_Name" required style="width: 520px;"></td>
         </tr>
         <tr>
             <td class="form-group"><label for="Job_Title">職種名</label></td>
-            <td><input type="text" id="Job_Title" name="Job_Title" required style="width: 120px;"></td>
+            <td><input type="text" id="Job_Title" name="Job_Title" required style="width: 520px;"></td>
         </tr>        
         <tr>
             <td class="form-group"><label for="Number_of_Employee">従業員数</label></td>
-            <td><input type="text" id="Number_of_Employee" name="Number_of_Employee" required></td>
+            <td><input type="text" id="Number_of_Employee" name="Number_of_Employee" required style="width: 520px;"></td>
         </tr>
         <tr>
             <td class="form-group"><label for="Work_Location">勤務地</label></td>
             <td>
-                <select id="Work_Location" name="Work_Location" required>
+                <select id="Work_Location" name="Work_Location" required style="width: 120px">
                     <option value="hokkaido">北海道</option>
     <option value="aomori">青森県</option>
     <option value="iwate">岩手県</option>
@@ -89,28 +95,28 @@
         </tr>
         <tr>
             <td class="form-group"><label for="Planned_Recruits">採用予定人数</label></td>
-            <td><input type="text" id="Planned_Recruits" name="Planned_Recruits" required></td>
+            <td><input type="text" id="Planned_Recruits" name="Planned_Recruits" required style="width: 520px;"></td>
         </tr>
         <tr>
             <td class="form-group"><label for="Employment_Status">雇用形態</label></td>
             <td>
-                <input type="text" id="Employment_Status" name="Employment_Status" required>
+                <input type="text" id="Employment_Status" name="Employment_Status" required style="width: 520px;">
             </td>
         </tr>
         <tr>
             <td class="form-group"><label for="Salary">給与</label></td>
             <td>
-                <input type="text" id="Salary" name="Salary" required>
+                <input type="text" id="Salary" name="Salary" required style="width: 520px;">
             </td>
         </tr>
         <tr>
             <td class="form-group"><label for="Overtime_pay">固定残業代の有無</label></td>
-            <td><input type="text" id="Overtime_pay" name="Overtime_pay" required></td>
+            <td><input type="text" id="Overtime_pay" name="Overtime_pay" required style="width: 520px;"></td>
         </tr>
     </table>
     <div class="button-group">
 
-        <button type="submit">登録</button>
+        <button type="submit">完了</button>
     </div>
 </form>
 </body>
