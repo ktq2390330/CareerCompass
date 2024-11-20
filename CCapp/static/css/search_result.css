@@ -81,27 +81,28 @@ h2::after {
     align-items: center;
     flex-wrap: wrap; /* 小さな画面で折り返し */
     gap: 20px;
+    justify-content: center; /* 子要素を中央揃え */
 }
 
 .description {
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 18px;
     color: #333;
     text-align: center;
     word-wrap: break-word; /* テキストを折り返す */
     overflow-wrap: break-word; /* 長い単語も折り返して表示 */
     max-width: 260px; /* 画像と同じ幅に合わせる */
     margin-right: auto; /* 中央寄せ */
-    margin-left: 15px; /* 文字を少し右に寄せる */
+    margin-left: 50px; /* 文字を少し右に寄せる */
     flex: 1; /* 空きスペースを占める */
 }
 
 .company-content img {
-    width: 330px;
+    width: 400px;
     height: 200px;
     object-fit: cover;
-    border: 1px solid #060606;
-    margin-right: 70px; /* 中央寄せ */
+    border: 2px solid #060606;
+    margin-right: 200px; /* 中央寄せ */
 }
 
 .controls {
@@ -111,18 +112,18 @@ h2::after {
 
 /* 応募ボタンのスタイル */
 .apply-button {
-    padding: 10px 20px;
+    padding: 17px 50px;
     font-size: 1em;
     border: 2px solid rgb(11, 0, 0);
     border-radius: 5px;
     cursor: pointer;
     background-color: transparent;
     color: black;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .apply-button:hover {
-    background-color: #0056b3;
+    background-color: #72b2f6;
 }
 
 .brands {
@@ -140,26 +141,38 @@ h2::after {
     padding-bottom: 10px;
 }
 
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; /* 高さを調整 */
+    font-size: 1.5em;
+    text-align: center;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
 /* メディアクエリで画面幅が小さい場合のスタイル調整 */
 @media (max-width: 768px) {
-    /* 画像と説明を縦に並べる */
     .company-content {
         flex-direction: column;
         align-items: center;
     }
-    /* 説明文の幅を調整 */
     .description {
         text-align: center;
-        margin: 0;
+        margin: 10px 0;
+        max-width: 100%;
     }
-    /* 画像のサイズ調整 */
     .company-content img {
-        max-width: 90%;
+        max-width: 100%;
         height: auto;
     }
-    /* ページネーションのリンクサイズ */
     .pagination a {
         padding: 6px 12px;
+        font-size: 0.9em;
+    }
+    .apply-button {
+        padding: 12px 30px;
         font-size: 0.9em;
     }
 }

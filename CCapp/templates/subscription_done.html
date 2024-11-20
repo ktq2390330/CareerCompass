@@ -27,10 +27,11 @@
             <p class="text">上記のメールアドレスから確認メールが届かない場合は、下記のお問い合わせ先までご連絡ください。</h2>
             <div class="contact-info">
                 <p class="inquiry_target">■お問い合わせ先</p>
-                <p class="responsible_person">担当者: ◯◯◯◯</p>
-                <p class="tel">TEL: ◯◯◯◯◯◯◯◯◯</p>
-                <p class="e-mail">メールアドレス: example2@gmail.com</p>
+                <p class="responsible_person">担当者: {{ company_info.responsible_person }}</p>
+                <p class="tel">TEL: {{ company_info.tel }}</p>
+                <p class="e-mail">メールアドレス: {{ company_info.email }}</p>
             </div>
+                
         </div>
     </div>
     <div class="button-group">
