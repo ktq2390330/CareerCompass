@@ -132,11 +132,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.live.com'               # GmailのSMTPサーバー
+EMAIL_HOST = 'smtp.gmail.com'               # GmailのSMTPサーバー
 EMAIL_PORT = 587                            # SMTPサーバーのポート番号
-EMAIL_HOST_USER = 'tyotyotyo112@gmail.com'   # Gmailのアドレス
-EMAIL_HOST_PASSWORD = 'zcvh ieai pcpc kdru'      # Gmailのアプリ用パスワード
-EMAIL_USE_TLS = True                        # SMTPサーバーと通信する際にTLS（セキュア）接続を使う
+EMAIL_HOST_USER = 'oohara.pretest@gmail.com'   # Gmailのアドレス
+EMAIL_HOST_PASSWORD = 'orjt drlz ribe iypd'      # Gmailのアプリ用パスワード
+EMAIL_USE_TLS = True                     # SMTPサーバーと通信する際にTLS（セキュア）接続を使う
 
 # load_dotenv()
 # OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
