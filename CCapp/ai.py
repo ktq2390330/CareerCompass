@@ -27,33 +27,61 @@ def generate_content(prompt, text_content):
 
 # テキストファイルの処理
 def process_text_file():
+    # 初期化
     djangoSetup()
     configure_genai()
-    basePath='ai/'
-    promptPath=f'{basePath}prompt.txt'
-    prompt=readFile(promptPath)
 
-    if prompt:
-        filePath=makeImportPath(basePath,'prompt.txt')
-        try:
-            text_content=readFile(filePath)
-        except UnicodeDecodeError:
-            try:
-                with open(filePath, 'r', encoding='latin1') as file:
-                    text_content = file.read()
-            except Exception as e:
-                print(f'Error reading file {filePath}: {e}')
-                return
-        except Exception as e:
-            print(f'Error processing file {filePath}: {e}')
+    # ベースディレクトリとファイルパスを定義
+    basePath = 'ai/'
+    promptPath = makeImportPath(basePath, 'prompt.txt')
+
+    # プロンプトの読み込み
+    try:
+        prompt = readFile(promptPath)
+        if not prompt:
+            print(f"Prompt file is empty or missing: {promptPath}")
             return
+        else:
+            print('プロンプト内容')
+            print(f'{prompt}\n')
+    except Exception as e:
+        print(f"Error reading prompt file {promptPath}: {e}")
+        return
 
+    # テキストファイルの読み込み
+    filePath = makeImportPath(basePath, 'data.txt')
+    try:
+        try:
+            text_content = readFile(filePath)
+        except UnicodeDecodeError:
+            with open(filePath, 'r', encoding='latin1') as file:
+                text_content = file.read()
+    except Exception as e:
+        print(f"Error reading text file {filePath}: {e}")
+        return
+
+    # Geminiを使用してコンテンツを生成
+    try:
         generated_content = generate_content(prompt, text_content)
-        if generated_content:
-            output_file_path = '../ai/output.txt'
-            with open(output_file_path, 'w', encoding='utf-8') as output_file:
-                output_file.write(generated_content)
-            print(f'Generated content written to {output_file_path}')
+        if not generated_content:
+            print("No content was generated. Please check your model or input.")
+            return
+    except Exception as e:
+        print(f"Error generating content with Gemini: {e}")
+        return
+
+    # 生成されたコンテンツをファイルに書き込み
+    output_file_path = 'output.txt'
+    try:
+        print('回答')
+        print(generated_content)
+        with open(output_file_path, 'w', encoding='utf-8') as output_file:
+            output_file.write(generated_content)
+        print(f"Generated content written to {output_file_path}")
+    except Exception as e:
+        print(f"Error writing to output file {output_file_path}: {e}")
 
 if __name__ == '__main__':
+    # 実行時のログレベルを設定して警告を抑制
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # TensorFlowのログレベル設定
     process_text_file()

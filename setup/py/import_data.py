@@ -404,4 +404,3 @@ for file_key,function in functionMap.items():
     function(file_path)
 
 logging.info('Executed all.')
-print('Executed all.')
