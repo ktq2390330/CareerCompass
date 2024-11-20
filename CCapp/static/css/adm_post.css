@@ -7,36 +7,6 @@ body {
     margin-right: auto;
 }
 
-.brand {
-    font-size: 30px; /* フォントサイズを大きく */
-    text-decoration: none;
-    font-weight: bold;
-    line-height: 1; /* 行間を狭くする */
-}
-
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 左揃えにする */
-    position: absolute; /* 絶対配置 */
-    top: 20px; /* 上部の余白 */
-    left: 20px; /* 左側の余白 */
-}
-
-/* ナビゲーション下の実線 */
-.header-line {
-    border: none;
-    border-top: solid 2px black; /* 線の太さを変更 */
-    height: 1px;
-    width: 1155%;
-    margin: 30 0 0 -10%; /* 上下の余白を調整 */
-}
-
-h1 {
-    margin-bottom: 0;
-    margin-top: 1px;
-}
-
 hr {
     border: 0;
     height: 1px;
@@ -51,6 +21,7 @@ table {
     max-width: 680px;
     margin-left: auto;
     margin-right: auto;
+    height: 470px;
 }
 
 td {
@@ -64,11 +35,6 @@ td {
     text-align: center;
 }
 
-.button-group {
-    text-align: center;
-    margin-top: 20px;
-}
-
 button {
     margin: 0 50px;
     padding: 10px 25px;
@@ -79,6 +45,12 @@ button {
     background-color: transparent;
     color: black;
     width: 150px;
+}
+
+.center-button {
+    display: flex;
+    justify-content: center; /* 水平方向に中央に配置 */
+    margin-top: 20px; /* 上部に少し余白を追加 */
 }
 
 button:hover {
