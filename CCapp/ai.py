@@ -49,15 +49,15 @@ def process_text_file():
         return
 
     # テキストファイルの読み込み
-    filePath = makeImportPath(basePath, 'data.txt')
+    dataPath = makeImportPath(basePath, 'data.txt')
     try:
         try:
-            text_content = readFile(filePath)
+            text_content = readFile(dataPath)
         except UnicodeDecodeError:
-            with open(filePath, 'r', encoding='latin1') as file:
+            with open(dataPath, 'r', encoding='latin1') as file:
                 text_content = file.read()
     except Exception as e:
-        print(f"Error reading text file {filePath}: {e}")
+        print(f"Error reading text file {dataPath}: {e}")
         return
 
     # Geminiを使用してコンテンツを生成
@@ -71,15 +71,15 @@ def process_text_file():
         return
 
     # 生成されたコンテンツをファイルに書き込み
-    output_file_path = 'output.txt'
+    outputPath = makeImportPath(basePath, 'output.txt')
     try:
         print('回答')
         print(generated_content)
-        with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        with open(outputPath, 'w', encoding='utf-8') as output_file:
             output_file.write(generated_content)
-        print(f"Generated content written to {output_file_path}")
+        print(f"Generated content written to {outputPath}")
     except Exception as e:
-        print(f"Error writing to output file {output_file_path}: {e}")
+        print(f"Error writing to output file {outputPath}: {e}")
 
 if __name__ == '__main__':
     # 実行時のログレベルを設定して警告を抑制
