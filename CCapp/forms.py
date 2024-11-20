@@ -9,7 +9,7 @@ class LoginForm(forms.Form):
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
-class UserRegistrationForm(forms.Form):
+class UserSignupForm(forms.Form):
     uname = forms.CharField(max_length=30, required=True, label='氏名')
     furigana = forms.CharField(max_length=30, required=True, label='フリガナ')
     
