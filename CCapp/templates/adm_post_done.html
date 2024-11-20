@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>求人投稿完了</title>
+    <link href="{% static 'css/adm_post_done.css' %}" rel="stylesheet"/>
+</head>
+<body>
+    <header class="header">
+        <!-- brand name -->
+        <div id="brand">
+            <a class="brand" href="#"><i>Career
+                <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
+        </div>
+
+        <!-- ナビゲーション下の実線 -->
+        <hr class="header-line">
+    </header>
+
+    <div class="container">
+        <h3>投稿が完了しました。</h3>
+        <div class="button-group">
+            <button onclick="window.location='{% url 'CCapp:top' %}'">Topへ戻る</button>
+        </div>
+    </div>
+</body>
+</html>
