@@ -32,6 +32,7 @@ urlpatterns = [
     path('adm_post_list/', views.AdmPostListView.as_view(), name='adm_post_list'),
     path('adm_post/', views.AdmPostView.as_view(), name='adm_post'),
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
+    path('adm_edit_post/', views.AdmEditPostView.as_view(), name='adm_edit_post'),
 
     # subscription
     path('subscription/', views.SubscriptionView.as_view(), name='subscription'),
