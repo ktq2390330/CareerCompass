@@ -288,3 +288,5 @@ class AdmPostView(TemplateView):
 class AdmPostDoneView(TemplateView):
     template_name = 'adm_post_done.html'
 
+class AdmEditPostView(TemplateView):
+    template_name = 'adm_edit_post.html'
