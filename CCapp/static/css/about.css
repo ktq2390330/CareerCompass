@@ -19,5 +19,6 @@
     border: 2px solid; /* 外枠を維持 */
     padding: 60 40px; /* パディングを調整 */
     margin: 100px auto;
-    max-width: 1000px;
+    max-width: 956px;
+    text-align: center;
 }
