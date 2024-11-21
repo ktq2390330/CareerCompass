@@ -4,7 +4,7 @@ from django.db import models
 
 class Base(models.Model):
     id=models.AutoField(primary_key=True,verbose_name="ID")
-    name=models.CharField(max_length=63,verbose_name="名前")
+    name=models.CharField(max_length=64,verbose_name="名前")
 
     class Meta:
         abstract=True
@@ -65,7 +65,7 @@ class Tag(Base):
 
 class User(Base):
     mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
-    password=models.CharField(max_length=255,verbose_name="パスワード")
+    password=models.CharField(max_length=256,verbose_name="パスワード")
     authority=models.IntegerField(verbose_name="権限")
 
     class Meta:
@@ -74,22 +74,24 @@ class User(Base):
 
 class Profile(models.Model):
     user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID",related_name="profile")
-    nationality=models.CharField(max_length=255,verbose_name="国籍")
+    furigana=models.CharField(max_length=256,verbose_name="フリガナ")
+    nationality=models.CharField(max_length=256,verbose_name="国籍")
     birth=models.DateField(verbose_name="生年月日")
-    gender=models.CharField(max_length=15,verbose_name="性別")
+    gender=models.CharField(max_length=16,verbose_name="性別")
     graduation=models.IntegerField(verbose_name="卒業年度")
-    uSchool=models.CharField(max_length=255,verbose_name="学校名")
+    uSchool=models.CharField(max_length=256,verbose_name="学校名")
     sClass=models.IntegerField(verbose_name="学校区分")
     sol=models.IntegerField(verbose_name="文理区分")
-    department=models.CharField(max_length=31,verbose_name="学科名")
-    uTel=models.CharField(max_length=15,verbose_name="電話番号")
-    uAddress=models.CharField(max_length=255,verbose_name="住所")
+    department=models.CharField(max_length=32,verbose_name="学科名")
+    uTel=models.CharField(max_length=16,verbose_name="電話番号")
+    postalCode=models.CharField(max_length=8,verbose_name="郵便番号")
+    uAddress=models.CharField(max_length=256,verbose_name="住所")
     category00=models.ForeignKey(Category00,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ00",related_name="profile_category00")
     category01=models.ForeignKey(Category01,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ01",related_name="profile_category01")
     category10=models.ForeignKey(Category10,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ10",related_name="profile_category10")
     category11=models.ForeignKey(Category11,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ11",related_name="profile_category11")
     area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="profile_area1")
-    uOffer=models.CharField(max_length=255,verbose_name="内定先")
+    uOffer=models.CharField(max_length=256,verbose_name="内定先")
 
     class Meta:
         db_table="profile"
@@ -116,12 +118,12 @@ class Assessment(models.Model):
         verbose_name='自己分析'
 
 class Corporation(models.Model):
-    corp=models.IntegerField(primary_key=True,unique=True,verbose_name="法人番号")
-    cName=models.CharField(max_length=255,verbose_name="法人名")
-    address=models.CharField(max_length=255,verbose_name="住所")
+    corp=models.CharField(max_length=13,primary_key=True,unique=True,verbose_name="法人番号")
+    name=models.CharField(max_length=256,verbose_name="法人名")
+    address=models.CharField(max_length=256,verbose_name="住所")
     cMail=models.CharField(max_length=255,unique=True,verbose_name="メールアドレス")
-    cTel=models.CharField(max_length=15,verbose_name="電話番号")
-    url=models.URLField(max_length=511,verbose_name="URL")
+    cTel=models.CharField(max_length=16,verbose_name="電話番号")
+    url=models.URLField(max_length=512,verbose_name="URL")
 
     class Meta:
         db_table='corporation'
@@ -130,22 +132,22 @@ class Corporation(models.Model):
 class Offer(Base):
     detail=models.TextField(verbose_name="詳細")
     solicitation=models.TextField(verbose_name="募集要項")
-    course=models.CharField(max_length=255,verbose_name="コース名")
-    forms=models.CharField(max_length=31,verbose_name="雇用形態")
-    roles=models.CharField(max_length=255,verbose_name="配属職種")
+    course=models.CharField(max_length=256,verbose_name="コース名")
+    forms=models.CharField(max_length=32,verbose_name="雇用形態")
+    roles=models.CharField(max_length=256,verbose_name="配属職種")
     CoB=models.TextField(verbose_name="提出書類")
-    subject=models.CharField(max_length=255,verbose_name="募集対象")
-    NoP=models.CharField(max_length=63,verbose_name="募集人数")
-    departments=models.CharField(max_length=255,verbose_name="募集学部・学科")
+    subject=models.CharField(max_length=256,verbose_name="募集対象")
+    NoP=models.CharField(max_length=64,verbose_name="募集人数")
+    departments=models.CharField(max_length=256,verbose_name="募集学部・学科")
     characteristic=models.TextField(verbose_name="募集特徴")
     PES=models.TextField(verbose_name="採用後の対応")
-    giving=models.CharField(max_length=255,verbose_name="初任給")
-    allowances=models.CharField(max_length=255,verbose_name="諸手当")
-    salaryRaise=models.CharField(max_length=63,verbose_name="昇給")
-    bonus=models.CharField(max_length=31,verbose_name="賞与")
+    giving=models.CharField(max_length=256,verbose_name="初任給")
+    allowances=models.CharField(max_length=256,verbose_name="諸手当")
+    salaryRaise=models.CharField(max_length=64,verbose_name="昇給")
+    bonus=models.CharField(max_length=32,verbose_name="賞与")
     holiday=models.TextField(verbose_name="休日休暇")
     welfare=models.ForeignKey(Tag,on_delete=models.SET_NULL,null=True,verbose_name="福利厚生")
-    workingHours=models.CharField(max_length=255,verbose_name="勤務時間")
+    workingHours=models.CharField(max_length=256,verbose_name="勤務時間")
     area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="offer_area1")
     category00=models.ForeignKey(Category00,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ00",related_name="offer_category00")
     category01=models.ForeignKey(Category01,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ01",related_name="offer_category01")

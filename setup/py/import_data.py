@@ -1,8 +1,8 @@
 import os
 import logging
 import datetime
-from django_setup_def import djangoSetup
-djangoSetup()
+from django_setup_def import djangoImportSetup
+djangoImportSetup()
 from CCapp.models import *
 from CCapp.defs import makeDirFile,makeImportPath,logconfig,logException,logsOutput,readFile,executeFunction
 from django.db import transaction
@@ -253,21 +253,37 @@ def assessment(filePath):
     outputQueryResults(instanceDict)
 
 def corporation(filePath):
-    instanceDict={}
+    instanceDict = {}
+
     def function():
         try:
-            data=readFile(filePath)
+            data = readFile(filePath)
             with transaction.atomic():
                 for row in data:
-                    cId,name,address,mail,tel,url=row['cId'],row['name'],row['address'],row['tel'],row['url']
-                    instance,created=Corporation.objects.get_or_create(corp=cId,cName=name,address=address,cMail=mail,cTel=tel,url=url)
-                    instanceDict[instance]=created
+                    required_keys = ['cId', 'name', 'address', 'mail', 'tel', 'url']
+                    if not all(key in row for key in required_keys):
+                        print(f"不足しているデータ: {row}")
+                        continue  # スキップ
+
+                    try:
+                        cId, name, address, mail, tel, url = (
+                            row['cId'], row['name'], row['address'], row['mail'], row['tel'], row['url']
+                        )  # 電話番号を整数に変換
+                    except ValueError as ve:
+                        print(f"データ変換エラー: {ve}, 行: {row}")
+                        continue
+
+                    instance, created = Corporation.objects.get_or_create(
+                        corp=cId, name=name, address=address, cMail=mail, cTel=tel, url=url
+                    )
+                    instanceDict[instance] = created
         except FileNotFoundError:
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
     outputQueryResults(instanceDict)
+
 
 def dm(filePath):
     instanceDict={}
@@ -398,7 +414,7 @@ functionMap={
 }
 
 for file_key,function in functionMap.items():
-    basePath='../data/'
+    basePath='../setup/data/'
     file_path=makeImportPath(basePath,file_key)
     logger.info(f"Loading data for {file_key} from {file_path}...")
     function(file_path)
