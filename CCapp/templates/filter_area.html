@@ -12,9 +12,6 @@
     <link href="{% static 'css/filter_area.css' %}" rel="stylesheet">
 {% endblock %}
 
-<!-- pagekeyをぶち込む -->
-{% block page_key %}filter_area{% endblock %}
-
 <!-- filter_base.htmlにぶち込む部分 -->
 {% block content2 %}
     <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
@@ -53,49 +50,97 @@
         </div>
     </div>
 
+    <!-- 外部スクリプトの読み込み -->
+    {% comment %} <script src="{% static 'js/filter_state.js' %}"></script> {% endcomment %}
+
+    <!-- 内部スクリプト -->
     <script>
         // ページ読み込み時に最初のエリアを表示
         window.onload = function() {
-            // 最初のエリアを表示
             const firstArea = document.querySelector('.area-details');
             if (firstArea) {
                 firstArea.classList.add('active');
             }
-    
-            // 最初のボタンをアクティブにする
+
             const firstButton = document.querySelector('.selection-button a');
             if (firstButton) {
                 firstButton.classList.add('active');
             }
+
+            restoreAreaState();
         };
-    
+
         // ボタンをクリックして対応するチェックボックスを表示
         function showArea(areaId) {
-            // すべてのエリア詳細を非表示にする
             const allAreas = document.querySelectorAll('.area-details');
             allAreas.forEach(area => area.classList.remove('active'));
-            
-            // 該当するチェックボックスを表示
+
             const targetArea = document.getElementById(areaId);
             if (targetArea) {
                 targetArea.classList.add('active');
             }
-    
-            // すべてのボタンから 'active' クラスを削除
+
             const allButtons = document.querySelectorAll('.selection-button a');
             allButtons.forEach(button => button.classList.remove('active'));
-    
-            // クリックしたボタンに 'active' クラスを追加
+
             const clickedButton = document.querySelector(`.selection-button a[onclick="showArea('${areaId}')"]`);
             if (clickedButton) {
                 clickedButton.classList.add('active');
             }
         }
-    
+
         // すべて選択/解除
         function selectAll(areaId, isChecked) {
             const checkboxes = document.querySelectorAll('#' + areaId + ' input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+            // チェックボックスの状態をローカルストレージに保存
+            saveCheckboxState();
         }
-    </script>     
+
+        // チェックボックスの状態を保存
+        function saveAreaState() {
+            const filterState = {};
+            document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+                const value = checkbox.value;
+                filterState[value] = checkbox.checked || false;
+            });
+            saveToCookies(filterState);
+        }
+
+        // チェックボックスの状態をクッキーに保存
+        function saveToCookies(filterState) {
+            const filterStateJSON = JSON.stringify(filterState);
+            document.cookie = `filterStates_area=${encodeURIComponent(filterStateJSON)}; path=/;`;
+        }
+        
+        // チェックボックスの状態をクッキーから読み込む
+        function loadFromCookies() {
+            const cookies = document.cookie.split(';');
+            let filterState = {};
+            cookies.forEach(cookie => {
+                const [name, value] = cookie.split('=').map(c => c.trim());
+                if (name === 'filterStates_area') {
+                    filterState = JSON.parse(decodeURIComponent(value));
+                }
+            });
+            return filterState || {};
+        }
+
+        // チェックボックスの状態を復元
+        function restoreAreaState() {
+            const filterState = loadFromCookies();
+            document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+                const value = checkbox.value;
+                if (filterState.hasOwnProperty(value)) {
+                    checkbox.checked = !!filterState[value];
+                }
+            });
+        }
+
+        // チェックボックスの変更時に保存
+        document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', saveAreaState);
+        });
+    </script>
+     
 {% endblock %}

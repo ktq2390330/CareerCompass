@@ -31,5 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <button type="submit">検索</button>
 </form>
 
-
-なんか知らんけどjobtypeがプログラミングエラーになった
+areaはクッキー
+industryはセッションでチェックボックスのステータスを保持している状況
+全部セッションに書き変える

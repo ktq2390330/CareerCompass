@@ -1,54 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const pageKey = document.body.dataset.pageKey;
+// document.addEventListener('DOMContentLoaded', () => {
+//     const pageID = (() => {
+//         const path = window.location.pathname;
+//         if (path.includes('filter_area')) return 'filter_area';
+//         if (path.includes('filter_industry')) return 'filter_industry';
+//         if (path.includes('filter_jobtype')) return 'filter_jobtype';
+//         if (path.includes('filter_benefits')) return 'filter_benefits';
+//         return 'default';
+//     })();
 
-    // エラーハンドリングを追加
-    if (!pageKey) {
-        console.error("Error: data-page-key is not set on the <body> element.");
-        return;
-    }
+//     function saveFilterState(filterState) {
+//         // クッキーに保存
+//         const filterStateJSON = JSON.stringify(filterState);
+//         document.cookie = `filterStates_${pageID}=${encodeURIComponent(filterStateJSON)}; path=/;`;
+//     }
 
-    console.log("Page key:", pageKey);
+//     function loadFilterState() {
+//         const cookies = document.cookie.split(';');
+//         let filterState = {};
+//         cookies.forEach(cookie => {
+//             const [name, value] = cookie.split('=').map(c => c.trim());
+//             if (name === `filterStates_${pageID}`) {
+//                 filterState = JSON.parse(decodeURIComponent(value));
+//             }
+//         });
+//         console.log('Loaded Filter States from cookies:', filterState);
+//         return filterState || {};
+//     }
 
-    // 保存
-    function saveCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const state = {};
-    
-        checkboxes.forEach(checkbox => {
-            state[checkbox.value] = checkbox.checked;
-            console.log(`Saving - Value: ${checkbox.value}, Checked: ${checkbox.checked}`);
-        });
-    
-        sessionStorage.setItem(pageKey, JSON.stringify(state));
-        console.log("Saved State:", state);
-    }
-    
+//     function saveCheckboxState() {
+//         const filterState = {};
+//         document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+//             const value = checkbox.value; // valueをキーとして利用
+//             filterState[value] = checkbox.checked || false;
+//         });
+//         console.log('Saving Filter State for Page:', pageID, filterState);
+//         saveFilterState(filterState);
+//     }
 
-    // 復元
-    function restoreCheckboxState() {
-        console.log("Restoring checkbox state...");
-        const state = JSON.parse(sessionStorage.getItem(pageKey)) || {};
-    
-        console.log("State loaded:", state);
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            if (state.hasOwnProperty(checkbox.value)) {
-                checkbox.checked = state[checkbox.value];
-                console.log(`Restored ${checkbox.value}: ${checkbox.checked}`);
-            }
-        });
-    }
-    
+//     function restoreCheckboxState() {
+//         const filterState = loadFilterState();
+//         console.log('Restoring Filter State for Page:', pageID, filterState);
+//         document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+//             const value = checkbox.value;
+//             if (filterState.hasOwnProperty(value)) {
+//                 checkbox.checked = !!filterState[value];
+//                 console.log(`Checkbox with value=${value}: Restored to ${checkbox.checked}`);
+//             }
+//         });
+//     }
 
-    // イベントリスナー
-    document.addEventListener('change', event => {
-        if (event.target.type === 'checkbox') {
-            console.log(`Checkbox Changed - Value: ${event.target.value}, Checked: ${event.target.checked}`);
-            saveCheckboxState();
-        }
-    });
-    
+//     restoreCheckboxState();
 
-    document.addEventListener('DOMContentLoaded', restoreCheckboxState);
-
-});
+//     document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+//         checkbox.addEventListener('change', saveCheckboxState);
+//         console.log('Checkbox Event Attached:', checkbox.value);
+//     });
+// });

@@ -15,16 +15,13 @@
     {% block head2 %}{% endblock %}
 {% endblock %}
 
-<!-- pagekeyをぶち込む -->
-{% block page_key %}filter_base{% endblock %}
-
 <!-- base.htmlにぶち込む部分 -->
 {% block content %}
     <!-- search-box -->
     <div class="container">
         <div class="search-field">
             <!-- 検索バー-->
-            <form action="/search" method="GET">
+            <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
                 <input type="text" name="query" placeholder="企業名や業種で探す" required>
                 <button type="submit" id="search-button">検索</button>
             </form>
