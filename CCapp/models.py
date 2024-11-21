@@ -63,10 +63,14 @@ class Tag(Base):
         db_table='Tag'
         verbose_name='タグ'
 
-class User(models.Model):
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
-    created_at = models.DateTimeField(auto_now_add=True)
+class User(Base):
+    mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
+    password=models.CharField(max_length=255,verbose_name="パスワード")
+    authority=models.IntegerField(verbose_name="権限")
+
+    class Meta:
+        db_table='user'
+        verbose_name='ユーザ'
 
 class Profile(models.Model):
     user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID",related_name="profile")
