@@ -12,6 +12,7 @@
 <h1>新規登録</h1>
 <hr>
 <form action="#" method="post">
+    {% csrf_token %}
     <table>
         <tr>
             <td class="form-group"><label for="UName">氏名</label></td>

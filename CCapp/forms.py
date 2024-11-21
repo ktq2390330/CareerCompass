@@ -2,56 +2,152 @@ from django import forms
 from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=150, required=True)
+    mail = forms.CharField(max_length=150, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
 
-#新規登録
-from django.contrib.auth.forms import UserCreationForm
-from .models import User
+# サインアップ（新規登録）フォーム
+from datetime import date
 
-class UserSignupForm(forms.Form):
-    uname = forms.CharField(max_length=30, required=True, label='氏名')
-    furigana = forms.CharField(max_length=30, required=True, label='フリガナ')
-    
-    # 生年月日を年、月、日の3つのフィールドに分ける
-    birth_date_year = forms.IntegerField(required=True, label='生年')
-    birth_date_month = forms.IntegerField(required=True, label='生月')
-    birth_date_day = forms.IntegerField(required=True, label='生日')
+class SignupForm(forms.Form):
+    UName = forms.CharField(
+        label="氏名",
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={"placeholder": "例：田中太郎", "class": "form-control"})
+    )
+    Furigana = forms.CharField(
+        label="フリガナ",
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={"placeholder": "例：タナカタロウ", "class": "form-control"})
+    )
+    Birth_Date_Year = forms.IntegerField(
+        label="生年月日（年）",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 60px;"})
+    )
+    Birth_Date_Month = forms.IntegerField(
+        label="生年月日（月）",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 40px;"})
+    )
+    Birth_Date_Day = forms.IntegerField(
+        label="生年月日（日）",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 40px;"})
+    )
+    Gender = forms.ChoiceField(
+        label="性別",
+        choices=[("Male", "男"), ("Female", "女"), ("Other", "その他")],
+        required=False,
+        widget=forms.RadioSelect
+    )
+    Gender_Other = forms.CharField(
+        label="その他の性別",
+        max_length=50,
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 100px;"})
+    )
+    Mail = forms.EmailField(
+        label="メールアドレス",
+        required=True,
+        widget=forms.EmailInput(attrs={"class": "form-control"})
+    )
+    UTel = forms.CharField(
+        label="電話番号",
+        max_length=20,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    UAddress = forms.CharField(
+        label="住所",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    Password = forms.CharField(
+        label="パスワード",
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
+        required=True
+    )
+    Password_Conf = forms.CharField(
+        label="パスワード確認",
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
+        required=True
+    )
+    USchool = forms.CharField(
+        label="学校名",
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    Department = forms.CharField(
+        label="学部・学科名",
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    Graduation = forms.IntegerField(
+        label="卒業年（西暦）",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 60px;"})
+    )
 
-    # 性別をラジオボタンとその他のフィールドで入力
-    gender_choices = [('M', '男性'), ('F', '女性')]
-    gender = forms.ChoiceField(choices=gender_choices, required=False, widget=forms.RadioSelect, label='性別')
-    gender_other = forms.CharField(max_length=30, required=False, label='その他の性別', widget=forms.TextInput(attrs={'placeholder': 'その他を入力'}))
-    
-    mail = forms.EmailField(required=True, label='メールアドレス')
-    utel = forms.CharField(max_length=15, required=True, label='電話番号')
-    uaddress = forms.CharField(max_length=255, required=True, label='住所')
-    uschool = forms.CharField(max_length=100, required=False, label='学校名')
-    department = forms.CharField(max_length=100, required=False, label='学部・学科名')
-    graduation = forms.IntegerField(required=False, label='卒業年')
-    
-    password = forms.CharField(widget=forms.PasswordInput(), required=True, label='パスワード')
-    password_conf = forms.CharField(widget=forms.PasswordInput(), required=True, label='パスワード確認')
-    
-    def clean_email(self):
-        mail = self.cleaned_data.get('email')
-        if User.objects.filter(mail=mail).exists():
-            raise forms.ValidationError("このメールアドレスは既に使われています。")
-        return mail
-    
-    def clean_password_confirmation(self):
-        password = self.cleaned_data.get('Password')
-        password_conf = self.cleaned_data.get('Password_Conf')
-        if password != password_conf:
-            raise forms.ValidationError("パスワードが一致しません。")
-        return password_conf
-    
     def clean(self):
         cleaned_data = super().clean()
-        # 生年月日のチェック（年、月、日が全て入力されているか確認）
-        if cleaned_data.get('birth_date_year') and cleaned_data.get('birth_date_month') and cleaned_data.get('birth_date_day'):
-            birth_date = f"{cleaned_data['birth_date_year']}-{cleaned_data['birth_date_month']:02d}-{cleaned_data['birth_date_day']:02d}"
-            cleaned_data['birth_date'] = birth_date
+        email = cleaned_data.get("Mail")
+        password = cleaned_data.get("Password")
+        password_conf = cleaned_data.get("Password_Conf")
+        gender = cleaned_data.get("Gender")
+        gender_other = cleaned_data.get("Gender_Other")
+
+        if User.objects.filter(email=email).exists():
+            self.add_error("Mail", "このメールアドレスは既に登録されています。")
+
+        if password != password_conf:
+            self.add_error("Password_Conf", "パスワードが一致しません。")
+
+        if not gender and not gender_other:
+            self.add_error("Gender", "性別を選択するか入力してください。")
+
+# プロフィール更新用フォーム
+class UserUpdateForm(forms.Form):
+    UName = forms.CharField(max_length=30, required=True, label='氏名')
+    Frigana = forms.CharField(max_length=30, required=True, label='フリガナ')
+    Birth_Date = forms.DateField(required=True, label='生年月日', widget=forms.DateInput(attrs={'type': 'date'}))
+    Gender = forms.ChoiceField(choices=[('M', '男性'), ('F', '女性'), ('O', 'その他')], required=True, label='性別')
+    Mail = forms.EmailField(required=True, label='メールアドレス')
+    UTel = forms.CharField(max_length=15, required=True, label='電話番号')
+    UAddress = forms.CharField(max_length=255, required=True, label='住所')
+    Password = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード')
+    Password_Conf = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード確認')
+    Uschool = forms.CharField(max_length=100, required=False, label='学校名')
+    department = forms.CharField(max_length=100, required=False, label='学部・学科名')
+    Graduation = forms.IntegerField(required=False, label='卒業年')
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        # 初期値をユーザー情報で設定
+        if self.user:
+            self.fields['UName'].initial = self.user.UName
+            self.fields['Mail'].initial = self.user.Mail
+            # 他のフィールドも必要に応じて初期値を設定
+
+    def clean_email(self):
+        Mail = self.cleaned_data.get('Mail')
+        if User.objects.filter(email=Mail).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError("このメールアドレスは既に使用されています。")
+        return Mail
+
+    def clean(self):
+        cleaned_data = super().clean()
+        Password = cleaned_data.get('Password')
+        Password_Conf = cleaned_data.get('Password_Conf')
+
+        if Password and Password != Password_Conf:
+            self.add_error('password_conf', "パスワードが一致しません。")
+        
         return cleaned_data
 
 class ContactForm(forms.Form):
@@ -105,7 +201,7 @@ class UserUpdateForm(forms.Form):
 
     def clean_email(self):
         mail = self.cleaned_data.get('mail')
-        if User.objects.filter(mail=mail).exclude(pk=self.user.pk).exists():
+        if User.objects.filter(email=mail).exclude(pk=self.user.pk).exists():
             raise forms.ValidationError("このメールアドレスは既に使用されています。")
         return mail
 

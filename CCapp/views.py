@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .models import User, Area0, Area1, Category00, Category01, Category10, Category11, Tag
+from .models import *
 from .forms import LoginForm
 from django.views.generic import TemplateView
+from django.views import View
+from .forms import SignupForm
 
 # TemplateViewをインポート
 from django.views.generic.base import TemplateView
@@ -47,6 +49,52 @@ class LoginView(TemplateView):
             except User.DoesNotExist:
                 messages.error(request, "ユーザーが存在しません。")
         return self.render_to_response({"form": form})
+
+# 新規登録のviews
+class SignupView(View):
+    def get(self, request):
+        form = SignupForm()
+        return render(request, "signup.html", {"form": form})
+
+    def post(self, request):
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            # フォームからメールアドレスとパスワードを取得
+            cleaned_data = form.cleaned_data
+            email = cleaned_data["Mail"]
+            password = cleaned_data["Password"]
+
+            # ユーザーを作成
+            user = User.objects.get_or_create(
+                mail=email,
+                password=password,  # パスワードはハッシュ化していない
+            )
+            
+
+            # 作成したユーザーIDを取得
+            user_id = user.id
+
+            # プロフィール情報を設定（フォームの他のフィールドを使用）
+            user.first_name = cleaned_data["UName"]
+            user.last_name_kana = cleaned_data["Furigana"]
+            user.birth_date = f'{cleaned_data["Birth_Date_Year"]}年{cleaned_data["Birth_Date_Month"]}月{cleaned_data["Birth_Date_Day"]}日'
+            user.gender = cleaned_data["Gender_Other"] if cleaned_data["Gender"] == "Other" else cleaned_data["Gender"]
+            user.phone = cleaned_data["UTel"]
+            user.address = cleaned_data["UAddress"]
+            user.school_name = cleaned_data["USchool"]
+            user.department = cleaned_data["Department"]
+            user.graduation_year = cleaned_data["Graduation"]
+            # ユーザーを自動でログイン
+            login(request, user)
+
+            # メッセージを表示
+            messages.success(request, "新規登録が完了しました！")
+
+            # トップページにリダイレクト
+            return redirect("CCapp:top")
+        else:
+            return render(request, ".../signup/", {"form": form})
+
 
 class ContactView(FormView):
     template_name ='contact.html'
@@ -144,7 +192,6 @@ class Edit_acView(TemplateView):
 # profile
 class ProfileView(TemplateView):
     template_name = 'profile.html'
-
 
 # filter
 # filter_area
