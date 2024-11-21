@@ -61,12 +61,12 @@ class SignupView(View):
         if form.is_valid():
             # フォームからメールアドレスとパスワードを取得
             cleaned_data = form.cleaned_data
-            email = cleaned_data["Mail"]
+            mail = cleaned_data["Mail"]
             password = cleaned_data["Password"]
 
             # ユーザーを作成
             user = User.objects.get_or_create(
-                mail=email,
+                mail=mail,
                 password=password,  # パスワードはハッシュ化していない
             )
             
