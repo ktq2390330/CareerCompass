@@ -43,9 +43,10 @@ class LoginView(TemplateView):
                 user = User.objects.get(mail=mail)
                 if user.password == password:  #簡易的なパスワードチェックを実行
                     login(request, user)
-                    return redirect("home")  #ログイン後のリダイレクト先を指定する
+                    messages.success(request, "ログインに成功しました。")
+                    return redirect("top")  #ログイン後のリダイレクト先を指定する
                 else:
-                    messages.error(request, "パスワードが正しくありません。")
+                    messages.error(request, "メールアドレスまたはパスワードが正しくありません。")
             except User.DoesNotExist:
                 messages.error(request, "ユーザーが存在しません。")
         return self.render_to_response({"form": form})
