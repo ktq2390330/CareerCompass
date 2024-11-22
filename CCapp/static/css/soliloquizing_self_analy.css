@@ -30,7 +30,9 @@
 
 /* 上部4つのボタンにカーソルを当てたときに灰色に */
 .nav-btn:hover {
-    background-color: lightgray;
+    background-color: #d0eaff;
+        border-color: #4598eb;
+        color: #4598eb;
 }
 
 .soliloquizing_self_analy-box {
@@ -59,15 +61,12 @@
 }
 
 .save-button {
-    padding: 20px 40px;
-    border: 1px solid;
-    border-radius: 4px;
+    padding: 12px 20px; /* ボタン内の余白を増やす */
+    background-color: #4598eb; /* ボタンの色 */
+    color: white;
+    border: none;
+    border-radius: 5px; /* 角の丸みを増やす */
     cursor: pointer;
-    background-color: white;
-    font-size: large;
-}
-
-/* 保存ボタンにカーソルを当てたときの色設定 */
-.save-button:hover {
-    background-color: lightgray;
+    width: 100px; /* ボタンの幅 */
+    font-size: 20px;
 }

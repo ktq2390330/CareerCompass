@@ -30,7 +30,9 @@
 
 /* 上部4つのボタンにカーソルを当てたときに灰色に */
 .nav-btn:hover {
-    background-color: lightgray;
+    background-color: #d0eaff;
+        border-color: #4598eb;
+        color: #4598eb;
 }
 
 .soliloquizing_jobtype-box {
