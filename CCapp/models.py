@@ -111,7 +111,7 @@ class Question01(Base):
 class Assessment(models.Model):
     user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID")
     question01=models.ForeignKey(Question01,on_delete=models.CASCADE,verbose_name="質問",related_name="assessment_question01")
-    response=models.TextField(verbose_name="回答")
+    answer=models.TextField(verbose_name="回答")
 
     class Meta:
         db_table='assessment'

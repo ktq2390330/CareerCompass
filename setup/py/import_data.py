@@ -8,10 +8,12 @@ from CCapp.defs import makeDirFile,makeImportPath,logconfig,logException,logsOut
 from django.db import transaction
 
 # ログの設定
-logDir=os.path.join('logs')
-logFile=os.path.join(f'{logDir}/data_import.log')
-logconfig(logFile)
-logger=makeDirFile(logFile)
+def import_data_SettingLogs():
+    logDir=os.path.join('logs')
+    logFile=os.path.join(f'{logDir}/data_import.log')
+    logconfig(logFile)
+    logger=makeDirFile(logFile)
+    return logger
 
 #インスタンスの作成または取得結果
 def queryResults(instanceDict):
@@ -233,6 +235,43 @@ def profile(filePath):
     executeFunction(function)
     outputQueryResults(instanceDict)
 
+def question00(filePath):
+    instanceDict={}
+    def function():
+        try:
+            data=readFile(filePath)
+            with transaction.atomic():
+                for row in data:
+                    questionName=row['name']
+                    instance,created=Question00.objects.get_or_create(name=questionName)
+                    instanceDict[instance]=created
+        except FileNotFoundError:
+            print(f"ファイルが見つかりません: {filePath}")
+        except Exception as e:
+            print(f"エラーが発生しました: {e}")
+    executeFunction(function)
+    outputQueryResults(instanceDict)
+
+def question01(filePath):
+    instanceDict={}
+    def function():
+        try:
+            data=readFile(filePath)
+            with transaction.atomic():
+                for row in data:
+                    question00Name,name=row['question00name'], row['name']
+                    question00=Question00.objects.get(name=question00Name)
+                    instance,created=Category11.objects.get_or_create(name=name,question00=question00)
+                    instanceDict[instance]=created
+        except Category10.DoesNotExist:
+            print(f"{question00Name} は存在しません")
+        except FileNotFoundError:
+            print(f"ファイルが見つかりません: {filePath}")
+        except Exception as e:
+            print(f"エラーが発生しました: {e}")
+    executeFunction(function)
+    outputQueryResults(instanceDict)
+
 def assessment(filePath):
     instanceDict={}
     def function():
@@ -240,12 +279,15 @@ def assessment(filePath):
             data=readFile(filePath)
             with transaction.atomic():
                 for row in data:
-                    userId,qa_l=row['userID'],row['qa_l']
+                    userId,question01Name,answer=row['userID'],row['question01name'],row['answer']
                     user=User.objects.get(id=userId)
-                    instance,created=User.objects.get_or_create(user=user,QA_l=qa_l)
+                    question01=Question01.objects.get(question01Name)
+                    instance,created=User.objects.get_or_create(user=user,question01=question01,answer=answer)
                     instanceDict[instance]=created
         except User.DoesNotExist:
             print(f"userID: {userId} は存在しません")
+        except Question01.DoesNotExist:
+            print(f"questionName: {question01Name} は存在しません")
         except FileNotFoundError:
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
@@ -399,6 +441,8 @@ functionMap={
     'tag.csv':tag,
     'user.csv':user,
     # 'profile.csv':profile,
+    'question00.csv':question00,
+    'question01.csv':question01,
     # 'assessment.csv':assessment,
     'corporation.csv':corporation,
     # 'DM.csv':dm,
@@ -406,6 +450,7 @@ functionMap={
     # 'offerEntry.json':offerEntry,
     # 'supportDM.csv':supportDM,
 }
+logger=import_data_SettingLogs()
 
 for file_key,function in functionMap.items():
     basePath='../setup/data/'
