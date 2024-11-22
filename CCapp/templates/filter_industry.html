@@ -51,10 +51,7 @@
         </div>
     </div>
 
-    <!-- 外部スクリプトの読み込み -->
-    {% comment %} <script src="{% static 'js/filter_state.js' %}"></script> {% endcomment %}
 
-    <!-- 内部スクリプト -->
     <script>
         // ページ読み込み時に最初の業界を表示
         window.onload = function() {
@@ -63,6 +60,7 @@
                 firstIndustry.classList.add('active');
             }
 
+            // 最初のボタンをアクティブにする
             const firstButton = document.querySelector('.selection-button a');
             if (firstButton) {
                 firstButton.classList.add('active');
@@ -76,14 +74,17 @@
             const allIndustries = document.querySelectorAll('.industry-details');
             allIndustries.forEach(industry => industry.classList.remove('active'));
 
+            // 該当するチェックボックスを表示
             const targetIndustry = document.getElementById(industryId);
             if (targetIndustry) {
                 targetIndustry.classList.add('active');
             }
 
+            // 全てのボタンから 'active' クラスを削除
             const allButtons = document.querySelectorAll('.selection-button a');
             allButtons.forEach(button => button.classList.remove('active'));
 
+            // クリックしたボタンに 'active' クラスを追加
             const clickedButton = document.querySelector(`.selection-button a[onclick="showIndustry('${industryId}')"]`);
             if (clickedButton) {
                 clickedButton.classList.add('active');
