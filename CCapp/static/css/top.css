@@ -12,7 +12,6 @@
     background-color: #ffffff; /* 背景色 */
     border: 2px solid #000000; /* 枠線 */
     padding: 60px 40px; /* 内側の余白を上下60px、左右20pxに増やす */
-    border-radius: 40px; /* 角を丸く */
     margin: 100px auto; /* 上下に50pxの余白、左右は自動で中央揃え */
     max-width: 1000px; /* 幅を制限 */
     text-align: center; /* テキストとボタンを中央揃え */
