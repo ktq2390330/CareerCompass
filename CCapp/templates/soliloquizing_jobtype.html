@@ -1,32 +1,23 @@
-{% extends "base.html" %}
+<!-- soliloquizing_base.htmlを継承 -->
+{% extends "soliloquizing_base.html" %}
+
+<!-- staticタグを使うために追加 -->
 {% load static %}
 
-{% block title %}業種研究{% endblock %}
+<!-- タイトル -->
+{% block title %}soliloquizing_jobtype{% endblock %}
 
-{% block head %}
-<link href="{% static 'css/soliloquizing_jobtype.css' %}" rel="stylesheet">
+<!-- 埋め込む用のcssを読み込む -->
+{% block head2 %}
+    {% comment %} <link href="{% static 'css/soliloquizing.css' %}" rel="stylesheet"> {% endcomment %}
 {% endblock %}
 
-{% block content %}
-    
-    <div class="soliloquizing_jobtype-box">
-        <div class="container">
-            <div class="nav-buttons">
-                <a href="{% url 'CCapp:self_analy' %}" class="nav-btn self-analy">自己分析</a>
-                <a href="{% url 'CCapp:axis' %}" class="nav-btn axis">就活の軸</a>
-                <a href="{% url 'CCapp:industry' %}" class="nav-btn industry">業界研究</a>
-                <a href="{% url 'CCapp:jobtype' %}" class="nav-btn jobtype active">業種研究</a>
-            </div>
-        <form>
-            {% for question in questions %}
-                <label for="question{{ forloop.counter }}">Q{{ forloop.counter }}: {{ question }}</label>
-                <textarea id="question{{ forloop.counter }}" name="question{{ forloop.counter }}" class="question-input"></textarea>
-            {% endfor %}
+<!-- soliloquizing_base.htmlにぶち込む部分 -->
+{% block soliloquizing %}
 
-            <div class="save-button-container">
-                <button type="submit" class="save-button">保存</button>
-            </div>
-        </form>
-    </div>
-</div>
+    {% for question in questions %}
+    <label for="question{{ forloop.counter }}">Q{{ forloop.counter }}: {{ question }}</label>
+    <textarea id="question{{ forloop.counter }}" name="question{{ forloop.counter }}" class="question-input"></textarea>
+    {% endfor %} 
+     
 {% endblock %}
