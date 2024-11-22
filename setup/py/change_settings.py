@@ -54,15 +54,11 @@ def configureEmailSettings():
     print("\nEmail settings configuration")
     email_host=input("Enter EMAIL_HOST: ")
     email_port=input("Enter EMAIL_PORT: ")
-    email_user=input("Enter EMAIL_HOST_USER: ")
-    email_password=input("Enter EMAIL_HOST_PASSWORD: ")
     email_use_tls=input("Use TLS? (yes/no): ").strip().lower()
 
     settings.EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
     settings.EMAIL_HOST=email_host
     settings.EMAIL_PORT=int(email_port)
-    settings.EMAIL_HOST_USER=email_user
-    settings.EMAIL_HOST_PASSWORD=email_password
     settings.EMAIL_USE_TLS=email_use_tls=='yes'
     print("Email settings updated successfully.\n")
 

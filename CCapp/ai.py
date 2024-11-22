@@ -1,12 +1,15 @@
 import os
+from dotenv import load_dotenv
 import google.generativeai as genai
 from defs import readFile,makeImportPath,djangoSetup
+from django.conf import Settings
 
 # Google Generative AIの設定
 def configure_genai():
     try:
         # ハードコードされたAPIキー
-        api_key = 'AIzaSyD2bMpR0jFTpMyFuj1yMYs9MhqAxH_M_S8'
+        load_dotenv()
+        api_key=Settings.GEMINI_API_KEY
         genai.configure(api_key=api_key)
     except Exception as e:
         print(f'Error in configuring Generative AI: {e}')
@@ -82,6 +85,4 @@ def process_text_file():
         print(f"Error writing to output file {outputPath}: {e}")
 
 if __name__ == '__main__':
-    # 実行時のログレベルを設定して警告を抑制
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # TensorFlowのログレベル設定
     process_text_file()
