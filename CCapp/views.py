@@ -237,7 +237,6 @@ def filter_jobtype_view(request):
 def filter_benefits_view(request):
     # データベースから福利厚生の情報を取得
     tag_list = Tag.objects.all()
-    print(tag_list)
     # テンプレートにデータを渡す
     return render(request, 'filter_benefits.html', {'tag_list': tag_list })
 
