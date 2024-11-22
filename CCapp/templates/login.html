@@ -14,7 +14,6 @@
 <div class="container">
     <form action="{% url 'CCapp:login' %}" method="post">
         {% csrf_token %}
-    <form>
         <div class="form-group">
             <input type="text" id="mail" name="mail" placeholder="メールアドレス" required>
         </div>
