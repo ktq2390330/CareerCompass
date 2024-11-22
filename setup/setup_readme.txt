@@ -1,6 +1,3 @@
-0.環境
-Python 3.11 or earlier.
-
 1.リポジトリのクローン
 
 git clone https://github.com/ktq2390330/CareerCompass

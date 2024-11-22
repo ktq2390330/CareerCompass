@@ -202,8 +202,9 @@ def profile(filePath):
             with transaction.atomic():
                 for row in data:
                     userId,nationality,birth,gender,graduation,school,sClass,sol,departments,tel,address,category00name,category01name,category10name,category11name,area1name,uOffer=row
-                    ['userId'],row['nationality'],row['birth'],row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row
+                    ['userId'],row['nationality'],row['birth'].split('-'),row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row
                     ['category00name'],row['category01name'],row['category10name'],row['category11name'],row['area1name'],row['uOffer']
+                    birth=datetime.date(birth)
                     user=User.objects.get(id=userId)
                     area1=Area1.objects.get(name=area1name)
                     category00=Category00.objects.get(name=category00name)
@@ -254,29 +255,22 @@ def assessment(filePath):
 
 def corporation(filePath):
     instanceDict = {}
-
     def function():
         try:
-            data = readFile(filePath)
+            data=readFile(filePath)
             with transaction.atomic():
                 for row in data:
-                    required_keys = ['cId', 'name', 'address', 'mail', 'tel', 'url']
+                    required_keys=['cId','name','address','mail','tel','url']
                     if not all(key in row for key in required_keys):
                         print(f"不足しているデータ: {row}")
-                        continue  # スキップ
-
+                        continue
                     try:
-                        cId, name, address, mail, tel, url = (
-                            row['cId'], row['name'], row['address'], row['mail'], row['tel'], row['url']
-                        )  # 電話番号を整数に変換
+                        cId,name,address,mail,tel,url=(row['cId'],row['name'],row['address'],row['mail'],row['tel'],row['url'])
                     except ValueError as ve:
                         print(f"データ変換エラー: {ve}, 行: {row}")
                         continue
-
-                    instance, created = Corporation.objects.get_or_create(
-                        corp=cId, name=name, address=address, cMail=mail, cTel=tel, url=url
-                    )
-                    instanceDict[instance] = created
+                    instance,created=Corporation.objects.get_or_create(corp=cId,name=name,address=address,cMail=mail,cTel=tel,url=url)
+                    instanceDict[instance]=created
         except FileNotFoundError:
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
