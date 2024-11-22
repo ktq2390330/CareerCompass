@@ -23,8 +23,16 @@ from django.core.mail import EmailMessage
 from .forms import UserUpdateForm
 from django.contrib.auth import update_session_auth_hash
 
-class TopView(TemplateView):
-    template_name = 'top.html'
+def top_page_view(request):
+    category00_list = Category00.objects.all()
+    category10_list = Category10.objects.all()
+    area1_list = Area1.objects.all()
+
+    return render(request, 'top.html', {
+        'category00_list': category00_list,
+        'category10_list': category10_list,
+        'area1_list': area1_list,
+    })
 
 class LoginView(TemplateView):
     template_name = 'login.html'
