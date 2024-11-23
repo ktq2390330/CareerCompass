@@ -5,10 +5,10 @@ __pycache__/
 *.pyd
 
 # Django関連
-media/      # アップロードされたメディアファイル
+media/
 
 # 環境ファイル
-.env        # 環境変数を設定するファイル
+.env
 
 # 仮想環境
 venv/
