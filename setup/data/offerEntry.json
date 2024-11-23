@@ -1,0 +1,15 @@
+[
+    {
+    "offerId": 1,
+    "users": [
+        {"userId": 5},
+        {"userId": 6}
+        ]
+    },
+    {
+    "offerId": 2,
+    "users": [
+        {"userId": 6}
+        ]
+    }
+]

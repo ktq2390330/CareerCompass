@@ -1,0 +1,155 @@
+@charset "UTF-8";
+
+/* header内の要素のレイアウト */
+.header {
+    width: 80%;  /* 横幅を100%に */
+    padding: 0px;  /* 余白 */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    
+}
+
+/* brand */
+.brand {
+    font-size: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1; /* 行間を狭くする */
+    color: black; /* リンクの色を青に固定 */
+}
+
+/* brand（ロゴ）部分 */
+#brand {
+    display: flex;  /* 横並び */
+    align-items: center;  /* 上下中央揃え */
+    text-align: left;  /* 左寄せ */
+}
+
+/* brand横のh1タグの体裁 */
+#brand h1 {
+    margin: 0 auto; /* 左右のマージンを自動調整 */
+    text-align: center; /* テキストの中央揃え */
+    transform: translateX(-75px); /* 20px分左にずらす */
+}
+
+.brands {
+    font-size: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1; /* 行間を狭くする */
+    color: black; /* リンクの色を青に固定 */
+    text-align: center;  /* 文字を中央揃えに */
+    position: relative;
+    top: 30px; /* 文字をさらに下にずらす */
+}
+
+/* footer */
+.row {
+    text-align: center;
+    font-size: 20px;
+    position: relative;
+    top: 30px; /* 文字をさらに下にずらす */
+}
+
+h2 {
+    font-size: 30px;
+    margin-top: 0; /* h2 の上の余白を削除 */
+    margin-bottom: 0; /* 下の余白を小さくする */
+}
+
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: lightgray;
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 120%;
+    max-width: 800px;
+}
+
+td {
+    border: 0.8px solid lightgray; /* 外枠の線を少し細く */
+    padding: 10px;
+    text-align: left;
+    border-radius: 5px;
+
+}
+
+.form-group {
+    text-align: center;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    margin: 0 10px;
+    padding: 8px 16px;
+    font-size: 1em;
+    border: 1px solid lightgray; /* 枠線を追加してシンプルな見た目に */
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+}
+
+button:hover {
+    background-color: #f0f0f0; /* ホバー時の背景色 */
+}
+
+small {
+    font-size: 0.8em;
+    color: gray;
+}
+
+td input {
+    text-align: left;
+    box-sizing: border-box;
+    border-radius: 5px; /* 角を丸く */
+    border: 1px solid;
+    padding: 5px;
+    font-size: 1em;
+}
+
+#Birth_Year, #Birth_Month, #Birth_Day {
+    width: 50px; /* 生年月日の各入力欄の幅を指定 */
+}
+
+#UName, #Furigana {
+    width: 150px;
+}
+
+#UTel {
+    width: 200px;
+}
+
+#Graduation {
+    width: 80px;
+}
+
+/* 性別のラジオボタンの整列と右側配置 */
+td label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+td label input[type="radio"] {
+    margin-left: 5px;
+    margin-right: 0;
+}

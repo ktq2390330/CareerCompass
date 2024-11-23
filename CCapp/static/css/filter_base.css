@@ -1,0 +1,109 @@
+@charset "utf-8";
+
+/* 全体の設定 */
+    /* container */
+    .container {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+/* サーチフィールド内の中身の設定 */
+
+    /* search-field */
+    .search-field {
+        background-color: #ffffff; /* 背景色 */
+        border: 2px solid #000000; /* 枠線 */
+        padding: 60px 40px; /* 内側の余白を上下60px、左右40pxに増やす */
+        margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
+        max-width: 1000px; /* 幅を制限 */
+        text-align: center; /* テキストとボタンを中央揃え */
+    }
+
+    /* search-field form */
+    .search-field form {
+        display: flex;
+        justify-content: center;
+        gap: 15px; /* フォーム内の要素間の隙間を広げる */
+        flex-wrap: wrap; /* 要素が幅に収まらない場合に折り返す */
+    }
+
+    /* 検索バー */
+    .search-field input[type="text"] {
+        flex: 1; /* バーの幅を調整 */
+        padding: 20px; /* 入力フィールドの内側余白を増やす */
+        border: 1px solid #000000; /* 枠線の色 */
+        border-radius: 8px; /* 角の丸みを増やす */
+        font-size: 20px;
+    }
+
+    /* 検索ボタン */
+    #search-button {
+        padding: 12px 20px; /* ボタン内の余白を増やす */
+        background-color: #4598eb; /* ボタンの色 */
+        color: white;
+        border: none;
+        border-radius: 8px; /* 角の丸みを増やす */
+        cursor: pointer;
+        width: 100px;
+        font-size: 20px;
+    }
+
+
+    /* filter-navigation */
+    .filter-navigation {
+        text-align: center; /* ナビゲーション全体を中央に配置 */
+    }
+
+    /* filter-navigation-button */
+    .filter-navigation-button {
+        list-style-type: none;  /* 箇条書きの点を消す */
+        padding: 0;
+        display: inline-flex; /* 横並びに配置 */
+        gap: 10px; /* 各ボタンの間にスペースを追加 */
+        margin-top: 20px;
+    }
+
+    .filter-navigation-button li a {
+        display: inline-block;
+        width: 150px; /* ボタンの固定幅を設定 */
+        padding: 10px 0; /* 上下のスペースのみを設定 */
+        text-align: center; /* テキストを中央揃え */
+        border: 2px solid #ccc;  /* 四角枠の色 */
+        border-radius: 8px; /* 角丸四角にする */
+        background-color: #ffffff; /* ボタンの背景色 */
+        text-decoration: none; /* リンクの下線を消す */
+        color: #333; /* テキストの色 */
+        font-size: 20px; /* フォントサイズ */
+        transition: background-color 0.3s; /* 背景色が変わるトランジション */
+    }
+
+    .filter-navigation-button li a:hover {
+        background-color: #d0eaff;
+        border-color: #4598eb;
+        color: #4598eb;
+    }
+
+    .filter-navigation-button a.active {
+        background-color: #ffffff;
+        color: #000;
+        border: 2px solid #4598eb;  /* 四角枠の色 */
+    }
+
+    /* search-button-container */
+    .search-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; /* 上に少し余白を追加 */
+    }
+
+    .search-button {
+        padding: 12px 20px; /* ボタン内の余白を増やす */
+        background-color: #4598eb; /* ボタンの色 */
+        color: white;
+        border: none;
+        border-radius: 5px; /* 角の丸みを増やす */
+        cursor: pointer;
+        width: 100px; /* ボタンの幅 */
+        font-size: 20px;
+    }

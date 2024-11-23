@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/* container */
+.container {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* search-field */
+.search-field {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 100%; /* 幅を画面にフィットさせる */
+    box-sizing: border-box; /* padding含めた幅制御 */
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* 検索バーとボタンを横並びにするためのフレックスボックス */
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 検索バー */
+.search-field input[type="text"] {
+    width: 70%; /* バーの幅を全体の70%に調整 */
+    padding: 15px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    min-width: 150px;
+    box-sizing: border-box;
+}
+
+/* 検索ボタン */
+.search-field button {
+    padding: 12px 20px;
+    background-color: #3791ec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+    font-size: 18px;
+}
+
+.search-field button:hover {
+    background-color: #256aaf;
+}
+
+/* 画面が小さい時のレスポンシブ対応 */
+@media (max-width: 768px) {
+    .search-field input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .search-field button {
+        width: 100%;
+    }
+}

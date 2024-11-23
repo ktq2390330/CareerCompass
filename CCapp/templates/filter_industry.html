@@ -1,0 +1,148 @@
+<!-- base.htmlを継承 -->
+{% extends "filter_base.html" %}
+
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- filter_industry用のタイトル -->
+{% block title %}filter industry{% endblock %}
+
+<!-- 埋め込む用のCSSを読み込む -->
+{% block head2 %}
+    <link href="{% static 'css/filter_industry.css' %}" rel="stylesheet">
+{% endblock %}
+
+<!-- filter_base.htmlにぶち込む部分 -->
+{% block content2 %}
+    <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
+    <div class="selection-wrapper">
+        <!-- 大分類ボタン -->
+        <nav class="selection">
+            <ul class="selection-button">
+                {% for category00 in category00_list %}
+                <li>
+                    <!-- 各ボタンに onclick で業界IDを渡す -->
+                    <a href="javascript:void(0);" onclick="showIndustry('industry{{ category00.id }}')">
+                        {{ category00.name }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- 各業界のチェックボックス -->
+        <div class="checkbox-field">
+            {% for category00 in category00_list %}
+            <!-- 初期表示する業界に 'active' クラスを追加 -->
+            <div id="industry{{ category00.id }}" class="industry-details {% if forloop.first %}active{% endif %}">
+                <button type="button" onclick="selectAll('industry{{ category00.id }}', true)">すべて選択</button>
+                <button type="button" onclick="selectAll('industry{{ category00.id }}', false)">選択解除</button>
+
+                <!-- category01 のチェックボックスを動的に生成 -->
+                {% for category01 in category01_list %}
+                    {% if category01.category00_id == category00.id %}
+                    <label>
+                        <input type="checkbox" name="industry[]" value="{{ category01.id }}"> {{ category01.name }}
+                    </label><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <script>
+        // ページ読み込み時に最初の業界を表示
+        window.onload = function() {
+            const firstIndustry = document.querySelector('.industry-details');
+            if (firstIndustry) {
+                firstIndustry.classList.add('active');
+            }
+
+            // 最初のボタンをアクティブにする
+            const firstButton = document.querySelector('.selection-button a');
+            if (firstButton) {
+                firstButton.classList.add('active');
+            }
+
+            restoreIndustryState();
+        };
+
+        // ボタンをクリックして対応するチェックボックスを表示
+        function showIndustry(industryId) {
+            const allIndustries = document.querySelectorAll('.industry-details');
+            allIndustries.forEach(industry => industry.classList.remove('active'));
+
+            // 該当するチェックボックスを表示
+            const targetIndustry = document.getElementById(industryId);
+            if (targetIndustry) {
+                targetIndustry.classList.add('active');
+            }
+
+            // 全てのボタンから 'active' クラスを削除
+            const allButtons = document.querySelectorAll('.selection-button a');
+            allButtons.forEach(button => button.classList.remove('active'));
+
+            // クリックしたボタンに 'active' クラスを追加
+            const clickedButton = document.querySelector(`.selection-button a[onclick="showIndustry('${industryId}')"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+        }
+
+        // すべて選択/解除
+        function selectAll(industryId, isChecked) {
+            const checkboxes = document.querySelectorAll('#' + industryId + ' input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+            // チェックボックスの状態をローカルストレージに保存
+            saveIndustryState();
+        }
+
+        // チェックボックスの状態を保存
+        function saveIndustryState() {
+            const filterState = {};
+            document.querySelectorAll('input[type="checkbox"][name="industry[]"]').forEach(checkbox => {
+                const value = checkbox.value;
+                filterState[value] = checkbox.checked || false;
+            });
+            saveToCookies(filterState);
+        }
+
+        // チェックボックスの状態をクッキーに保存
+        function saveToCookies(filterState) {
+            const filterStateJSON = JSON.stringify(filterState);
+            document.cookie = `filterStates_industry=${encodeURIComponent(filterStateJSON)}; path=/;`;
+        }
+
+        // チェックボックスの状態をクッキーから読み込む
+        function loadFromCookies() {
+            const cookies = document.cookie.split(';');
+            let filterState = {};
+            cookies.forEach(cookie => {
+                const [name, value] = cookie.split('=').map(c => c.trim());
+                if (name === 'filterStates_industry') {
+                    filterState = JSON.parse(decodeURIComponent(value));
+                }
+            });
+            return filterState || {};
+        }
+
+        // チェックボックスの状態を復元
+        function restoreIndustryState() {
+            const filterState = loadFromCookies();
+            document.querySelectorAll('input[type="checkbox"][name="industry[]"]').forEach(checkbox => {
+                const value = checkbox.value;
+                if (filterState.hasOwnProperty(value)) {
+                    checkbox.checked = !!filterState[value];
+                }
+            });
+        }
+
+        // チェックボックスの変更時に保存
+        document.querySelectorAll('input[type="checkbox"][name="industry[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', saveIndustryState);
+        });
+    </script>
+
+{% endblock %}

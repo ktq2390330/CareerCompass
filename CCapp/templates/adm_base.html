@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <!-- title -->
+        <title>{% block title %} [adm]Career Compass {% endblock %}</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href={% static "assets/favicon.ico" %} />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href={% static 'css/adm_base.css' %} rel="stylesheet" />
+
+        <!-- 追加のcssを読み込むためのブロック -->
+        {% block head %}{% endblock %}
+        
+    </head>
+    <body>
+        <!-- header -->
+        <header class="header">
+            <!-- brand name -->
+            <div id="brand">
+                <!-- ロゴ -->
+                <a class="brand" href="#"><i>Career
+                    <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
+
+                <!-- 管理者タイトル -->
+                <h1>管理者</h1>
+            </div>
+
+            <!-- ナビゲーション下の実線 -->
+            <hr class="header-line">
+
+            <!-- Navigation-->
+            <nav class="navigation">
+                <ul class="navigation-button">
+                    <li><a href="#top">トップ</a></li>
+                    <li><a href="#addpost">求人追加</a></li>
+                    <li><a href="#logout">ログアウト</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- ここに別要素をぶち込んで使う -->
+        {% block content %}{% endblock %}
+        
+        <!-- Footer-->
+        <footer class="footer bg-light">
+            <div class="container">
+                
+                <!-- copyright -->
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                        <p class="text-muted small mb-4 mb-lg-0">copyright &copy; Career Compass</p>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>

@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <!-- title -->
+        <title>{% block title %} Career Compass {% endblock %}</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href={% static "assets/favicon.ico" %} />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href={% static 'css/base.css' %} rel="stylesheet" />
+
+        <!-- 追加のcssを読み込むためのブロック -->
+        {% block head %}{% endblock %}
+
+    </head>
+    <body data-page-key="{{ page_key }}">
+
+        <!-- header -->
+        <header class="header">
+            <!-- brand name -->
+            <div id="brand">
+                <a class="brand" href="{% url 'CCapp:top' %}"><i>Career
+                    <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
+            </div>
+
+            <!-- ナビゲーション下の実線 -->
+            <hr class="header-line">
+
+            <!-- Navigation -->
+            <nav class="navigation">
+                <ul class="navigation-button">
+                    <li><a href="{% url 'CCapp:top' %}" class="{% if request.path == '/' %}active{% endif %}">トップ</a></li>
+                    <li><a href="{% url 'CCapp:profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}">プロフィール</a></li>
+                    <li><a href="{% url 'CCapp:filter_area' %}" class="{% if request.path == '/filter_area/' %}active{% endif %}">絞り込み検索</a></li>
+                    <li><a href="{% url 'CCapp:self_analy' %}" class="{% if request.path == '/self_analy/' %}active{% endif %}">自問自答</a></li>
+                    <li><a href="{% url 'CCapp:about' %}" class="{% if request.path == '/about/' %}active{% endif %}">サービス概要</a></li>
+                    <li><a href="{% url 'CCapp:contact' %}" class="{% if request.path == '/contact/' %}active{% endif %}">お問い合わせ</a></li>
+                    <li><a href="{% url 'CCapp:logout' %}" class="{% if request.path == '/logout/' %}active{% endif %}">ログアウト</a></li>
+                </ul>
+            </nav>
+
+        </header>
+
+        <!-- ここに別要素をぶち込んで使う -->
+        {% block content %}{% endblock %}
+        
+        <!-- Footer-->
+        <footer class="footer bg-light">
+            <div class="container">
+                
+                <!-- copyright -->
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                        <p class="text-muted small mb-4 mb-lg-0">copyright &copy; Career Compass</p>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        {% comment %} <script src="js/scripts.js"></script> {% endcomment %}
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>

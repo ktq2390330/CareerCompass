@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}お問い合わせ完了{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/contact_done.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container text-center" style="margin-top: 150px;">
+    <h1 class="message">お問い合わせが完了しました</h1>
+    <div class="button-container">
+        <a href="{% url 'CCapp:top' %}" class="back-button">topへ戻る</a>
+    </div>
+</div>
+{% endblock %}

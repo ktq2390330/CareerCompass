@@ -1,0 +1,29 @@
+<!-- base.htmlを継承 -->
+{% extends "adm_base.html" %}
+
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- top page用のタイトル -->
+{% block title %}[adm]dashboard{% endblock %}
+
+<!-- top page用のcssを読み込む -->
+{% block head %}
+    <link href="{% static 'css/adm_dashboard.css' %}" rel="stylesheet">
+{% endblock %}
+
+<!-- base.htmlにぶち込む部分 -->
+{% block content %}
+
+    <!-- search-box -->
+    <div class="container">
+        <div class="search-field">
+            <!-- 検索バー-->
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="企業名または法人番号で探す" required>
+                <button type="submit">検索</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
