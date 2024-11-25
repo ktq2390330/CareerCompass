@@ -52,7 +52,7 @@ class LoginView(TemplateView):
                 if user.password == password:  #簡易的なパスワードチェックを実行
                     login(request, user)
                     messages.success(request, "ログインに成功しました。")
-                    return redirect("top")  #ログイン後のリダイレクト先を指定する
+                    return redirect('CCapp:top')  #ログイン後のリダイレクト先を指定する
                 else:
                     messages.error(request, "メールアドレスまたはパスワードが正しくありません。")
             except User.DoesNotExist:
