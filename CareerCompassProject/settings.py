@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CCapp.apps.CcappConfig',
     # "django_cleanup",
-    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
