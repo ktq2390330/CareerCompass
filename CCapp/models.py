@@ -1,6 +1,5 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.contrib.auth.models import BaseUserManager
+
 # Create your models here.
 
 class Base(models.Model):
@@ -64,28 +63,11 @@ class Tag(Base):
         db_table='Tag'
         verbose_name='タグ'
 
-class UserManager(BaseUserManager):
-    def create_user(self, mail, password=None, **extra_fields):
-        if not mail:
-            raise ValueError("メールアドレスは必須です")
-        mail = self.normalize_email(mail)
-        user = self.model(mail=mail, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-class User(AbstractBaseUser, PermissionsMixin):
+class User(Base):
     mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
     password=models.CharField(max_length=256,verbose_name="パスワード")
-    name = models.CharField(max_length=64, verbose_name="名前")
-    is_active = models.BooleanField(default=True, verbose_name="アクティブ")
-    is_staff = models.BooleanField(default=False, verbose_name="スタッフ")
     authority=models.IntegerField(verbose_name="権限")
 
-    objects = UserManager()
-
-    REQUIRED_FIELDS = []
-    USERNAME_FIELD = 'mail'
     class Meta:
         db_table='user'
         verbose_name='ユーザ'
