@@ -1,6 +1,45 @@
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
 
-# Create your models here.
+class UserManager(BaseUserManager):
+    def create_user(self, mail,password=None,**extra_fields):
+        if not mail:
+            raise ValueError("メールアドレスを指定してください。")
+        mail=self.normalize_email(mail)
+        user=self.model(mail=mail,**extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, mail, password=None, **extra_fields):
+        extra_fields.setdefault('authority', 0)
+        return self.create_user(mail, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
+    name=models.CharField(max_length=64,verbose_name="名前",blank=True)
+    is_active=models.BooleanField(default=True,verbose_name="アクティブ")
+    authority=models.IntegerField(
+        choices=[(0,"Admin"), (1,"Support Staff"), (2,"Service User")],
+        default=2,
+        verbose_name="権限"
+    )
+    objects = UserManager()
+    USERNAME_FIELD='mail'
+    REQUIRED_FIELDS=[]
+    class Meta:
+        db_table='user'
+        verbose_name='ユーザー'
+        verbose_name_plural='ユーザー'
+
+    def is_admin(self):
+        return self.authority==0
+
+    def is_staff_member(self):
+        return self.authority==1
+
+    def is_service_user(self):
+        return self.authority==2
 
 class Base(models.Model):
     id=models.AutoField(primary_key=True,verbose_name="ID")
@@ -62,15 +101,6 @@ class Tag(Base):
     class Meta:
         db_table='Tag'
         verbose_name='タグ'
-
-class User(Base):
-    mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
-    password=models.CharField(max_length=256,verbose_name="パスワード")
-    authority=models.IntegerField(verbose_name="権限")
-
-    class Meta:
-        db_table='user'
-        verbose_name='ユーザ'
 
 class Profile(models.Model):
     user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID",related_name="profile")
