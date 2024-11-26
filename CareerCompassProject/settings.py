@@ -143,5 +143,5 @@ EMAIL_USE_TLS = True                     # SMTPサーバーと通信する際に
 
 GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
-LOGIN_REDIRECT_URL = 'top'  # ログイン後のリダイレクト先
+LOGIN_REDIRECT_URL = 'CCapp.top'  # ログイン後のリダイレクト先
 AUTH_USER_MODEL = 'CCapp.User'

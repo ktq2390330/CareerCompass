@@ -2,8 +2,12 @@ from django import forms
 from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
-    mail = forms.CharField(max_length=150, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    mail = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)  # 'request'を取り除いて処理
+        super().__init__(*args, **kwargs)
 
 # サインアップ（新規登録）フォーム
 from datetime import date

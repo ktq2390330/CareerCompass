@@ -5,10 +5,12 @@ app_name = 'CCapp'
 
 urlpatterns = [
     # top
-    path('', views.top_page_view, name='top'),
+    path('top/', views.top_page_view, name='top'),
+    
 
     # account
-    path('login/', views.LoginView.as_view(), name='login'),
+    path('', views.LoginView.as_view(), name='login'),
+    # path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('signup/', views.SignupView.as_view(), name='signup'),
 

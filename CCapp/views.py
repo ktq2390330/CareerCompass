@@ -23,6 +23,14 @@ from django.core.mail import EmailMessage
 from .forms import UserUpdateForm
 from django.contrib.auth import update_session_auth_hash
 
+from django.contrib.auth.views import LoginView as BaseLoginView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+@login_required(login_url='CCapp:login')
 def top_page_view(request):
     category00_list = Category00.objects.all()
     category10_list = Category10.objects.all()
@@ -34,30 +42,28 @@ def top_page_view(request):
         'area1_list': area1_list,
     })
 
-class LoginView(TemplateView):
+class LoginView(FormView):
     template_name = 'login.html'
+    form_class = LoginForm
 
-    def get(self, request, *args, **kwargs):
-        form = LoginForm()
-        return self.render_to_response({"form": form})
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
 
-    def post(self, request, *args, **kwargs):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            mail = form.cleaned_data["mail"]
-            password = form.cleaned_data["password"]
+    def form_valid(self, form):
+        _mail = form.cleaned_data['mail']
+        password = form.cleaned_data['password']
+        try:
+            user = User.objects.get(mail=_mail, password=password)
+        except User.DoesNotExist:
+            form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
+            return self.form_invalid(form)
 
-            try:
-                user = User.objects.get(mail=mail)
-                if user.password == password:  #簡易的なパスワードチェックを実行
-                    login(request, user)
-                    messages.success(request, "ログインに成功しました。")
-                    return redirect('CCapp:top')  #ログイン後のリダイレクト先を指定する
-                else:
-                    messages.error(request, "メールアドレスまたはパスワードが正しくありません。")
-            except User.DoesNotExist:
-                messages.error(request, "ユーザーが存在しません。")
-        return self.render_to_response({"form": form})
+        login(self.request, user)
+        # 'top' という名前でURLをリダイレクト
+        return redirect('CCapp:top')
+
 
 # 新規登録のviews
 class SignupView(View):
@@ -105,10 +111,11 @@ class SignupView(View):
             return render(request, ".../signup/", {"form": form})
 
 
-class ContactView(FormView):
+class ContactView(LoginRequiredMixin, FormView):
     template_name ='contact.html'
     form_class = ContactForm
     success_url = reverse_lazy('CCapp:contact_done')
+    login_url = '/login/'  # 必要に応じてログインページのURLを設定
 
     def form_valid(self, form):
         name = form.cleaned_data['name']
@@ -131,10 +138,11 @@ class ContactView(FormView):
             self.request, 'お問い合わせは正常に送信されました。')
         return super().form_valid(form)
     
-class UserUpdateView(FormView):
+class UserUpdateView(LoginRequiredMixin, FormView):
     template_name = 'account_update.html'  # 使用するテンプレート
     form_class = UserUpdateForm  # 使用するフォーム
     success_url = reverse_lazy('CCapp:profile')  # フォーム送信後にプロフィール画面にリダイレクト
+    login_url = '/login/'  # ログインが必要な場合のリダイレクトURL
 
     def get(self, request, *args, **kwargs):
         # ユーザーの現在の情報をフォームにセットして表示
@@ -177,12 +185,12 @@ class UserUpdateView(FormView):
 
         messages.success(self.request, 'アカウント情報が更新されました。')
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
         # フォームが無効な場合、エラーメッセージを表示
         messages.error(self.request, '入力内容に誤りがあります。')
         return super().form_invalid(form)
-
+    
 # accout
 # signin
 class SigninView(TemplateView):
