@@ -201,10 +201,16 @@ class UserUpdateView(LoginRequiredMixin, FormView):
 class SigninView(LoginRequiredMixin,TemplateView):
     template_name = 'signin.html'
     login_url = 'CCapp:login'
-# logout
-class LogoutView(LoginRequiredMixin, TemplateView):
+
+# logout_conf
+class LogoutConfView(LoginRequiredMixin, TemplateView):
     template_name = 'logout.html'
     login_url = 'CCapp:login'
+    
+# logout
+def LogoutView(request):
+    logout(request)
+    return redirect('CCapp:login')
 # delete_ac
 class Delete_acView(LoginRequiredMixin, TemplateView):
     template_name = 'delete_ac.html'
