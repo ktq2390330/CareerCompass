@@ -1,6 +1,24 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
 # Create your models here.
+class UserManager(BaseUserManager):
+    def create_superuser(self, mail, password=None, **extra_fields):
+        user = User.objects.get(mail=mail, password=password)
+        
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, mail, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError("スーパーユーザーはis_staff=Trueである必要があります")
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError("スーパーユーザーはis_superuser=Trueである必要があります")
+
+        return self.create_user(mail, password, **extra_fields)
 
 class Base(models.Model):
     id=models.AutoField(primary_key=True,verbose_name="ID")
@@ -63,10 +81,15 @@ class Tag(Base):
         db_table='Tag'
         verbose_name='タグ'
 
-class User(Base):
-    mail=models.EmailField(max_length=255,unique=True,verbose_name="メールアドレス")
-    password=models.CharField(max_length=256,verbose_name="パスワード")
-    authority=models.IntegerField(verbose_name="権限")
+class User(AbstractBaseUser, PermissionsMixin):
+    mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
+    password = models.CharField(max_length=256, verbose_name="パスワード")
+    authority = models.IntegerField(verbose_name="権限")
+
+    USERNAME_FIELD = "mail"
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
 
     class Meta:
         db_table='user'
