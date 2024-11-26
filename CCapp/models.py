@@ -172,7 +172,7 @@ class Offer(Base):
     category01 = models.ForeignKey(Category01, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ01")
     category10 = models.ForeignKey(Category10, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ10")
     category11 = models.ForeignKey(Category11, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11")
-    corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, null=True, verbose_name="法人")
+    # corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, null=True, verbose_name="法人")
     applicants = models.ManyToManyField(User, through="OfferEntry", verbose_name="応募者リスト", related_name="offer_offerEntry")
     period = models.DateTimeField(verbose_name="公開期限")
     status = models.BooleanField(default=False, verbose_name="公開状況")
@@ -254,7 +254,7 @@ class BaseDM(Base):
 
 class DM(BaseDM):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ユーザID")
-    corp = models.ForeignKey(Corporation, on_delete=models.CASCADE, verbose_name="法人番号")
+    # corp = models.ForeignKey(Corporation, on_delete=models.CASCADE, verbose_name="法人番号")
 
     class Meta:
         db_table = 'DM'

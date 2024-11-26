@@ -8,6 +8,14 @@ body {
     margin-top: 20px;
 }
 
+/* 親要素のスタイル */
+#brand {
+    position: relative;       /* 子要素を絶対配置する基準を作成 */
+    display: flex;            /* フレックスボックスを維持（レイアウトの調整） */
+    align-items: center;      /* 垂直方向の中央揃え */
+    padding: 10px;
+}
+
 /* brand */
 .brand {
     font-size: 30px;
@@ -25,6 +33,14 @@ body {
 .brand:active {
     color: black; /* クリック後も常に青色にする */
     text-decoration: none; /* 下線を消す（必要なら） */
+}
+
+.user-name {
+    margin-left: auto;        /* 左側に空白を追加 */
+    font-size: 1rem;          /* 適宜調整 */
+    text-decoration: none;    /* 下線を削除 */
+    color: #333;              /* 適宜調整 */
+    margin-top: 30px;
 }
 
 /* navigation */

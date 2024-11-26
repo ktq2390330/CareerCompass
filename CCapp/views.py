@@ -32,6 +32,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 @login_required(login_url='CCapp:login')
 def top_page_view(request):
+    if not request.user.is_authenticated:
+        print("ユーザーは認証されていません")
+    else:
+        print(f"認証済みユーザー: {request.user.mail}")
+
     category00_list = Category00.objects.all()
     category10_list = Category10.objects.all()
     area1_list = Area1.objects.all()
@@ -115,7 +120,7 @@ class ContactView(LoginRequiredMixin, FormView):
     template_name ='contact.html'
     form_class = ContactForm
     success_url = reverse_lazy('CCapp:contact_done')
-    login_url = '/login/'  # 必要に応じてログインページのURLを設定
+    login_url = 'CCapp:login'  # 必要に応じてログインページのURLを設定
 
     def form_valid(self, form):
         name = form.cleaned_data['name']
@@ -142,7 +147,7 @@ class UserUpdateView(LoginRequiredMixin, FormView):
     template_name = 'account_update.html'  # 使用するテンプレート
     form_class = UserUpdateForm  # 使用するフォーム
     success_url = reverse_lazy('CCapp:profile')  # フォーム送信後にプロフィール画面にリダイレクト
-    login_url = '/login/'  # ログインが必要な場合のリダイレクトURL
+    login_url = 'CCapp:login'  # ログインが必要な場合のリダイレクトURL
 
     def get(self, request, *args, **kwargs):
         # ユーザーの現在の情報をフォームにセットして表示
@@ -193,22 +198,25 @@ class UserUpdateView(LoginRequiredMixin, FormView):
     
 # accout
 # signin
-class SigninView(TemplateView):
+class SigninView(LoginRequiredMixin,TemplateView):
     template_name = 'signin.html'
+    login_url = 'CCapp:login'
 # logout
-class LogoutView(TemplateView):
+class LogoutView(LoginRequiredMixin, TemplateView):
     template_name = 'logout.html'
+    login_url = 'CCapp:login'
 # delete_ac
-class Delete_acView(TemplateView):
+class Delete_acView(LoginRequiredMixin, TemplateView):
     template_name = 'delete_ac.html'
 # edit_ac
-class Edit_acView(TemplateView):
+class Edit_acView(LoginRequiredMixin, TemplateView):
     template_name = 'edit_ac.html'
 
 
 # profile
-class ProfileView(TemplateView):
+class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
+    login_url = 'CCapp:login'
 
 # filter
 # filter_area

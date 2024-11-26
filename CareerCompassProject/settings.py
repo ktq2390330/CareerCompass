@@ -143,5 +143,16 @@ EMAIL_USE_TLS = True                     # SMTPサーバーと通信する際に
 
 GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
+# この下三行なんか変かも ↓↓↓
+LOGIN_URL = 'CCapp:login'
 LOGIN_REDIRECT_URL = 'CCapp.top'  # ログイン後のリダイレクト先
+LOGOUT_REDIRECT_URL = 'CCapp.login'  # ログアウト後のリダイレクト先
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # デフォルトのバックエンド
+]
+
+# セッションエンジン
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 AUTH_USER_MODEL = 'CCapp.User'
