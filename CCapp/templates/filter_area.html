@@ -50,18 +50,17 @@
         </div>
     </div>
 
-    <!-- 外部スクリプトの読み込み -->
-    {% comment %} <script src="{% static 'js/filter_state.js' %}"></script> {% endcomment %}
-
     <!-- 内部スクリプト -->
     <script>
         // ページ読み込み時に最初のエリアを表示
         window.onload = function() {
+            // 該当するチェックボックスを表示
             const firstArea = document.querySelector('.area-details');
             if (firstArea) {
                 firstArea.classList.add('active');
             }
 
+            // 最初のボタンをアクティブにする
             const firstButton = document.querySelector('.selection-button a');
             if (firstButton) {
                 firstButton.classList.add('active');
