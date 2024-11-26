@@ -6,7 +6,7 @@ from .forms import LoginForm
 from django.views.generic import TemplateView
 from django.views import View
 from .forms import SignupForm
-
+from django.contrib.auth import logout
 # TemplateViewをインポート
 from django.views.generic.base import TemplateView
 # FormViewをインポート
