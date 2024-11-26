@@ -220,6 +220,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 # filter
 # filter_area
+@login_required(login_url='CCapp:login')
 def filter_area_view(request):
     # データベースからエリアの情報を取得
     area0_list = Area0.objects.all()
@@ -230,6 +231,7 @@ def filter_area_view(request):
         'area1_list': area1_list
     })
 # filter_industry
+@login_required(login_url='CCapp:login')
 def filter_industry_view(request):
     # データベースから業界の情報を取得
     category00_list = Category00.objects.all()
@@ -240,6 +242,7 @@ def filter_industry_view(request):
         'category01_list': category01_list
     })
 # filter_jobtype
+@login_required(login_url='CCapp:login')
 def filter_jobtype_view(request):
     # データベースから職種の情報を取得
     category10_list = Category10.objects.all()
@@ -250,6 +253,7 @@ def filter_jobtype_view(request):
         'category11_list': category11_list
     })
 # filter_benefits
+@login_required(login_url='CCapp:login')
 def filter_benefits_view(request):
     # データベースから福利厚生の情報を取得
     tag_list = Tag.objects.all()
@@ -261,56 +265,72 @@ def filter_benefits_view(request):
 # dashboard
 class AdmTopView(TemplateView):
     template_name = 'adm_dashboard.html'
+    login_url = '#'
 # login
 class AdmLoginView(TemplateView):
     template_name = 'adm_login.html'
+    login_url = '#'
 # logout
 class AdmLogoutView(TemplateView):
     template_name = 'adm_logout.html'
+    login_url = '#'
 # post_list
 class AdmPostListView(TemplateView):
     template_name = 'adm_post_list.html'
+    login_url = '#'
 
 
 # subscription
-class SubscriptionView(TemplateView):
+class SubscriptionView(LoginRequiredMixin, TemplateView):
     template_name = 'subscription.html'
+    login_url = 'CCapp:login'
 # subscription_done
-class Subscription_doneView(TemplateView):
+class Subscription_doneView(LoginRequiredMixin, TemplateView):
     template_name = 'subscription_done.html'
+    login_url = 'CCapp:login'
 
 
 # about
-class AboutView(TemplateView):
+class AboutView(LoginRequiredMixin, TemplateView):
     template_name = 'about.html'
+    login_url = 'CCapp:login'
 
 # jobs
-class JobsView(TemplateView):
+class JobsView(LoginRequiredMixin, TemplateView):
     template_name = 'jobs.html'
+    login_url = 'CCapp:login'
 
 # search
-class SearchresultView(TemplateView):
+class SearchresultView(LoginRequiredMixin, TemplateView):
     template_name = 'search_result.html'
+    login_url = 'CCapp:login'
 
 
 # self
-class SelfAnalyView(TemplateView):
+class SelfAnalyView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_self_analy.html'
+    login_url = 'CCapp:login'
 
-class AxisView(TemplateView):
+class AxisView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_axis.html'
+    login_url = 'CCapp:login'
 
-class IndustryView(TemplateView):
+class IndustryView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_industry.html'
+    login_url = 'CCapp:login'
 
-class JobtypeView(TemplateView):
+class JobtypeView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_jobtype.html'
+    login_url = 'CCapp:login'
 
-class AdmPostView(TemplateView):
+class AdmPostView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post.html'
+    login_url = '#'
 
-class AdmPostDoneView(TemplateView):
+class AdmPostDoneView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post_done.html'
+    login_url = '#'
 
-class AdmEditPostView(TemplateView):
+class AdmEditPostView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_edit_post.html'
+    login_url = '#'
