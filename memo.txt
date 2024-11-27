@@ -34,3 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
 areaはクッキー
 industryはセッションでチェックボックスのステータスを保持している状況
 全部セッションに書き変える
+
+権限
+0管理者
+1サポート
+2一般ユーザー
