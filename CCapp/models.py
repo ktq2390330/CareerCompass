@@ -18,9 +18,8 @@ class UserManager(BaseUserManager):
         return self.create_user(mail, password, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser):
     mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
-    password = models.TextField(verbose_name="パスワード")
     name = models.CharField(max_length=64, verbose_name="名前",blank=True)
     authority = models.IntegerField(
         choices=[(0, "Admin"), (1, "Support Staff"), (2, "Service User")],
@@ -45,15 +44,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_service_user(self):
         return self.authority == 2
 
-    def has_permission(self, level):
-        return self.authority <= level
-
     def get_full_name(self):
         return self.name or "未設定"
-
-    def __str__(self):
-        return f"{self.name} ({self.get_authority_display()})"
-
 
 class Base(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID")
@@ -61,7 +53,6 @@ class Base(models.Model):
 
     class Meta:
         abstract = True
-
 
 # エリア
 class Area0(Base):
