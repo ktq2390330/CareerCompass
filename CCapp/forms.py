@@ -15,10 +15,10 @@ from .models import User
 
 class SignupForm(forms.Form):
     # フィールド定義
-    UName = forms.CharField(label='氏名', max_length=255)
-    Mail = forms.EmailField(label='メールアドレス')
-    Password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
-    Password_Conf = forms.CharField(label='パスワード確認', widget=forms.PasswordInput())
+    UName = forms.CharField(label='氏名', max_length=255, required=True)
+    Mail = forms.EmailField(label='メールアドレス', required=True)
+    Password = forms.CharField(label='パスワード', widget=forms.PasswordInput(), required=True)
+    Password_Conf = forms.CharField(label='パスワード確認', widget=forms.PasswordInput(), required=True)
 
     # バリデーション
     def clean_Mail(self):

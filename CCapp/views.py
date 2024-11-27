@@ -69,7 +69,6 @@ class LoginView(FormView):
         # 'top' という名前でURLをリダイレクト
         return redirect('CCapp:top')
 
-
 # 新規登録のviews
 class SignupView(View):
     def get(self, request):
@@ -79,13 +78,15 @@ class SignupView(View):
     def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
-            mail = form.cleaned_data.get('Mail')  # 'Mail' フィールド
+            mail = form.cleaned_data.get('Mail')  # 'Mail' フィールドを取得
             password = form.cleaned_data.get('Password')
             name = form.cleaned_data.get('UName')
 
-            # メールアドレスでユーザーを作成（'mail' フィールドを使用）
-            user = User.objects.create_user(mail=mail, password=password)
-            user.name = name  # 氏名を 'name' フィールドに保存
+            # 'mail' を使用してユーザーを作成
+            # パスワードをハッシュ化せずに保存（後にハッシュ化できるようにする）
+            user = User.objects.create(mail=mail, password=password)
+            # user = User.objects.create_user(mail=mail, password=password)
+            user.name = name  # 名前を 'name' フィールドに保存
             user.save()
 
             # 自動ログイン
