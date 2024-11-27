@@ -2,14 +2,106 @@
     {
     "offerId": 1,
     "users": [
-        {"userId": 5},
-        {"userId": 6}
+        {"mail": "ktq2390312@stu.o-hara.ac.jp"}
         ]
     },
     {
     "offerId": 2,
     "users": [
-        {"userId": 6}
+        {"mail": "usertest001@test1.com"},
+        {"mail": "usertest002@test2.com"}
+        ]
+    },
+    {
+    "offerId": 3,
+    "users": [
+        {"mail": "usertest003@test3.com"},
+        {"mail": "usertest004@test4.com"},
+        {"mail": "usertest005@test5.com"}
+        ]
+    },
+    {
+    "offerId": 4,
+    "users": [
+        {"mail": "usertest006@test6.com"},
+        {"mail": "usertest007@test7.com"},
+        {"mail": "usertest008@test8.com"},
+        {"mail": "usertest009@test9.com"}
+        ]
+    },
+    {
+    "offerId": 5,
+    "users": [
+        {"mail": "usertest0010@test10.com"},
+        {"mail": "usertest0011@test11.com"},
+        {"mail": "usertest0012@test12.com"},
+        {"mail": "usertest0013@test13.com"},
+        {"mail": "usertest0014@test14.com"}
+        ]
+    },
+    {
+    "offerId": 6,
+    "users": [
+        {"mail": "usertest0015@test15.com"},
+        {"mail": "usertest0016@test16.com"},
+        {"mail": "usertest0017@test17.com"},
+        {"mail": "usertest0018@test18.com"},
+        {"mail": "usertest0019@test19.com"},
+        {"mail": "usertest0020@test20.com"}
+        ]
+    },
+    {
+    "offerId": 7,
+    "users": [
+        {"mail": "sunshine21@randommail.com"},
+        {"mail": "greenfox22@mailpro.com"},
+        {"mail": "starline23@fastmail.com"},
+        {"mail": "midnight24@randommail.com"},
+        {"mail": "oceanview25@securemail.com"},
+        {"mail": "bright26@protonmail.com"},
+        {"mail": "freedom27@mailservice.com"}
+        ]
+    },
+    {
+    "offerId": 8,
+    "users": [
+        {"mail": "sunshine21@randommail.com"},
+        {"mail": "greenfox22@mailpro.com"},
+        {"mail": "starline23@fastmail.com"},
+        {"mail": "midnight24@randommail.com"},
+        {"mail": "oceanview25@securemail.com"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"}
+        ]
+    },
+    {
+    "offerId": 9,
+    "users": [
+        {"mail": "sunshine21@randommail.com"},
+        {"mail": "greenfox22@mailpro.com"},
+        {"mail": "starline23@fastmail.com"},
+        {"mail": "midnight24@randommail.com"},
+        {"mail": "oceanview25@securemail.com"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"}
+        ]
+    },
+    {
+    "offerId": 10,
+    "users": [
+        {"mail": "sunshine21@randommail.com"},
+        {"mail": "greenfox22@mailpro.com"},
+        {"mail": "starline23@fastmail.com"},
+        {"mail": "midnight24@randommail.com"},
+        {"mail": "oceanview25@securemail.com"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"},
+        {"mail": "bright26@protonmail.co"}
         ]
     }
 ]
