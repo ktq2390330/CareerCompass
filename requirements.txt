@@ -1,10 +1,7 @@
 Django
+django-filter
 mysqlclient
 pillow
 django-cleanup
-openai
-pandas
-textblob
 python-dotenv
 google-generativeai
-pathlib

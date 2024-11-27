@@ -213,7 +213,7 @@ def profile(filePath):
                     category01=Category01.objects.get(name=category01name)
                     category10=Category10.objects.get(name=category10name)
                     category11=Category11.objects.get(name=category11name)
-                    instance,created=Profile.objects.get_or_create(user=user,nationality=nationality,birth=birth,gender=gender,graduation=graduation,uSchool=school,sClass=sClass,sol=sol,
+                    instance,created=Profile.objects.get_or_create(user=user,furigana=furigana,nationality=nationality,birth=birth,gender=gender,graduation=graduation,uSchool=school,sClass=sClass,sol=sol,
                     departments=departments,uTel=tel,uAddress=address,category00=category00,category01=category01,category10=category10,category11=category11,area1=area1,uOffer=uOffer)
                     instanceDict[instance]=created
         except User.DoesNotExist:
