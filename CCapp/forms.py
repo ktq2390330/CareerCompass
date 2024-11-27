@@ -10,108 +10,30 @@ class LoginForm(forms.Form):
         super().__init__(*args, **kwargs)
 
 # サインアップ（新規登録）フォーム
-from datetime import date
+from django.core.exceptions import ValidationError
+from .models import User
 
 class SignupForm(forms.Form):
-    UName = forms.CharField(
-        label="氏名",
-        max_length=50,
-        required=True,
-        widget=forms.TextInput(attrs={"placeholder": "例：田中太郎", "class": "form-control"})
-    )
-    Furigana = forms.CharField(
-        label="フリガナ",
-        max_length=50,
-        required=True,
-        widget=forms.TextInput(attrs={"placeholder": "例：タナカタロウ", "class": "form-control"})
-    )
-    Birth_Date_Year = forms.IntegerField(
-        label="生年月日（年）",
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 60px;"})
-    )
-    Birth_Date_Month = forms.IntegerField(
-        label="生年月日（月）",
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 40px;"})
-    )
-    Birth_Date_Day = forms.IntegerField(
-        label="生年月日（日）",
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 40px;"})
-    )
-    Gender = forms.ChoiceField(
-        label="性別",
-        choices=[("Male", "男"), ("Female", "女"), ("Other", "その他")],
-        required=False,
-        widget=forms.RadioSelect
-    )
-    Gender_Other = forms.CharField(
-        label="その他の性別",
-        max_length=50,
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 100px;"})
-    )
-    Mail = forms.EmailField(
-        label="メールアドレス",
-        required=True,
-        widget=forms.EmailInput(attrs={"class": "form-control"})
-    )
-    UTel = forms.CharField(
-        label="電話番号",
-        max_length=20,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-    UAddress = forms.CharField(
-        label="住所",
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-    Password = forms.CharField(
-        label="パスワード",
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
-        required=True
-    )
-    Password_Conf = forms.CharField(
-        label="パスワード確認",
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
-        required=True
-    )
-    USchool = forms.CharField(
-        label="学校名",
-        max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-    Department = forms.CharField(
-        label="学部・学科名",
-        max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-    Graduation = forms.IntegerField(
-        label="卒業年（西暦）",
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control", "style": "width: 60px;"})
-    )
+    # フィールド定義
+    UName = forms.CharField(label='氏名', max_length=255)
+    Mail = forms.EmailField(label='メールアドレス')
+    Password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
+    Password_Conf = forms.CharField(label='パスワード確認', widget=forms.PasswordInput())
 
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("Mail")
-        password = cleaned_data.get("Password")
-        password_conf = cleaned_data.get("Password_Conf")
-        gender = cleaned_data.get("Gender")
-        gender_other = cleaned_data.get("Gender_Other")
+    # バリデーション
+    def clean_Mail(self):
+        mail = self.cleaned_data.get('Mail')
+        if User.objects.filter(mail=mail).exists():
+            raise forms.ValidationError('このメールアドレスはすでに使用されています。')
+        return mail
 
-        if User.objects.filter(email=email).exists():
-            self.add_error("Mail", "このメールアドレスは既に登録されています。")
+    def clean_Password_Conf(self):
+        password = self.cleaned_data.get('Password')
+        password_conf = self.cleaned_data.get('Password_Conf')
 
         if password != password_conf:
-            self.add_error("Password_Conf", "パスワードが一致しません。")
-
-        if not gender and not gender_other:
-            self.add_error("Gender", "性別を選択するか入力してください。")
+            raise forms.ValidationError('パスワードと確認用パスワードが一致しません。')
+        return password_conf
 
 # プロフィール更新用フォーム
 class UserUpdateForm(forms.Form):

@@ -74,47 +74,30 @@ class LoginView(FormView):
 class SignupView(View):
     def get(self, request):
         form = SignupForm()
-        return render(request, "signup.html", {"form": form})
+        return render(request, 'signup.html', {'form': form})
 
     def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
-            # フォームからメールアドレスとパスワードを取得
-            cleaned_data = form.cleaned_data
-            mail = cleaned_data["Mail"]
-            password = cleaned_data["Password"]
+            mail = form.cleaned_data.get('Mail')  # 'Mail' フィールド
+            password = form.cleaned_data.get('Password')
+            name = form.cleaned_data.get('UName')
 
-            # ユーザーを作成
-            user = User.objects.get_or_create(
-                mail=mail,
-                password=password,  # パスワードはハッシュ化していない
-            )
-            
+            # メールアドレスでユーザーを作成（'mail' フィールドを使用）
+            user = User.objects.create_user(mail=mail, password=password)
+            user.name = name  # 氏名を 'name' フィールドに保存
+            user.save()
 
-            # 作成したユーザーIDを取得
-            user_id = user.id
-
-            # プロフィール情報を設定（フォームの他のフィールドを使用）
-            user.first_name = cleaned_data["UName"]
-            user.last_name_kana = cleaned_data["Furigana"]
-            user.birth_date = f'{cleaned_data["Birth_Date_Year"]}年{cleaned_data["Birth_Date_Month"]}月{cleaned_data["Birth_Date_Day"]}日'
-            user.gender = cleaned_data["Gender_Other"] if cleaned_data["Gender"] == "Other" else cleaned_data["Gender"]
-            user.phone = cleaned_data["UTel"]
-            user.address = cleaned_data["UAddress"]
-            user.school_name = cleaned_data["USchool"]
-            user.department = cleaned_data["Department"]
-            user.graduation_year = cleaned_data["Graduation"]
-            # ユーザーを自動でログイン
+            # 自動ログイン
             login(request, user)
 
-            # メッセージを表示
-            messages.success(request, "新規登録が完了しました！")
+            messages.success(request, '新規登録が完了しました。')
+            return redirect('CCapp:top')  # トップページにリダイレクト
 
-            # トップページにリダイレクト
-            return redirect("CCapp:top")
         else:
-            return render(request, ".../signup/", {"form": form})
+            messages.error(request, '入力に誤りがあります。')
 
+        return render(request, 'signup.html', {'form': form})
 
 class ContactView(LoginRequiredMixin, FormView):
     template_name ='contact.html'
