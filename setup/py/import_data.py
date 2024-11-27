@@ -203,11 +203,11 @@ def profile(filePath):
             data=readFile(filePath)
             with transaction.atomic():
                 for row in data:
-                    userId,nationality,birth,gender,graduation,school,sClass,sol,departments,tel,address,category00name,category01name,category10name,category11name,area1name,uOffer=row
-                    ['userId'],row['nationality'],row['birth'].split('-'),row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row
+                    mail,furigana,nationality,birth,gender,graduation,school,sClass,sol,departments,tel,address,category00name,category01name,category10name,category11name,area1name,uOffer=row
+                    ['mail'],row['furigana'],row['nationality'],row['birth'].split('-'),row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row
                     ['category00name'],row['category01name'],row['category10name'],row['category11name'],row['area1name'],row['uOffer']
                     birth=datetime.date(birth)
-                    user=User.objects.get(id=userId)
+                    user=User.objects.get(mail=mail)
                     area1=Area1.objects.get(name=area1name)
                     category00=Category00.objects.get(name=category00name)
                     category01=Category01.objects.get(name=category01name)
@@ -217,7 +217,7 @@ def profile(filePath):
                     departments=departments,uTel=tel,uAddress=address,category00=category00,category01=category01,category10=category10,category11=category11,area1=area1,uOffer=uOffer)
                     instanceDict[instance]=created
         except User.DoesNotExist:
-            print(f"userID: {userId} は存在しません")
+            print(f"mail: {mail} は存在しません")
         except Area1.DoesNotExist:
             print(f'area1: {area1name} は存在しません')
         except Category00.DoesNotExist:

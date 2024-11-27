@@ -1,24 +1,59 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
+from django.utils.timezone import now
 
-# Create your models here.
+
 class UserManager(BaseUserManager):
-    def create_superuser(self, mail, password=None, **extra_fields):
-        user = User.objects.get(mail=mail, password=password)
-        
+    def create_user(self, mail, password=None, **extra_fields):
+        if not mail:
+            raise ValueError("メールアドレスを指定してください。")
+        mail = self.normalize_email(mail)
+        user = self.model(mail=mail, **extra_fields)
+        user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
     def create_superuser(self, mail, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError("スーパーユーザーはis_staff=Trueである必要があります")
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError("スーパーユーザーはis_superuser=Trueである必要があります")
-
+        extra_fields.setdefault('authority', 0)
         return self.create_user(mail, password, **extra_fields)
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
+    name = models.CharField(max_length=64, verbose_name="名前", blank=True)
+    is_active = models.BooleanField(default=True, verbose_name="アクティブ")
+    authority = models.IntegerField(
+        choices=[(0, "Admin"), (1, "Support Staff"), (2, "Service User")],
+        default=2,
+        verbose_name="権限"
+    )
+    objects = UserManager()
+    USERNAME_FIELD = 'mail'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        db_table = 'user'
+        verbose_name = 'ユーザー'
+        verbose_name_plural = 'ユーザー'
+
+    def is_admin(self):
+        return self.authority == 0
+
+    def is_staff_member(self):
+        return self.authority == 1
+
+    def is_service_user(self):
+        return self.authority == 2
+
+    def has_permission(self, level):
+        return self.authority <= level
+
+    def get_full_name(self):
+        return self.name or "未設定"
+
+    def __str__(self):
+        return f"{self.name} ({self.get_authority_display()})"
+
 
 class Base(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID")
@@ -98,43 +133,57 @@ class Category11(Base):
 # タグ
 class Tag(Base):
     class Meta:
-        db_table='Tag'
-        verbose_name='タグ'
+        db_table = 'Tag'
+        verbose_name = 'タグ'
 
-class User(AbstractBaseUser, PermissionsMixin):
-    mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
-    password = models.CharField(max_length=256, verbose_name="パスワード")
-    authority = models.IntegerField(verbose_name="権限")
 
-    USERNAME_FIELD = "mail"
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
+# プロフィール
+class Profile(models.Model):
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name="ユーザID", related_name="profile")
+    furigana = models.CharField(max_length=256, verbose_name="フリガナ")
+    nationality = models.CharField(max_length=256, verbose_name="国籍")
+    birth = models.DateField(verbose_name="生年月日")
+    gender = models.CharField(max_length=16, verbose_name="性別")
+    graduation = models.IntegerField(verbose_name="卒業年度")
+    uSchool = models.CharField(max_length=256, verbose_name="学校名")
+    sClass = models.IntegerField(verbose_name="学校区分")
+    sol = models.IntegerField(verbose_name="文理区分")
+    department = models.CharField(max_length=32, verbose_name="学科名")
+    uTel = models.CharField(max_length=16, verbose_name="電話番号")
+    postalCode = models.CharField(max_length=8, verbose_name="郵便番号")
+    uAddress = models.CharField(max_length=256, verbose_name="住所")
+    category00 = models.ForeignKey(Category00, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ00")
+    category01 = models.ForeignKey(Category01, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ01")
+    category10 = models.ForeignKey(Category10, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ10")
+    category11 = models.ForeignKey(Category11, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11")
+    area1 = models.ForeignKey(Area1, on_delete=models.SET_NULL, null=True, verbose_name="エリア1")
+    uOffer = models.CharField(max_length=256, verbose_name="内定先")
 
     class Meta:
-        db_table='user'
-        verbose_name='ユーザ'
+        db_table = "profile"
+        verbose_name = "プロフィール"
 
-class Profile(models.Model):
-    user=models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE,verbose_name="ユーザID",related_name="profile")
-    furigana=models.CharField(max_length=256,verbose_name="フリガナ")
-    nationality=models.CharField(max_length=256,verbose_name="国籍")
-    birth=models.DateField(verbose_name="生年月日")
-    gender=models.CharField(max_length=16,verbose_name="性別")
-    graduation=models.IntegerField(verbose_name="卒業年度")
-    uSchool=models.CharField(max_length=256,verbose_name="学校名")
-    sClass=models.IntegerField(verbose_name="学校区分")
-    sol=models.IntegerField(verbose_name="文理区分")
-    department=models.CharField(max_length=32,verbose_name="学科名")
-    uTel=models.CharField(max_length=16,verbose_name="電話番号")
-    postalCode=models.CharField(max_length=8,verbose_name="郵便番号")
-    uAddress=models.CharField(max_length=256,verbose_name="住所")
-    category00=models.ForeignKey(Category00,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ00",related_name="profile_category00")
-    category01=models.ForeignKey(Category01,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ01",related_name="profile_category01")
-    category10=models.ForeignKey(Category10,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ10",related_name="profile_category10")
-    category11=models.ForeignKey(Category11,on_delete=models.SET_NULL,null=True,verbose_name="カテゴリ11",related_name="profile_category11")
-    area1=models.ForeignKey(Area1,on_delete=models.SET_NULL,null=True,verbose_name="エリア1",related_name="profile_area1")
-    uOffer=models.CharField(max_length=256,verbose_name="内定先")
+    def get_full_address(self):
+        return f"{self.postalCode} {self.uAddress}"
+
+    def get_preferences(self):
+        return {
+            "業界": f"{self.category00.name} - {self.category01.name if self.category01 else '未設定'}",
+            "職種": f"{self.category10.name} - {self.category11.name if self.category11 else '未設定'}",
+            "エリア": f"{self.area1.name if self.area1 else '未設定'}",
+        }
+
+    def __str__(self):
+        return f"{self.user.name} のプロフィール"
+
+# 法人
+class Corporation(models.Model):
+    corp = models.CharField(max_length=13, primary_key=True, unique=True, verbose_name="法人番号")
+    name = models.CharField(max_length=256, verbose_name="法人名")
+    address = models.CharField(max_length=256, verbose_name="住所")
+    cMail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
+    cTel = models.CharField(max_length=16, verbose_name="電話番号")
+    url = models.URLField(max_length=512, verbose_name="URL")
 
     class Meta:
         db_table = 'corporation'
@@ -172,7 +221,7 @@ class Offer(Base):
     category01 = models.ForeignKey(Category01, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ01")
     category10 = models.ForeignKey(Category10, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ10")
     category11 = models.ForeignKey(Category11, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11")
-    # corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, null=True, verbose_name="法人")
+    corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, null=True, verbose_name="法人")
     applicants = models.ManyToManyField(User, through="OfferEntry", verbose_name="応募者リスト", related_name="offer_offerEntry")
     period = models.DateTimeField(verbose_name="公開期限")
     status = models.BooleanField(default=False, verbose_name="公開状況")
@@ -254,7 +303,7 @@ class BaseDM(Base):
 
 class DM(BaseDM):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ユーザID")
-    # corp = models.ForeignKey(Corporation, on_delete=models.CASCADE, verbose_name="法人番号")
+    corp = models.ForeignKey(Corporation, on_delete=models.CASCADE, verbose_name="法人番号")
 
     class Meta:
         db_table = 'DM'
