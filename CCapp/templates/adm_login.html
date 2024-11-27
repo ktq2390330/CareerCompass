@@ -9,11 +9,11 @@
 </head>
 <body>
 
-<h1><big>Career Compass</big></h1>
-<h2>管理者</h2>
+<h1 class="career-compass">Career Compass</h1>
+<h2 class="admin">管理者</h2>
 
 <div class="container">
-    <form action="{% url 'CCapp:login' %}" method="post">
+    <form action="{% url 'CCapp:adm_login' %}" method="post">
 
         <!-- 入力フォーム -->
         {% csrf_token %}

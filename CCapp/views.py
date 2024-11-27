@@ -244,9 +244,34 @@ class AdmTopView(TemplateView):
     template_name = 'adm_dashboard.html'
     login_url = '#'
 # login
-class AdmLoginView(TemplateView):
+class AdmLoginView(FormView):
     template_name = 'adm_login.html'
-    login_url = '#'
+    form_class = LoginForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        _mail = form.cleaned_data['mail']
+        password = form.cleaned_data['password']
+        try:
+            user = User.objects.get(mail=_mail, password=password)
+        except User.DoesNotExist:
+            form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
+            return self.form_invalid(form)
+
+        # authorityが0（管理者）の場合のみログインを許可
+        if user.authority == 0:
+            login(self.request, user)
+            return redirect('CCapp:adm_dashboard')
+        else:
+            form.add_error(None, '管理者権限がありません')
+            return self.form_invalid(form)
+
+# logout_conf
+
 # logout
 class AdmLogoutView(TemplateView):
     template_name = 'adm_logout.html'
