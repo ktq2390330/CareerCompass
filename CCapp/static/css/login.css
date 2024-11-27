@@ -53,8 +53,12 @@ input[type="password"] {
     cursor: pointer;
     background-color: transparent;
     color: #000;
-    font-size: 18px;
     display: inline-block;
+    text-decoration: none;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .button-area p {
@@ -63,11 +67,19 @@ input[type="password"] {
 }
 
 .button-area a {
-    font-size: 20px;
-    margin: 20px;
+    width: 150px;
+    padding: 6px; 
+    margin-top: 10px;
+    border: 1px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000;
+    display: inline-block;
+    text-decoration: none;
 }
 
-button:hover {
+a:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
