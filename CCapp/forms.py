@@ -36,19 +36,19 @@ class SignupForm(forms.Form):
         return password_conf
 
 # プロフィール更新用フォーム
-class UserUpdateForm(forms.Form):
-    UName = forms.CharField(max_length=30, required=True, label='氏名')
-    Frigana = forms.CharField(max_length=30, required=True, label='フリガナ')
-    Birth_Date = forms.DateField(required=True, label='生年月日', widget=forms.DateInput(attrs={'type': 'date'}))
-    Gender = forms.ChoiceField(choices=[('M', '男性'), ('F', '女性'), ('O', 'その他')], required=True, label='性別')
-    Mail = forms.EmailField(required=True, label='メールアドレス')
-    UTel = forms.CharField(max_length=15, required=True, label='電話番号')
-    UAddress = forms.CharField(max_length=255, required=True, label='住所')
-    Password = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード')
-    Password_Conf = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード確認')
-    Uschool = forms.CharField(max_length=100, required=False, label='学校名')
+class ProfileForm(forms.Form):
+    uname = forms.CharField(max_length=30, required=True, label='氏名')
+    frigana = forms.CharField(max_length=30, required=True, label='フリガナ')
+    birth_date = forms.DateField(required=True, label='生年月日', widget=forms.DateInput(attrs={'type': 'date'}))
+    gender = forms.ChoiceField(choices=[('M', '男性'), ('F', '女性'), ('O', 'その他')], required=True, label='性別')
+    mail = forms.EmailField(required=True, label='メールアドレス')
+    utel = forms.CharField(max_length=15, required=True, label='電話番号')
+    uaddress = forms.CharField(max_length=255, required=True, label='住所')
+    password = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード')
+    password_conf = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード確認')
+    uschool = forms.CharField(max_length=100, required=False, label='学校名')
     department = forms.CharField(max_length=100, required=False, label='学部・学科名')
-    Graduation = forms.IntegerField(required=False, label='卒業年')
+    graduation = forms.IntegerField(required=False, label='卒業年')
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -56,31 +56,44 @@ class UserUpdateForm(forms.Form):
         
         # 初期値をユーザー情報で設定
         if self.user:
-            self.fields['UName'].initial = self.user.UName
-            self.fields['Mail'].initial = self.user.Mail
-            # 他のフィールドも必要に応じて初期値を設定
+            self.fields['uname'].initial = self.user.uname
+            self.fields['mail'].initial = self.user.mail
+            self.fields['birth_date'].initial = self.user.birth_date
+            self.fields['gender'].initial = self.user.gender
+            self.fields['utel'].initial = self.user.utel
+            self.fields['uaddress'].initial = self.user.uaddress
+            self.fields['uschool'].initial = self.user.uschool
+            self.fields['department'].initial = self.user.department
+            self.fields['graduation'].initial = self.user.graduation
 
-    def clean_email(self):
-        Mail = self.cleaned_data.get('Mail')
-        if User.objects.filter(email=Mail).exclude(pk=self.user.pk).exists():
+    def clean_mail(self):
+        mail = self.cleaned_data.get('mail')
+        if User.objects.filter(mail=mail).exclude(pk=self.user.pk).exists():
             raise forms.ValidationError("このメールアドレスは既に使用されています。")
-        return Mail
+        return mail
 
     def clean(self):
         cleaned_data = super().clean()
-        Password = cleaned_data.get('Password')
-        Password_Conf = cleaned_data.get('Password_Conf')
+        password = cleaned_data.get('password')
+        password_conf = cleaned_data.get('password_conf')
 
-        if Password and Password != Password_Conf:
+        if password and password != password_conf:
             self.add_error('password_conf', "パスワードが一致しません。")
         
         return cleaned_data
-    
+
     def save(self):
         if self.user:
             self.user.uname = self.cleaned_data['uname']
+            self.user.frigana = self.cleaned_data['frigana']
+            self.user.birth_date = self.cleaned_data['birth_date']
+            self.user.gender = self.cleaned_data['gender']
             self.user.mail = self.cleaned_data['mail']
-            # 他のフィールドもユーザーオブジェクトに保存する
+            self.user.utel = self.cleaned_data['utel']
+            self.user.uaddress = self.cleaned_data['uaddress']
+            self.user.uschool = self.cleaned_data['uschool']
+            self.user.department = self.cleaned_data['department']
+            self.user.graduation = self.cleaned_data['graduation']
             if self.cleaned_data['password']:
                 self.user.set_password(self.cleaned_data['password'])
             self.user.save()

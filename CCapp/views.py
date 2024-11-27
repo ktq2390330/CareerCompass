@@ -20,7 +20,7 @@ from django.contrib import messages
 # django.core.mailモジュールからEmailMessageをインポート
 from django.core.mail import EmailMessage
 
-from .forms import UserUpdateForm
+from .forms import ProfileForm
 from django.contrib.auth import update_session_auth_hash
 
 from django.contrib.auth.views import LoginView as BaseLoginView
@@ -127,56 +127,43 @@ class ContactView(LoginRequiredMixin, FormView):
             self.request, 'お問い合わせは正常に送信されました。')
         return super().form_valid(form)
     
-class UserUpdateView(LoginRequiredMixin, FormView):
+class ProfileView(LoginRequiredMixin, FormView):
     template_name = 'account_update.html'  # 使用するテンプレート
-    form_class = UserUpdateForm  # 使用するフォーム
-    success_url = reverse_lazy('CCapp:profile')  # フォーム送信後にプロフィール画面にリダイレクト
+    form_class = ProfileForm  # 使用するフォーム
+    success_url = reverse_lazy('CCapp:profile')  # フォーム送信後のリダイレクトURL
     login_url = 'CCapp:login'  # ログインが必要な場合のリダイレクトURL
 
-    def get(self, request, *args, **kwargs):
-        # ユーザーの現在の情報をフォームにセットして表示
-        form = self.form_class(initial={
-            'first_name': request.user.first_name,
-            'last_name_kana': request.user.last_name_kana,
-            'birth_date': request.user.birth_date,
-            'gender': request.user.gender,
-            'email': request.user.email,
-            'phone': request.user.phone,
-            'address': request.user.address,
-            'school_name': request.user.school_name,
-            'department': request.user.department,
-            'graduation_year': request.user.graduation_year
-        })
-        return self.render_to_response({"form": form})
+    def get_form_kwargs(self):
+        """
+        フォームの初期化時にユーザー情報を渡す
+        """
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # フォームの初期値を設定
+        return kwargs
 
     def form_valid(self, form):
-        # フォームが有効な場合、ユーザー情報を更新する処理
+        """
+        フォームが有効な場合、ユーザー情報を更新
+        """
         user = self.request.user
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name_kana = form.cleaned_data['last_name_kana']
-        user.birth_date = form.cleaned_data['birth_date']
-        user.gender = form.cleaned_data['gender']
-        user.email = form.cleaned_data['email']
-        user.phone = form.cleaned_data['phone']
-        user.address = form.cleaned_data['address']
-
-        password = form.cleaned_data.get('password')
-        if password:
-            user.set_password(password)  # パスワードが変更されていればセットする
-
-        user.school_name = form.cleaned_data['school_name']
-        user.department = form.cleaned_data['department']
-        user.graduation_year = form.cleaned_data['graduation_year']
+        # フォームのデータでユーザー情報を更新
+        for field, value in form.cleaned_data.items():
+            if field == "password" and value:
+                user.set_password(value)  # パスワードは特別に処理
+            else:
+                setattr(user, field, value)  # 他のフィールドはそのままセット
         user.save()
 
-        # セッションの認証情報を更新
+        # 認証セッション情報を更新
         update_session_auth_hash(self.request, user)
 
         messages.success(self.request, 'アカウント情報が更新されました。')
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # フォームが無効な場合、エラーメッセージを表示
+        """
+        フォームが無効な場合
+        """
         messages.error(self.request, '入力内容に誤りがあります。')
         return super().form_invalid(form)
     
@@ -201,12 +188,6 @@ class Delete_acView(LoginRequiredMixin, TemplateView):
 # edit_ac
 class Edit_acView(LoginRequiredMixin, TemplateView):
     template_name = 'edit_ac.html'
-
-
-# profile
-class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'profile.html'
-    login_url = 'CCapp:login'
 
 # filter
 # filter_area
