@@ -20,7 +20,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
-    name = models.CharField(max_length=64, verbose_name="名前", blank=True)
+    password = models.TextField(verbose_name="パスワード")
+    name = models.CharField(max_length=64, verbose_name="名前",blank=True)
     authority = models.IntegerField(
         choices=[(0, "Admin"), (1, "Support Staff"), (2, "Service User")],
         default=2,
