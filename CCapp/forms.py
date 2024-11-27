@@ -75,6 +75,16 @@ class UserUpdateForm(forms.Form):
             self.add_error('password_conf', "パスワードが一致しません。")
         
         return cleaned_data
+    
+    def save(self):
+        if self.user:
+            self.user.uname = self.cleaned_data['uname']
+            self.user.mail = self.cleaned_data['mail']
+            # 他のフィールドもユーザーオブジェクトに保存する
+            if self.cleaned_data['password']:
+                self.user.set_password(self.cleaned_data['password'])
+            self.user.save()
+
 
 class ContactForm(forms.Form):
     name = forms.CharField(label='お名前')
@@ -100,52 +110,3 @@ class ContactForm(forms.Form):
         'お問い合わせ内容を入力してください'
         # messageフィールドの出力する<input>タグのclass属性を設定
         self.fields['message'].widget.attrs['class'] = 'form-control'
-
-class UserUpdateForm(forms.Form):
-    uname = forms.CharField(max_length=30, required=True, label='氏名')
-    frigana = forms.CharField(max_length=30, required=True, label='フリガナ')
-    birth_date = forms.DateField(required=True, label='生年月日', widget=forms.DateInput(attrs={'type': 'date'}))
-    gender = forms.ChoiceField(choices=[('M', '男性'), ('F', '女性'), ('O', 'その他')], required=True, label='性別')
-    mail = forms.EmailField(required=True, label='メールアドレス')
-    utel = forms.CharField(max_length=15, required=True, label='電話番号')
-    uaddress = forms.CharField(max_length=255, required=True, label='住所')
-    password = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード')
-    password_conf = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード確認')
-    uschool = forms.CharField(max_length=100, required=False, label='学校名')
-    department = forms.CharField(max_length=100, required=False, label='学部・学科名')
-    graduation = forms.IntegerField(required=False, label='卒業年')
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        
-        # 初期値をユーザー情報で設定
-        if self.user:
-            self.fields['first_name'].initial = self.user.uname
-            self.fields['mail'].initial = self.user.mail
-            # 他のフィールドも必要に応じて初期値を設定
-
-    def clean_email(self):
-        mail = self.cleaned_data.get('mail')
-        if User.objects.filter(email=mail).exclude(pk=self.user.pk).exists():
-            raise forms.ValidationError("このメールアドレスは既に使用されています。")
-        return mail
-
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        password_conf = cleaned_data.get('password_conf')
-
-        if password and password != password_conf:
-            self.add_error('password_conf', "パスワードが一致しません。")
-        
-        return cleaned_data
-
-    def save(self):
-        if self.user:
-            self.user.uname = self.cleaned_data['uname']
-            self.user.mail = self.cleaned_data['mail']
-            # 他のフィールドもユーザーオブジェクトに保存する
-            if self.cleaned_data['password']:
-                self.user.set_password(self.cleaned_data['password'])
-            self.user.save()
