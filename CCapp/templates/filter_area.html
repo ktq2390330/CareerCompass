@@ -93,7 +93,7 @@
             const checkboxes = document.querySelectorAll('#' + areaId + ' input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
             // チェックボックスの状態をローカルストレージに保存
-            saveCheckboxState();
+            saveAreaState();
         }
 
         // チェックボックスの状態を保存

@@ -40,7 +40,7 @@
             <!-- Navigation -->
             <nav class="navigation">
                 <ul class="navigation-button">
-                    <li><a href="{% url 'CCapp:top' %}" class="{% if request.path == '/' %}active{% endif %}">トップ</a></li>
+                    <li><a href="{% url 'CCapp:top' %}" class="{% if request.path == '/top/' %}active{% endif %}">トップ</a></li>
                     <li><a href="{% url 'CCapp:profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}">プロフィール</a></li>
                     <li><a href="{% url 'CCapp:filter_area' %}" class="{% if request.path == '/filter_area/' %}active{% endif %}">絞り込み検索</a></li>
                     <li><a href="{% url 'CCapp:self_analy' %}" class="{% if request.path == '/self_analy/' %}active{% endif %}">自問自答</a></li>
