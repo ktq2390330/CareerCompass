@@ -27,7 +27,7 @@ from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
-
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 @login_required(login_url='CCapp:login')
@@ -128,7 +128,7 @@ class ContactView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
     
 class ProfileView(LoginRequiredMixin, FormView):
-    template_name = 'account_update.html'  # 使用するテンプレート
+    template_name = 'profile.html'  # 使用するテンプレート
     form_class = ProfileForm  # 使用するフォーム
     success_url = reverse_lazy('CCapp:profile')  # フォーム送信後のリダイレクトURL
     login_url = 'CCapp:login'  # ログインが必要な場合のリダイレクトURL
@@ -138,7 +138,7 @@ class ProfileView(LoginRequiredMixin, FormView):
         フォームの初期化時にユーザー情報を渡す
         """
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # フォームの初期値を設定
+        kwargs['user'] = self.request.user.profile  # プロフィール情報を渡す
         return kwargs
 
     def form_valid(self, form):
@@ -146,16 +146,22 @@ class ProfileView(LoginRequiredMixin, FormView):
         フォームが有効な場合、ユーザー情報を更新
         """
         user = self.request.user
+        profile = user.profile
+
         # フォームのデータでユーザー情報を更新
         for field, value in form.cleaned_data.items():
             if field == "password" and value:
                 user.set_password(value)  # パスワードは特別に処理
-            else:
-                setattr(user, field, value)  # 他のフィールドはそのままセット
-        user.save()
+            elif field != "password_conf":
+                setattr(profile, field, value)  # 他のフィールドはそのままセット
 
-        # 認証セッション情報を更新
-        update_session_auth_hash(self.request, user)
+        # パスワードが変更されている場合、セッションを更新
+        if form.cleaned_data.get("password"):
+            user.save()
+            update_session_auth_hash(self.request, user)
+
+        # プロフィールを保存
+        profile.save()
 
         messages.success(self.request, 'アカウント情報が更新されました。')
         return super().form_valid(form)
