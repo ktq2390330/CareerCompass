@@ -261,7 +261,7 @@ def question01(filePath):
                 for row in data:
                     question00Name,name=row['question00name'], row['name']
                     question00=Question00.objects.get(name=question00Name)
-                    instance,created=Category11.objects.get_or_create(name=name,question00=question00)
+                    instance,created=Question01.objects.get_or_create(name=name,question00=question00)
                     instanceDict[instance]=created
         except Category10.DoesNotExist:
             print(f"{question00Name} は存在しません")
