@@ -1,3 +1,9 @@
+/* リセットCSS */
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     max-width: 1200px;
     width: 90%;
@@ -14,7 +20,7 @@ h1.career-compass {
     text-align: center;
     font-style: italic;
     color: #000000;
-    margin-bottom: -1px;
+    margin-bottom: 0px;
     font-size: 85px;
 }
 
@@ -24,6 +30,19 @@ h2.admin {
     color: #000000;
 }
 
+/* ログインエラーメッセージ */
+.error-field {
+    height: 50px;
+    margin-top: 10px;
+}
+
+.error-field p {
+    color: #ff0000;
+    font-size: 14px;
+
+}
+
+/* コンテナ */
 .container {
     width: 370px;
     margin-top: 20px;

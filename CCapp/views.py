@@ -60,14 +60,20 @@ class LoginView(FormView):
         _mail = form.cleaned_data['mail']
         password = form.cleaned_data['password']
         try:
-            user = User.objects.get(mail=_mail, password=password)
+            user = User.objects.get(mail=_mail)
         except User.DoesNotExist:
+            # メールアドレスが見つからない場合
+            form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
+            return self.form_invalid(form)
+
+        # パスワードが一致しない場合
+        if not user.password == password:
             form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
             return self.form_invalid(form)
 
         login(self.request, user)
-        # 'top' という名前でURLをリダイレクト
         return redirect('CCapp:top')
+
 
 # 新規登録のviews
 class SignupView(View):
@@ -257,11 +263,17 @@ class AdmLoginView(FormView):
         _mail = form.cleaned_data['mail']
         password = form.cleaned_data['password']
         try:
-            user = User.objects.get(mail=_mail, password=password)
+            user = User.objects.get(mail=_mail)
         except User.DoesNotExist:
+            # メールアドレスが見つからない場合
             form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
             return self.form_invalid(form)
 
+        # パスワードの不一致
+        if not user.password == password:
+            form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
+            return self.form_invalid(form)
+        
         # authorityが0（管理者）の場合のみログインを許可
         if user.authority == 0:
             login(self.request, user)
