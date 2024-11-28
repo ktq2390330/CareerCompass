@@ -194,6 +194,7 @@ class LogoutConfView(LoginRequiredMixin, TemplateView):
 def LogoutView(request):
     logout(request)
     return redirect('CCapp:login')
+
 # delete_ac
 class Delete_acView(LoginRequiredMixin, TemplateView):
     template_name = 'delete_ac.html'
@@ -283,11 +284,13 @@ class AdmLoginView(FormView):
             return self.form_invalid(form)
 
 # logout_conf
-
-# logout
-class AdmLogoutView(TemplateView):
+class AdmLogoutConfView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_logout.html'
-    login_url = '#'
+# logout
+def AdmLogoutView(request):
+    logout(request)
+    return redirect('CCapp:adm_login')
+
 # post_list
 class AdmPostListView(TemplateView):
     template_name = 'adm_post_list.html'

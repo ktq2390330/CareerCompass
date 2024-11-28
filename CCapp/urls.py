@@ -10,7 +10,6 @@ urlpatterns = [
 
     # account
     path('', views.LoginView.as_view(), name='login'),
-    # path('login/', views.LoginView.as_view(), name='login'),
     path('logout_conf/', views.LogoutConfView.as_view(), name='logout_conf'),
     path('logout/', views.LogoutView, name='logout'),
     path('signup/', views.SignupView.as_view(), name='signup'),
@@ -31,7 +30,8 @@ urlpatterns = [
     # admin
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),
     path('adm_login/', views.AdmLoginView.as_view(), name='adm_login'),
-    path('adm_logout/', views.AdmLogoutView.as_view(), name='adm_logout'),
+    path('adm_logout_conf/', views.AdmLogoutConfView.as_view(), name='adm_logout_conf'),
+    path('adm_logout/', views.AdmLogoutView, name='adm_logout'),
     path('adm_post_list/', views.AdmPostListView.as_view(), name='adm_post_list'),
     path('adm_post/', views.AdmPostView.as_view(), name='adm_post'),
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),

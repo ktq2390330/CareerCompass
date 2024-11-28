@@ -9,46 +9,33 @@
 
 /* search-field */
 .search-field {
-    background-color: #ffffff;
-    border: 2px solid #000000;
-    padding: 40px;
-    border-radius: 20px;
-    max-width: 100%; /* 幅を画面にフィットさせる */
-    box-sizing: border-box; /* padding含めた幅制御 */
-    text-align: center;
-    margin: 0 auto;
-}
-
-/* 検索バーとボタンを横並びにするためのフレックスボックス */
-.search-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    background-color: #ffffff; /* 背景色 */
+    border: 2px solid #000000; /* 枠線 */
+    padding: 60px 40px; /* 内側の余白を上下60px、左右20pxに増やす */
+    margin: 100px auto; /* 上下に50pxの余白、左右は自動で中央揃え */
+    max-width: 1000px; /* 幅を制限 */
+    text-align: center; /* テキストとボタンを中央揃え */
 }
 
 /* 検索バー */
 .search-field input[type="text"] {
-    width: 70%; /* バーの幅を全体の70%に調整 */
-    padding: 15px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    font-size: 18px;
-    min-width: 150px;
-    box-sizing: border-box;
+    width: 650px; /* バーの幅を調整 */
+    padding: 20px; /* 入力フィールドの内側余白を増やす */
+    border: 1px solid #000000; /* 枠線の色 */
+    border-radius: 5px; /* 角の丸みを増やす */
+    font-size: 20px;
 }
 
 /* 検索ボタン */
 .search-field button {
-    padding: 12px 20px;
-    background-color: #3791ec;
+    padding: 12px 20px; /* ボタン内の余白を増やす */
+    background-color: #3791ec; /* ボタンの色 */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px; /* 角の丸みを増やす */
     cursor: pointer;
     width: 100px;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .search-field button:hover {

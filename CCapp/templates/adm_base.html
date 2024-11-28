@@ -27,7 +27,7 @@
             <!-- brand name -->
             <div id="brand">
                 <!-- ロゴ -->
-                <a class="brand" href="#"><i>Career
+                <a class="brand" href="{% url 'CCapp:adm_dashboard' %}"><i>Career
                     <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
 
                 <!-- 管理者タイトル -->
@@ -40,9 +40,9 @@
             <!-- Navigation-->
             <nav class="navigation">
                 <ul class="navigation-button">
-                    <li><a href="#top">トップ</a></li>
-                    <li><a href="#addpost">求人追加</a></li>
-                    <li><a href="#logout">ログアウト</a></li>
+                    <li><a href="{% url 'CCapp:adm_dashboard' %}" class="{% if request.path == '/adm_dashboard/' %}active{% endif %}">トップ</a></li>
+                    <li><a href="{% url 'CCapp:adm_post' %}" class="{% if request.path == '/adm_post/' %}active{% endif %}">求人追加</a></li>
+                    <li><a href="{% url 'CCapp:adm_logout_conf' %}" class="{% if request.path == '/adm_logout_conf/' %}active{% endif %}">ログアウト</a></li>
                 </ul>
             </nav>
         </header>
