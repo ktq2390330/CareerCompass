@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Assessment
 
 class LoginForm(forms.Form):
     mail = forms.CharField(max_length=150)
@@ -130,3 +131,11 @@ class ContactForm(forms.Form):
         if not email:
             raise forms.ValidationError("正しいメールアドレスの形式で入力してください。")
         return email
+
+class AssessmentForm(forms.ModelForm):
+    class Meta:
+        model = Assessment
+        fields = ['answer']  # 回答のみ
+        widgets = {
+            'answer': forms.Textarea(attrs={'style': 'width: 100%; resize: none;', 'rows': 1}),
+        }

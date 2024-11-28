@@ -349,17 +349,77 @@ class SearchresultView(LoginRequiredMixin, TemplateView):
 
 # soliloquizing
 # self_analy
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Question00, Question01, Assessment
+from .forms import AssessmentForm  # 必要であればフォームを使う
+
 @login_required(login_url='CCapp:login')
 def self_analy_view(request):
     # データベースから自己分析の情報を取得
     question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
     self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
 
+    # 初期データを設定（既に保存された回答があれば、それをフォームに表示）
+    initial_data = {}
+    for question in self_analy_list:
+        assessment = Assessment.objects.filter(user=request.user, question01=question).first()
+        if assessment:
+            initial_data[question.id] = assessment.answer
+
+    # POSTリクエストが来た場合（回答が送信された場合）
+    if request.method == 'POST':
+        # 各質問に対して回答を保存
+        for question in self_analy_list:
+            answer = request.POST.get(f'answer_{question.id}', '')
+            # 回答がある場合は保存または更新
+            assessment, created = Assessment.objects.update_or_create(
+                user=request.user,
+                question01=question,
+                defaults={'answer': answer},
+            )
+        return redirect('self_analy')  # 保存後、自分のページにリダイレクト
+
     # テンプレートにデータを渡す
     return render(request, 'soliloquizing_self_analy.html', {
         'question_title_list': question_title_list,
         'self_analy_list': self_analy_list,
+        'initial_data': initial_data,  # 回答済みのデータをフォームに表示
     })
+
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from .models import Assessment, Question01
+
+@login_required
+def save_answer_view(request):
+    if request.method == "POST":
+        user = request.user
+
+        # POSTデータから回答を保存
+        print(request.POST.items())
+        for key, value in request.POST.items():
+            if key.startswith("answer_"):
+                question_id = key.split("_")[1]  # フォームの名前から質問IDを取得
+                try:
+                    question01 = Question01.objects.get(id=question_id)
+                    # 既存の回答がある場合は更新、なければ作成
+                    Assessment.objects.update_or_create(
+                        user=user,
+                        question01=question01,
+                        defaults={'answer': value.strip()}
+                    )
+                except Question01.DoesNotExist:
+                    # 質問が存在しない場合はスキップ
+                    continue
+
+        # 成功後にリダイレクト
+        return redirect("CCapp:self_analy")
+
+    # GETリクエストの場合
+    return redirect("CCapp:self_analy")
+
+
 
 # axis
 class AxisView(LoginRequiredMixin, TemplateView):

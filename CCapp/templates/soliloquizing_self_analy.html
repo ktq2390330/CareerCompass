@@ -15,37 +15,48 @@
 <!-- soliloquizing_base.htmlにぶち込む部分 -->
 {% block soliloquizing %}
 
-    {% if question_title %}
-        <h2>{{ question_title.name }}</h2> <!-- タイトルを表示 -->
-    {% endif %}
+    <form method="POST" action="{% url 'CCapp:save_answer' %}">
+        {% csrf_token %}
+    
+        {% if question_title %}
+            <h2>{{ question_title.name }}</h2> <!-- タイトルを表示 -->
+        {% endif %}
 
-    {% for self_analy in self_analy_list %}
-        <label for="question{{ forloop.counter }}" style="display: block; text-align: left;">Q{{ forloop.counter }}: {{ self_analy.name }}</label>
-        <textarea id="question{{ forloop.counter }}" name="question{{ forloop.counter }}" class="question-input"></textarea><br>
-    {% endfor %}
+        {% for self_analy in self_analy_list %}
+            <label for="question{{ forloop.counter }}" style="display: block; text-align: left;">Q{{ forloop.counter }}: {{ self_analy.name }}</label>
+            <textarea id="question{{ forloop.counter }}" name="answer_{{ self_analy.id }}" class="question-input"></textarea><br>
+        {% endfor %}
 
+        <!-- 保存ボタン -->
+        <div class="save-button-container">
+            <button type="submit" class="save-button">保存</button>
+        </div>
+    </form>
 
 {% endblock %}
 
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        const textarea = document.getElementById('question{{ forloop.counter }}');
+        // すべてのtextareaに対して高さ自動調整機能を適用
+        const textareas = document.querySelectorAll('.question-input');
         
         // 高さを自動調整する関数
         const adjustHeight = (element) => {
             element.style.height = 'auto'; // 初期化
             element.style.height = element.scrollHeight + 'px'; // 必要な高さにリサイズ
         };
-    
-        // ページ読み込み時に初期サイズを設定
-        adjustHeight(textarea);
-    
-        // 入力イベントごとに高さを調整
-        textarea.addEventListener('input', function() {
-            adjustHeight(this);
+
+        // 各textareaに対してイベントリスナーを追加
+        textareas.forEach(textarea => {
+            // ページ読み込み時に初期サイズを設定
+            adjustHeight(textarea);
+
+            // 入力イベントごとに高さを調整
+            textarea.addEventListener('input', function() {
+                adjustHeight(this);
+            });
         });
     });
-    
 
 </script>
