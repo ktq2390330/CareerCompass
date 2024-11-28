@@ -18,7 +18,7 @@
     <div class="soliloquizing-field">
         <!-- soliloquizing-navigation -->
         {% url 'CCapp:self_analy' as self_analy_url %}
-        <nav class="soliloquizing_navigation">
+        <nav class="soliloquizing-navigation">
             <ul class="soliloquizing-navigation-button">
                 <li>
                     <a href="{{ self_analy_url }}"
@@ -49,11 +49,13 @@
                 </li>
             </ul>
         </nav>
+
+        <!-- ここに各入力項目が入る -->
+        {% block soliloquizing %}{% endblock %}
+
     </div>
 
     <form>
-        <!-- ここに各入力項目が入る -->
-        {% block soliloquizing %}{% endblock %}
 
         <!-- 保存ボタン -->
         <div class="save-button-container">

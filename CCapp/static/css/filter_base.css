@@ -15,7 +15,10 @@
         background-color: #ffffff; /* 背景色 */
         border: 2px solid #000000; /* 枠線 */
         padding: 60px 40px; /* 内側の余白を上下60px、左右40pxに増やす */
-        margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+        margin-bottom: 50px;
         max-width: 1000px; /* 幅を制限 */
         text-align: center; /* テキストとボタンを中央揃え */
     }
@@ -94,7 +97,6 @@
     .search-button-container {
         display: flex;
         justify-content: center;
-        margin-top: 20px; /* 上に少し余白を追加 */
     }
 
     .search-button {
@@ -102,7 +104,7 @@
         background-color: #4598eb; /* ボタンの色 */
         color: white;
         border: none;
-        border-radius: 5px; /* 角の丸みを増やす */
+        border-radius: 8px; /* 角の丸みを増やす */
         cursor: pointer;
         width: 100px; /* ボタンの幅 */
         font-size: 20px;

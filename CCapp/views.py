@@ -346,19 +346,32 @@ class SearchresultView(LoginRequiredMixin, TemplateView):
     login_url = 'CCapp:login'
 
 
-# self
-class SelfAnalyView(LoginRequiredMixin, TemplateView):
-    template_name = 'soliloquizing_self_analy.html'
-    login_url = 'CCapp:login'
 
+# soliloquizing
+# self_analy
+@login_required(login_url='CCapp:login')
+def self_analy_view(request):
+    # データベースから自己分析の情報を取得
+    question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
+    self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
+
+    # テンプレートにデータを渡す
+    return render(request, 'soliloquizing_self_analy.html', {
+        'question_title_list': question_title_list,
+        'self_analy_list': self_analy_list,
+    })
+
+# axis
 class AxisView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_axis.html'
     login_url = 'CCapp:login'
 
+# industry
 class IndustryView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_industry.html'
     login_url = 'CCapp:login'
 
+# jobtype
 class JobtypeView(LoginRequiredMixin, TemplateView):
     template_name = 'soliloquizing_jobtype.html'
     login_url = 'CCapp:login'
