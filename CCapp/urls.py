@@ -13,6 +13,8 @@ urlpatterns = [
     path('logout_conf/', views.LogoutConfView.as_view(), name='logout_conf'),
     path('logout/', views.LogoutView, name='logout'),
     path('signup/', views.SignupView.as_view(), name='signup'),
+    path('delete_ac/', views.Delete_acView.as_view(), name='delete_ac'),
+    path('delete_done/', views.Delete_ac_doneView.as_view(), name='delete_done'),
 
     # contact
     path('contact/',views.ContactView.as_view(), name='contact'),

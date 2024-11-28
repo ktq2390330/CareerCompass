@@ -19,6 +19,7 @@ from .forms import ContactForm
 from django.contrib import messages
 # django.core.mailモジュールからEmailMessageをインポート
 from django.core.mail import EmailMessage
+from django.db import DatabaseError
 
 from .forms import ProfileForm
 from django.contrib.auth import update_session_auth_hash
@@ -195,9 +196,40 @@ def LogoutView(request):
     logout(request)
     return redirect('CCapp:login')
 
-# delete_ac
-class Delete_acView(LoginRequiredMixin, TemplateView):
-    template_name = 'delete_ac.html'
+# アカウント削除確認画面と処理
+class Delete_acView(View):
+    def get(self, request):
+        # アカウント削除確認画面を表示
+        return render(request, 'delete_ac.html')
+
+    def post(self, request):
+        action = request.POST.get('action')
+
+        if action == 'yes':  # ユーザーが「はい」を選択した場合
+            try:
+                user = request.user
+                user.delete()  # アカウント削除処理
+                logout(request)  # ログアウトしてセッションを削除
+                return redirect('CCapp:delete_done')  # 完了画面へリダイレクト
+
+            except DatabaseError:
+                # データベースエラーの場合のエラーメッセージ
+                messages.error(request, 'エラーが発生しました。再試行してください。', extra_tags='delete_error')
+            except Exception:
+                # 予期しないエラーの場合のエラーメッセージ
+                messages.error(request, '予期しないエラーが発生しました。', extra_tags='delete_error')
+
+            return redirect('CCapp:delete_ac')  # 削除確認画面に戻る
+
+        elif action == 'no':  # ユーザーが「いいえ」を選択した場合
+            return redirect('CCapp:top')  # トップページにリダイレクト
+
+
+# アカウント削除完了画面
+class Delete_ac_doneView(View):
+    def get(self, request):
+        return render(request, 'delete_done.html')
+    
 # edit_ac
 class Edit_acView(LoginRequiredMixin, TemplateView):
     template_name = 'edit_ac.html'
