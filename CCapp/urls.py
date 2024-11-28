@@ -53,7 +53,7 @@ urlpatterns = [
     path('search_result/', views.SearchresultView.as_view(), name='search_result'),
 
     # self
-    path('self_analy/', views.SelfAnalyView.as_view(), name='self_analy'),
+    path('self_analy/', views.self_analy_view, name='self_analy'),
     path('axis/', views.AxisView.as_view(), name='axis'),
     path('industry/', views.IndustryView.as_view(), name='industry'),
     path('jobtype/', views.JobtypeView.as_view(), name='jobtype'),
