@@ -135,42 +135,33 @@ class ContactView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
     
 class ProfileView(LoginRequiredMixin, FormView):
-    template_name = 'profile.html'  # 使用するテンプレート
-    form_class = ProfileForm  # 使用するフォーム
-    success_url = reverse_lazy('CCapp:profile')  # フォーム送信後のリダイレクトURL
-    login_url = 'CCapp:login'  # ログインが必要な場合のリダイレクトURL
+    template_name = 'profile.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('CCapp:profile')
+    login_url = 'CCapp:login'
 
-    def get_form_kwargs(self):
+    def get_initial(self):
         """
-        フォームの初期化時にユーザー情報を渡す
+        初期値を設定
         """
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user.profile  # プロフィール情報を渡す
-        return kwargs
+        user = self.request.user
+        profile, created = Profile.objects.get_or_create(user=user, defaults={"birth": "2000-01-01",})
+        initial = super().get_initial()
+        for field in self.form_class.Meta.fields:
+            initial[field] = getattr(profile, field, None)
+        return initial
 
     def form_valid(self, form):
         """
-        フォームが有効な場合、ユーザー情報を更新
+        フォームが有効な場合、プロフィール情報を保存
         """
-        user = self.request.user
-        profile = user.profile
+        profile, _ = Profile.objects.get_or_create(user=self.request.user)
 
-        # フォームのデータでユーザー情報を更新
         for field, value in form.cleaned_data.items():
-            if field == "password" and value:
-                user.set_password(value)  # パスワードは特別に処理
-            elif field != "password_conf":
-                setattr(profile, field, value)  # 他のフィールドはそのままセット
-
-        # パスワードが変更されている場合、セッションを更新
-        if form.cleaned_data.get("password"):
-            user.save()
-            update_session_auth_hash(self.request, user)
-
-        # プロフィールを保存
+            setattr(profile, field, value)
         profile.save()
 
-        messages.success(self.request, 'アカウント情報が更新されました。')
+        messages.success(self.request, 'プロフィール情報が更新されました。')
         return super().form_valid(form)
 
     def form_invalid(self, form):

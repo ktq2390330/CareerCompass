@@ -73,6 +73,11 @@ class ProfileForm(forms.ModelForm):
             'birth': forms.DateInput(attrs={'type': 'date'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # `user` を取得
+        super().__init__(*args, **kwargs)
+
+
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
@@ -82,12 +87,13 @@ class ProfileForm(forms.ModelForm):
             self.add_error('password_conf', "パスワードが一致しません。")
 
         return cleaned_data
-
+    
     def save(self, commit=True):
         profile = super().save(commit=False)
-        password = self.cleaned_data.get('password')
-        if password:
-            profile.user.set_password(password)  # `set_password` を使う場合は関連付けた `User` が必要
+        if self.user and self.cleaned_data.get('password'):
+            self.user.set_password(self.cleaned_data['password'])
+            if commit:
+                self.user.save()
         if commit:
             profile.save()
         return profile
