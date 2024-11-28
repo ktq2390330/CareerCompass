@@ -25,15 +25,15 @@ class OfferFilter(filters.FilterSet):
             "status", "period"
         ]
 
-def filter_offers(filters, is_admin=False):
+def filter_offers(filters, authority):
     """
-    Offersをフィルタリングする関数。
+    Offersをフィルタリングする関数（OR検索対応）。
     
     :param filters: dict - フィルタ条件の辞書。
-        - name: str | None - 求人名の部分一致。
+        - name: list[str] | None - 求人名の部分一致キーワードリスト。
         - welfare: list[str] | None - 福利厚生のリスト。
-        - area0: str | None - エリア0名。
-        - area1: str | None - エリア1名。
+        - area0: list[str] | None - エリア0名リスト。
+        - area1: list[str] | None - エリア1名リスト。
         - category00: list[str] | None - カテゴリ00のリスト。
         - category01: list[str] | None - カテゴリ01のリスト。
         - category10: list[str] | None - カテゴリ10のリスト。
@@ -45,21 +45,31 @@ def filter_offers(filters, is_admin=False):
     """
     query = Q()
 
-    # 1. 求人名フィルタ
+    # 1. 求人名フィルタ（OR検索対応）
     if filters.get("name"):
-        query &= Q(name__icontains=filters["name"])
+        name_query = Q()
+        for keyword in filters["name"]:
+            name_query |= Q(name__icontains=keyword)
+        query &= name_query
     
-    # 2. 福利厚生フィルタ
+    # 2. 福利厚生フィルタ（OR検索対応）
     if filters.get("welfare"):
         query &= Q(welfare__name__in=filters["welfare"])
     
-    # 3. エリアフィルタ
+    # 3. エリアフィルタ（OR検索対応）
     if filters.get("area0"):
-        query &= Q(area1__area0__name__icontains=filters["area0"])
-    if filters.get("area1"):
-        query &= Q(area1__name__icontains=filters["area1"])
+        area0_query = Q()
+        for keyword in filters["area0"]:
+            area0_query |= Q(area1__area0__name__icontains=keyword)
+        query &= area0_query
     
-    # 4. カテゴリフィルタ
+    if filters.get("area1"):
+        area1_query = Q()
+        for keyword in filters["area1"]:
+            area1_query |= Q(area1__name__icontains=keyword)
+        query &= area1_query
+    
+    # 4. カテゴリフィルタ（OR検索対応）
     if filters.get("category00"):
         query &= Q(category00__name__in=filters["category00"])
     if filters.get("category01"):
@@ -69,12 +79,15 @@ def filter_offers(filters, is_admin=False):
     if filters.get("category11"):
         query &= Q(category11__name__in=filters["category11"])
     
-    # 5. 法人フィルタ
+    # 5. 法人フィルタ（OR検索対応）
     if filters.get("corporation"):
-        query &= Q(corporation__name__in=filters["corporation"])
+        corp_query = Q()
+        for keyword in filters["corporation"]:
+            corp_query |= Q(corporation__name__icontains=keyword)
+        query &= corp_query
     
     # 6. ユーザー用の公開状況フィルタ
-    if not is_admin:
+    if authority==2:
         query &= Q(status=True) & Q(period__gt=now())
 
     # Offerのフィルタリング

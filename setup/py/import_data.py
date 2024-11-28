@@ -279,13 +279,13 @@ def assessment(filePath):
             data=readFile(filePath)
             with transaction.atomic():
                 for row in data:
-                    userId,question01Name,answer=row['userID'],row['question01name'],row['answer']
-                    user=User.objects.get(id=userId)
+                    mail,question01Name,answer=row['mail'],row['question01name'],row['answer']
+                    user=User.objects.get(mail=mail)
                     question01=Question01.objects.get(question01Name)
                     instance,created=User.objects.get_or_create(user=user,question01=question01,answer=answer)
                     instanceDict[instance]=created
         except User.DoesNotExist:
-            print(f"userID: {userId} は存在しません")
+            print(f"mail: {mail} は存在しません")
         except Question01.DoesNotExist:
             print(f"questionName: {question01Name} は存在しません")
         except FileNotFoundError:
@@ -440,7 +440,7 @@ functionMap={
     'category11.csv':category11,
     'tag.csv':tag,
     'user.csv':user,
-    # 'profile.csv':profile,
+    'profile.csv':profile,
     'question00.csv':question00,
     'question01.csv':question01,
     # 'assessment.csv':assessment,
