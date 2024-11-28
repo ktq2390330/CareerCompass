@@ -123,3 +123,10 @@ class ContactForm(forms.Form):
         'お問い合わせ内容を入力してください'
         # messageフィールドの出力する<input>タグのclass属性を設定
         self.fields['message'].widget.attrs['class'] = 'form-control'
+
+    # メールアドレスが正しい形式かチェック
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError("正しいメールアドレスの形式で入力してください。")
+        return email
