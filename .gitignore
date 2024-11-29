@@ -5,7 +5,7 @@ __pycache__/
 *.pyd
 
 # Django関連
-# media/
+media/
 
 # 環境ファイル
 .env
