@@ -145,7 +145,14 @@ class ProfileView(LoginRequiredMixin, FormView):
         初期値を設定
         """
         user = self.request.user
-        profile, created = Profile.objects.get_or_create(user=user, defaults={"birth": "2000-01-01",})
+        profile, created = Profile.objects.get_or_create(
+            user=user,
+            defaults={
+                "birth": "2000-01-01",
+                "graduation": 20240331,
+                "sClass": 1,
+                "sol":1,
+                })
         initial = super().get_initial()
         for field in self.form_class.Meta.fields:
             initial[field] = getattr(profile, field, None)

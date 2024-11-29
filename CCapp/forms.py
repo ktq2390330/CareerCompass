@@ -39,9 +39,6 @@ class SignupForm(forms.Form):
 # プロフィール更新用フォーム
 from .models import Profile
 class ProfileForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード')
-    password_conf = forms.CharField(widget=forms.PasswordInput, required=False, label='パスワード確認')
-
     class Meta:
         model = Profile
         fields = [
@@ -71,32 +68,32 @@ class ProfileForm(forms.ModelForm):
             'uOffer': '内定先',
         }
         widgets = {
-            'birth': forms.DateInput(attrs={'type': 'date'}),
+            'birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'graduation': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'uTel': forms.TextInput(attrs={'placeholder': '例: 09012345678'}),
+            'postalCode': forms.TextInput(attrs={'placeholder': '例: 123-4567'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)  # `user` を取得
-        super().__init__(*args, **kwargs)
-
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        password_conf = cleaned_data.get('password_conf')
 
-        if password and password != password_conf:
-            self.add_error('password_conf', "パスワードが一致しません。")
+        # 必須フィールドの確認
+        if not cleaned_data.get('graduation'):
+            self.add_error('graduation', "卒業年度は必須です。")
+
+        if not cleaned_data.get('birth'):
+            self.add_error('birth', "生年月日は必須です。")
 
         return cleaned_data
     
+    def clean_graduation(self):
+        graduation_date = self.cleaned_data.get('graduation')
+        if graduation_date:
+            return graduation_date.year  # 年の部分のみを返す
+        return None
+    
     def save(self, commit=True):
-        profile = super().save(commit=False)
-        if self.user and self.cleaned_data.get('password'):
-            self.user.set_password(self.cleaned_data['password'])
-            if commit:
-                self.user.save()
-        if commit:
-            profile.save()
+        profile = super().save(commit=commit)
         return profile
 
 
