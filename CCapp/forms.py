@@ -45,7 +45,7 @@ class ProfileForm(forms.ModelForm):
             'furigana', 'nationality', 'birth', 'gender', 'graduation', 
             'uSchool', 'sClass', 'sol', 'department', 'uTel', 
             'postalCode', 'uAddress', 'category00', 'category01', 
-            'category10', 'category11', 'area1', 'uOffer'
+            'category10', 'category11', 'area1', 'uOffer', 'photo'
         ]
         labels = {
             'furigana': 'フリガナ',
@@ -66,6 +66,7 @@ class ProfileForm(forms.ModelForm):
             'category11': 'カテゴリ11',
             'area1': 'エリア1',
             'uOffer': '内定先',
+            'photo': 'プロフィール写真'
         }
         widgets = {
             'birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
