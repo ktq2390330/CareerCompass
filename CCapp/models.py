@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.timezone import now
 
 
+# Userモデル
 class UserManager(BaseUserManager):
     def create_user(self, mail, password=None, **extra_fields):
         if not mail:
@@ -19,12 +20,12 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス")
-    name = models.CharField(max_length=64, verbose_name="名前",blank=True)
+    mail = models.EmailField(max_length=255, unique=True, verbose_name="メールアドレス", db_index=True)
+    name = models.CharField(max_length=64, verbose_name="名前", blank=True)
     authority = models.IntegerField(
         choices=[(0, "Admin"), (1, "Support Staff"), (2, "Service User")],
         default=2,
-        verbose_name="権限"
+        verbose_name="権限",
     )
     objects = UserManager()
     USERNAME_FIELD = 'mail'
@@ -187,8 +188,9 @@ class Corporation(models.Model):
         return self.name
 
 
-# 求人情報
-class Offer(Base):
+# Offerモデル
+class Offer(models.Model):
+    name = models.CharField(max_length=64, verbose_name="求人名", db_index=True)
     detail = models.TextField(verbose_name="詳細")
     solicitation = models.TextField(verbose_name="募集要項")
     course = models.CharField(max_length=256, verbose_name="コース名")
@@ -205,21 +207,25 @@ class Offer(Base):
     salaryRaise = models.CharField(max_length=64, verbose_name="昇給")
     bonus = models.CharField(max_length=32, verbose_name="賞与")
     holiday = models.TextField(verbose_name="休日休暇")
-    welfare = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, verbose_name="福利厚生")
+    welfare = models.ForeignKey('Tag', on_delete=models.SET_NULL, null=True, verbose_name="福利厚生", db_index=True)
     workingHours = models.CharField(max_length=256, verbose_name="勤務時間")
-    area1 = models.ForeignKey(Area1, on_delete=models.SET_NULL, null=True, verbose_name="エリア1", related_name="offer_area1")
-    category00 = models.ForeignKey(Category00, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ00")
-    category01 = models.ForeignKey(Category01, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ01")
-    category10 = models.ForeignKey(Category10, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ10")
-    category11 = models.ForeignKey(Category11, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11")
-    corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, null=True, verbose_name="法人")
+    area1 = models.ForeignKey('Area1', on_delete=models.SET_NULL, null=True, verbose_name="エリア1", related_name="offer_area1", db_index=True)
+    category00 = models.ForeignKey('Category00', on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ00", db_index=True)
+    category01 = models.ForeignKey('Category01', on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ01", db_index=True)
+    category10 = models.ForeignKey('Category10', on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ10", db_index=True)
+    category11 = models.ForeignKey('Category11', on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11", db_index=True)
+    corporation = models.ForeignKey('Corporation', on_delete=models.CASCADE, null=True, verbose_name="法人", db_index=True)
     applicants = models.ManyToManyField(User, through="OfferEntry", verbose_name="応募者リスト", related_name="offer_offerEntry")
-    period = models.DateTimeField(verbose_name="公開期限")
-    status = models.BooleanField(default=False, verbose_name="公開状況")
+    period = models.DateTimeField(verbose_name="公開期限", db_index=True)
+    status = models.BooleanField(default=False, verbose_name="公開状況", db_index=True)
 
     class Meta:
         db_table = 'offer'
         verbose_name = '求人'
+        indexes = [
+            models.Index(fields=['status', 'period']),
+            models.Index(fields=['area1', 'category00', 'category10']),
+        ]
 
     def is_active(self):
         return self.status and self.period > now()
@@ -231,6 +237,7 @@ class Offer(Base):
         return f"{self.name} ({self.corporation.name if self.corporation else '未設定'})"
 
 
+
 class OfferEntry(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, verbose_name="求人", related_name="offerApp_offer")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="ユーザ", related_name="offerApp_user")
@@ -240,6 +247,9 @@ class OfferEntry(models.Model):
         db_table = 'offer_entry'
         verbose_name = '求人応募'
         unique_together = ('offer', 'user')
+        indexes = [
+            models.Index(fields=['offer', 'user']),
+        ]
 
     def __str__(self):
         return f"{self.user.name} applied to {self.offer.name}"
@@ -247,13 +257,14 @@ class OfferEntry(models.Model):
 
 # 自己分析
 class Assessment(models.Model):
-    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name="ユーザID")
-    question01 = models.ForeignKey("Question01", on_delete=models.CASCADE, verbose_name="質問", related_name="assessment_question01")
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name="ユーザID")
+    question01 = models.ForeignKey("Question01",on_delete=models.PROTECT,verbose_name="質問",related_name="assessment_question01")
     answer = models.TextField(verbose_name="回答")
 
     class Meta:
         db_table = 'assessment'
         verbose_name = '自己分析'
+        unique_together = ('user', 'question01') 
 
     def __str__(self):
         return f"Assessment for {self.user.name}"
