@@ -156,3 +156,6 @@ AUTHENTICATION_BACKENDS = [
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 AUTH_USER_MODEL = 'CCapp.User'
+
+MEDIA_URL = '/media/'  # メディアファイルのURLパス
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # メディアファイルの保存場所

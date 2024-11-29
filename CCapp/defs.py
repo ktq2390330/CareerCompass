@@ -79,3 +79,28 @@ def readFile(filePath):
     except Exception as e:
         print(f'error in readFile: {e}')
         return None
+
+# ファイルへの書き込み関数（対応ファイル: csv, json, txt）
+def writeFile(filePath, data):
+    logsOutput(filePath)
+    try:
+        if filePath.endswith('.csv'):
+            with open(filePath, mode='w', newline='', encoding='utf-8') as file:
+                if isinstance(data, list) and data:
+                    writer = csv.DictWriter(file, fieldnames=data[0].keys())
+                    writer.writeheader()
+                    writer.writerows(data)
+                else:
+                    raise ValueError("CSV書き込みにはリスト形式のデータが必要です。")
+        elif filePath.endswith('.json'):
+            with open(filePath, 'w', encoding='utf-8') as file:
+                json.dump(data, file, ensure_ascii=False, indent=4)
+        elif filePath.endswith('.txt'):
+            with open(filePath, 'w', encoding='utf-8') as file:
+                file.write(data)
+        else:
+            raise ValueError("サポートされていないファイル形式です。TEXT, CSVまたはJSONファイルを使用してください。")
+    except Exception as e:
+        print(f'error in writeFile: {e}')
+        return False
+    return True

@@ -150,6 +150,7 @@ class Profile(models.Model):
     category11 = models.ForeignKey(Category11, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11")
     area1 = models.ForeignKey(Area1, on_delete=models.SET_NULL, null=True, verbose_name="エリア1")
     uOffer = models.CharField(max_length=256, verbose_name="内定先")
+    photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True, verbose_name="プロフィール写真")
 
     class Meta:
         db_table = "profile"
