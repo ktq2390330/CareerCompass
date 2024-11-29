@@ -257,6 +257,7 @@ class OfferEntry(models.Model):
 
 # 自己分析
 class Assessment(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name="ID")
     user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name="ユーザID")
     question01 = models.ForeignKey("Question01",on_delete=models.PROTECT,verbose_name="質問",related_name="assessment_question01")
     answer = models.TextField(verbose_name="回答")
@@ -264,7 +265,6 @@ class Assessment(models.Model):
     class Meta:
         db_table = 'assessment'
         verbose_name = '自己分析'
-        unique_together = ('user', 'question01') 
 
     def __str__(self):
         return f"Assessment for {self.user.name}"
