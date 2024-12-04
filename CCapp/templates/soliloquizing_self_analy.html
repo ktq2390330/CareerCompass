@@ -4,6 +4,9 @@
 <!-- staticタグを使うために追加 -->
 {% load static %}
 
+<!-- カスタムフィルターを読み込む -->
+{% load custom_filters %}
+
 <!-- タイトル -->
 {% block title %}soliloquizing_self_analy{% endblock %}
 
@@ -23,8 +26,12 @@
         {% endif %}
 
         {% for self_analy in self_analy_list %}
-            <label for="question{{ forloop.counter }}" style="display: block; text-align: left;">Q{{ forloop.counter }}: {{ self_analy.name }}</label>
-            <textarea id="question{{ forloop.counter }}" name="answer_{{ self_analy.id }}" class="question-input"></textarea><br>
+        <label for="question{{ forloop.counter }}">Q{{ forloop.counter }}: {{ self_analy.name }}</label>
+        <textarea id="question{{ forloop.counter }}" name="answer_{{ self_analy.id }}" class="question-input">
+            {% if self_analy.id in form.initial %}
+                {{ form.initial|get_item:self_analy.id }}
+            {% endif %}
+        </textarea><br>
         {% endfor %}
 
         <!-- 保存ボタン -->
@@ -36,7 +43,6 @@
 {% endblock %}
 
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         // すべてのtextareaに対して高さ自動調整機能を適用
         const textareas = document.querySelectorAll('.question-input');
@@ -58,5 +64,4 @@
             });
         });
     });
-
 </script>

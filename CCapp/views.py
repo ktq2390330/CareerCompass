@@ -370,29 +370,22 @@ def self_analy_view(request):
     # 初期データを設定（既に保存された回答があれば、それをフォームに表示）
     initial_data = {}
     for question in self_analy_list:
+        # ユーザーがこの質問に対して回答したか確認
         assessment = Assessment.objects.filter(user=request.user, question01=question).first()
         if assessment:
-            initial_data[question.id] = assessment.answer
+            initial_data[f'answer_{question.id}'] = assessment.answer
 
-    # POSTリクエストが来た場合（回答が送信された場合）
-    if request.method == 'POST':
-        # 各質問に対して回答を保存
-        for question in self_analy_list:
-            answer = request.POST.get(f'answer_{question.id}', '')
-            # 回答がある場合は保存または更新
-            assessment, created = Assessment.objects.update_or_create(
-                user=request.user,
-                question01=question,
-                defaults={'answer': answer},
-            )
-        return redirect('self_analy')  # 保存後、自分のページにリダイレクト
+
+    form = AssessmentForm(initial=initial_data)
 
     # テンプレートにデータを渡す
     return render(request, 'soliloquizing_self_analy.html', {
         'question_title_list': question_title_list,
         'self_analy_list': self_analy_list,
-        'initial_data': initial_data,  # 回答済みのデータをフォームに表示
+        'form': form,  # フォームも渡す
     })
+
+
 
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
