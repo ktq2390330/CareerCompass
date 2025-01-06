@@ -469,11 +469,41 @@ def industry_view(request):
         'form': form,
     })
 
-
 # jobtype
-class JobtypeView(LoginRequiredMixin, TemplateView):
-    template_name = 'soliloquizing_jobtype.html'
-    login_url = 'CCapp:login'
+@login_required(login_url='CCapp:login')
+def jobtype_view(request):
+    # データベースから質問を取得
+    question_title_list = Question00.objects.filter(id=4)
+    jobtype_list = Question01.objects.filter(question00_id=4)
+
+    # フォームの初期データを動的に設定
+    form = AssessmentForm(
+        questions=jobtype_list, 
+        user=request.user,
+        data=request.POST or None  # POSTデータがあれば渡す
+    )
+
+    if request.method == "POST" and form.is_valid():
+        # 保存処理
+        for question in jobtype_list:
+            answer_key = f'answer_{question.id}'
+            if answer_key in form.cleaned_data:
+                answer_value = form.cleaned_data[answer_key]
+
+                # 既存の回答があれば更新、なければ作成
+                Assessment.objects.update_or_create(
+                    user=request.user,
+                    question01=question,
+                    defaults={'answer': answer_value}
+                )
+
+        return redirect('CCapp:jobtype')
+
+    return render(request, 'soliloquizing_jobtype.html', {
+        'question_title_list': question_title_list,
+        'self_analy_list': jobtype_list,
+        'form': form,
+    })
 
 @login_required(login_url='CCapp:login')
 def save_answer_view(request):
