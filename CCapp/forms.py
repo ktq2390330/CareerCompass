@@ -144,10 +144,7 @@ class AssessmentForm(forms.Form):
 
             self.fields[f'answer_{question.id}'] = forms.CharField(
                 label=f'Q: {question.name}',
-                widget=forms.Textarea(attrs={
-                    'style': 'width: 100%; resize: none;',
-                    'rows': 2,
-                }),
+                widget=forms.Textarea(attrs={'rows': 2}),  # style属性を削除
                 initial=initial_value,
                 required=False
             )
