@@ -130,10 +130,24 @@ class ContactForm(forms.Form):
             raise forms.ValidationError("正しいメールアドレスの形式で入力してください。")
         return email
 
-class AssessmentForm(forms.ModelForm):
-    class Meta:
-        model = Assessment
-        fields = ['answer']  # 回答のみ
-        widgets = {
-            'answer': forms.Textarea(attrs={'style': 'width: 100%; resize: none;', 'rows': 1}),
-        }
+class AssessmentForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.questions = kwargs.pop('questions')  # 質問リストを受け取る
+        self.user = kwargs.pop('user')  # 現在のユーザーを受け取る
+        super().__init__(*args, **kwargs)
+
+        # 動的にフィールドを追加
+        for question in self.questions:
+            # ユーザーの回答を取得（もし存在すれば）
+            existing_answer = Assessment.objects.filter(user=self.user, question01=question).first()
+            initial_value = existing_answer.answer if existing_answer else ""
+
+            self.fields[f'answer_{question.id}'] = forms.CharField(
+                label=f'Q: {question.name}',
+                widget=forms.Textarea(attrs={
+                    'style': 'width: 100%; resize: none;',
+                    'rows': 2,
+                }),
+                initial=initial_value,
+                required=False
+            )

@@ -10,27 +10,37 @@
 <!-- タイトル -->
 {% block title %}soliloquizing_self_analy{% endblock %}
 
-<!-- 埋め込む用のcssを読み込む -->
+<!-- 埋め込む用のCSSを読み込む -->
 {% block head2 %}
-    {% comment %} <link href="{% static 'css/soliloquizing.css' %}" rel="stylesheet"> {% endcomment %}
+    <link href="{% static 'css/soliloquizing.css' %}" rel="stylesheet">
 {% endblock %}
 
 <!-- soliloquizing_base.htmlにぶち込む部分 -->
 {% block soliloquizing %}
 
-    <form method="POST" action="{% url 'CCapp:save_answer' %}">
+    <form method="POST" action="{% url 'CCapp:self_analy' %}">
         {% csrf_token %}
-    
-        {% if question_title %}
-            <h2>{{ question_title.name }}</h2> <!-- タイトルを表示 -->
+
+        <!-- 質問のタイトルを表示 -->
+        {% if question_title_list %}
+            {% for title in question_title_list %}
+                <h2>{{ title.name }}</h2>
+            {% endfor %}
         {% endif %}
 
-        {% for self_analy in self_analy_list %}
-            <label for="question{{ forloop.counter }}">Q{{ forloop.counter }}: {{ self_analy.name }}</label>
-            <textarea id="question{{ forloop.counter }}" name="answer_{{ self_analy.id }}" class="question-input">{% if self_analy.id in form.initial %}{{ form.initial|get_item:self_analy.id }}{% endif %}</textarea>
-            <br>
+        <!-- 動的に生成されたフォームフィールドを表示 -->
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                <!-- エラーメッセージを表示 -->
+                {% if field.errors %}
+                    <div class="error-message">
+                        {{ field.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
         {% endfor %}
-
 
         <!-- 保存ボタン -->
         <div class="save-button-container">
@@ -43,8 +53,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // すべてのtextareaに対して高さ自動調整機能を適用
-        const textareas = document.querySelectorAll('.question-input');
-        
+        const textareas = document.querySelectorAll('textarea');
+
         // 高さを自動調整する関数
         const adjustHeight = (element) => {
             element.style.height = 'auto'; // 初期化

@@ -363,26 +363,37 @@ from .forms import AssessmentForm  # 必要であればフォームを使う
 
 @login_required(login_url='CCapp:login')
 def self_analy_view(request):
-    # データベースから自己分析の情報を取得
-    question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
-    self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
+    # データベースから質問を取得
+    question_title_list = Question00.objects.filter(id=1)
+    self_analy_list = Question01.objects.filter(question00_id=1)
 
-    # 初期データを設定（既に保存された回答があれば、それをフォームに表示）
-    initial_data = {}
-    for question in self_analy_list:
-        # ユーザーがこの質問に対して回答したか確認
-        assessment = Assessment.objects.filter(user=request.user, question01=question).first()
-        if assessment:
-            initial_data[f'answer_{question.id}'] = assessment.answer
+    # フォームの初期データを動的に設定
+    form = AssessmentForm(
+        questions=self_analy_list, 
+        user=request.user,
+        data=request.POST or None  # POSTデータがあれば渡す
+    )
 
+    if request.method == "POST" and form.is_valid():
+        # 保存処理
+        for question in self_analy_list:
+            answer_key = f'answer_{question.id}'
+            if answer_key in form.cleaned_data:
+                answer_value = form.cleaned_data[answer_key]
 
-    form = AssessmentForm(initial=initial_data)
+                # 既存の回答があれば更新、なければ作成
+                Assessment.objects.update_or_create(
+                    user=request.user,
+                    question01=question,
+                    defaults={'answer': answer_value}
+                )
 
-    # テンプレートにデータを渡す
+        return redirect('CCapp:self_analy')
+
     return render(request, 'soliloquizing_self_analy.html', {
         'question_title_list': question_title_list,
         'self_analy_list': self_analy_list,
-        'form': form,  # フォームも渡す
+        'form': form,
     })
 
 
@@ -397,7 +408,7 @@ from .models import Question00, Question01, Assessment
 from .forms import AssessmentForm
 
 @login_required
-def save_answer_view(request):
+def save_analy_view(request):
     # データベースから自己分析の情報を取得
     question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
     self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
