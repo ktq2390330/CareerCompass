@@ -142,9 +142,14 @@ class AssessmentForm(forms.Form):
             existing_answer = Assessment.objects.filter(user=self.user, question01=question).first()
             initial_value = existing_answer.answer if existing_answer else ""
 
+            # フィールドを追加
             self.fields[f'answer_{question.id}'] = forms.CharField(
-                label=f'Q: {question.name}',
-                widget=forms.Textarea(attrs={'rows': 2}),  # style属性を削除
+                label=f'Q{question.id}: {question.name}',  # 質問番号をラベルに含める
+                widget=forms.Textarea(attrs={
+                    'rows': 2,
+                    'id': f'Q{question.id}',  # 質問番号をidとして設定
+                }),
                 initial=initial_value,
                 required=False
             )
+
