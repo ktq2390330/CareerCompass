@@ -391,13 +391,22 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Assessment, Question01
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Question00, Question01, Assessment
+from .forms import AssessmentForm
+
 @login_required
 def save_answer_view(request):
-    if request.method == "POST":
-        user = request.user
+    # データベースから自己分析の情報を取得
+    question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
+    self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
+    print(self_analy_list)
+    print('-------------------------')
+    print(question_title_list)
 
+    if request.method == "POST":
         # POSTデータから回答を保存
-        print(request.POST.items())
         for key, value in request.POST.items():
             if key.startswith("answer_"):
                 question_id = key.split("_")[1]  # フォームの名前から質問IDを取得
@@ -405,7 +414,7 @@ def save_answer_view(request):
                     question01 = Question01.objects.get(id=question_id)
                     # 既存の回答がある場合は更新、なければ作成
                     Assessment.objects.update_or_create(
-                        user=user,
+                        user=request.user,
                         question01=question01,
                         defaults={'answer': value.strip()}
                     )
@@ -413,12 +422,24 @@ def save_answer_view(request):
                     # 質問が存在しない場合はスキップ
                     continue
 
-        # 成功後にリダイレクト
+        # 保存後に再表示
         return redirect("CCapp:self_analy")
 
-    # GETリクエストの場合
-    return redirect("CCapp:self_analy")
+    # GETリクエスト: 初期データを設定（既に保存された回答があれば、それをフォームに表示）
+    initial_data = {}
+    for question in self_analy_list:
+        assessment = Assessment.objects.filter(user=request.user, question01=question).first()
+        if assessment:
+            initial_data[question.id] = assessment.answer if assessment.answer is not None else ""  # 保存された回答を初期値に設定
 
+    form = AssessmentForm(initial=initial_data)
+
+    # テンプレートにデータを渡す
+    return render(request, 'soliloquizing_self_analy.html', {
+        'question_title_list': question_title_list,
+        'self_analy_list': self_analy_list,
+        'form': form,  # フォームも渡す
+    })
 
 
 # axis
