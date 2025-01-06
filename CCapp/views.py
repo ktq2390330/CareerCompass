@@ -397,18 +397,86 @@ def self_analy_view(request):
     })
 
 
+# axis
+@login_required(login_url='CCapp:login')
+def axis_view(request):
+    # データベースから質問を取得
+    question_title_list = Question00.objects.filter(id=2)
+    axis_list = Question01.objects.filter(question00_id=2)
 
-from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
-from .models import Assessment, Question01
+    # フォームの初期データを動的に設定
+    form = AssessmentForm(
+        questions=axis_list, 
+        user=request.user,
+        data=request.POST or None  # POSTデータがあれば渡す
+    )
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Question00, Question01, Assessment
-from .forms import AssessmentForm
+    if request.method == "POST" and form.is_valid():
+        # 保存処理
+        for question in axis_list:
+            answer_key = f'answer_{question.id}'
+            if answer_key in form.cleaned_data:
+                answer_value = form.cleaned_data[answer_key]
 
-@login_required
-def save_analy_view(request):
+                # 既存の回答があれば更新、なければ作成
+                Assessment.objects.update_or_create(
+                    user=request.user,
+                    question01=question,
+                    defaults={'answer': answer_value}
+                )
+
+        return redirect('CCapp:axis')
+    
+    return render(request, 'soliloquizing_axis.html', {
+        'question_title_list': question_title_list,
+        'self_analy_list': axis_list,
+        'form': form,
+    })
+
+# industry
+@login_required(login_url='CCapp:login')
+def industry_view(request):
+    # データベースから質問を取得
+    question_title_list = Question00.objects.filter(id=3)
+    industry_list = Question01.objects.filter(question00_id=3)
+
+    # フォームの初期データを動的に設定
+    form = AssessmentForm(
+        questions=industry_list, 
+        user=request.user,
+        data=request.POST or None  # POSTデータがあれば渡す
+    )
+
+    if request.method == "POST" and form.is_valid():
+        # 保存処理
+        for question in industry_list:
+            answer_key = f'answer_{question.id}'
+            if answer_key in form.cleaned_data:
+                answer_value = form.cleaned_data[answer_key]
+
+                # 既存の回答があれば更新、なければ作成
+                Assessment.objects.update_or_create(
+                    user=request.user,
+                    question01=question,
+                    defaults={'answer': answer_value}
+                )
+
+        return redirect('CCapp:industry')
+
+    return render(request, 'soliloquizing_industry.html', {
+        'question_title_list': question_title_list,
+        'self_analy_list': industry_list,
+        'form': form,
+    })
+
+
+# jobtype
+class JobtypeView(LoginRequiredMixin, TemplateView):
+    template_name = 'soliloquizing_jobtype.html'
+    login_url = 'CCapp:login'
+
+@login_required(login_url='CCapp:login')
+def save_answer_view(request):
     # データベースから自己分析の情報を取得
     question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
     self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
@@ -448,95 +516,6 @@ def save_analy_view(request):
         'self_analy_list': self_analy_list,
         'form': form,  # フォームも渡す
     })
-
-
-# axis
-@login_required(login_url='CCapp:login')
-def axis_view(request):
-    # データベースから質問を取得
-    question_title_list = Question00.objects.filter(id=2)
-    axis_list = Question01.objects.filter(question00_id=2)
-
-    # フォームの初期データを動的に設定
-    form = AssessmentForm(
-        questions=axis_list, 
-        user=request.user,
-        data=request.POST or None  # POSTデータがあれば渡す
-    )
-
-    if request.method == "POST" and form.is_valid():
-        # 保存処理
-        for question in axis_list:
-            answer_key = f'answer_{question.id}'
-            if answer_key in form.cleaned_data:
-                answer_value = form.cleaned_data[answer_key]
-
-                # 既存の回答があれば更新、なければ作成
-                Assessment.objects.update_or_create(
-                    user=request.user,
-                    question01=question,
-                    defaults={'answer': answer_value}
-                )
-
-        return redirect('CCapp:axis')
-    
-    return render(request, 'soliloquizing_axis.html', {
-        'question_title_list': question_title_list,
-        'self_analy_list': axis_list,
-        'form': form,
-    })
-
-@login_required
-def save_axis_view(request):
-    # データベースから自己分析の情報を取得
-    question_title_list = Question00.objects.filter(id=2)  # 特定のquestion_idに絞る
-    axis_list = Question01.objects.filter(question00_id=2)  # question_idが2のデータを取得
-
-    if request.method == "POST":
-        # POSTデータから回答を保存
-        for key, value in request.POST.items():
-            if key.startswith("answer_"):
-                question_id = key.split("_")[2]  # フォームの名前から質問IDを取得
-                try:
-                    question01 = Question01.objects.get(id=question_id)
-                    # 既存の回答がある場合は更新、なければ作成
-                    Assessment.objects.update_or_create(
-                        user=request.user,
-                        question01=question01,
-                        defaults={'answer': value.strip()}
-                    )
-                except Question01.DoesNotExist:
-                    # 質問が存在しない場合はスキップ
-                    continue
-            
-            # 保存後に再表示
-            return redirect("CCapp:axis")
-        
-        # GETリクエスト: 初期データを設定（既に保存された回答があれば、それをフォームに表示）
-    initial_data = {}
-    for question in axis_list:
-        assessment = Assessment.objects.filter(user=request.user, question01=question).first()
-        if assessment:
-            initial_data[question.id] = assessment.answer if assessment.answer is not None else ""  # 保存された回答を初期値に設定
-
-    form = AssessmentForm(initial=initial_data)
-
-    # テンプレートにデータを渡す
-    return render(request, 'soliloquizing_axis.html', {
-        'question_title_list': question_title_list,
-        'self_analy_list': axis_list,
-        'form': form,  # フォームも渡す
-    })
-
-# industry
-class IndustryView(LoginRequiredMixin, TemplateView):
-    template_name = 'soliloquizing_industry.html'
-    login_url = 'CCapp:login'
-
-# jobtype
-class JobtypeView(LoginRequiredMixin, TemplateView):
-    template_name = 'soliloquizing_jobtype.html'
-    login_url = 'CCapp:login'
 
 class AdmPostView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post.html'
