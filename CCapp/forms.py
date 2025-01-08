@@ -89,14 +89,15 @@ class ProfileForm(forms.ModelForm):
     
     def clean_graduation(self):
         graduation_date = self.cleaned_data.get('graduation')
-        if graduation_date:
-            return graduation_date.year  # 年の部分のみを返す
-        return None
-    
+        if graduation_date and not isinstance(graduation_date, datetime.date):
+            raise forms.ValidationError("卒業年度は有効な日付である必要があります。")
+        return graduation_date
+   
     def save(self, commit=True):
-        profile = super().save(commit=commit)
+        profile = super().save(commit=False)  # データベース保存を一旦抑制
+        if commit:
+            profile.save()
         return profile
-
 
 class ContactForm(forms.Form):
     name = forms.CharField(label='お名前')
