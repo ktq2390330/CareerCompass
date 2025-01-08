@@ -32,9 +32,9 @@
     {% if page_obj.object_list %}
         {% for company in page_obj.object_list %}
         <article class="company-card">
-            <h2>{{ company.name }}</h2>
+            <h2>{{ corporation.name}}</h2>
             <div class="company-content">
-                <p class="description">{{ company.description|default:"説明がありません" }}</p>
+                <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
                 <div class="job-item">
                     {% if company.image %}
                         <img src="{{ company.image.url }}" alt="{{ company.name }}">

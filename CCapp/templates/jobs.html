@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<h2>株式会社ソリューションズ</h2>
+<h2>{{ offer.corporation.name }}</h2>
 
     <!-- 全体を囲む大きな枠 -->
     <div class="container-box">
@@ -20,11 +20,10 @@
         <div class="job-items">
             <div class="job-item">
                 <img src="{% static 'images/job_image1.jpg' %}" alt="仕事内容イメージ1">
-                <p>詳細説明1ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+                <p>{{ offer.detail }}</p>
             </div>
             <div class="job-item">
                 <img src="{% static 'images/job_image2.jpg' %}" alt="仕事内容イメージ2">
-                <p>詳細説明2いいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいい</p>
             </div>
         </div>
         
@@ -35,34 +34,38 @@
             <table>
                 <tr>
                     <th>コース名</th>
-                    <td>{{ job.course_name }}</td>
+                    <td>{{ offer.course }}</td>
                 </tr>
                 <tr>
                     <th>雇用形態</th>
-                    <td>{{ job.employment_type }}</td>
+                    <td>{{ offer.forms }}</td>
                 </tr>
                 <tr>
                     <th>配属職種</th>
-                    <td>{{ job.location }}</td>
+                    <td>{{ offer.roles }}</td>
                 </tr>
             </table>
         
-        <!-- Section 4: 応募要項・採用フロー -->
+        <!-- Section 4: 応募要項 -->
         <div class="content-box">
-            <h3>◇ 応募要項・採用フロー</h3>
+            <h3>◇ 応募要項</h3>
         </div>
             <table>
                 <tr>
-                    <th>採用フロー</th>
-                    <td>{{ job.hiring_flow }}</td>
+                    <th>募集対象</th>
+                    <td>{{ offer.subject }}</td>
                 </tr>
                 <tr>
-                    <th>選考方法</th>
-                    <td>{{ job.selection_method }}</td>
+                    <th>募集人数</th>
+                    <td>{{ offer.NoP }}</td>
+                </tr>
+                <tr>
+                    <th>募集特徴</th>
+                    <td>{{ offer.characteristic }}</td>
                 </tr>
                 <tr>
                     <th>提出書類</th>
-                    <td>{{ job.notification_method }}</td>
+                    <td>{{ offer.CoB }}</td>
                 </tr>
             </table>
         
@@ -73,15 +76,15 @@
             <table>
                 <tr>
                     <th>給与</th>
-                    <td>{{ job.salary }}</td>
+                    <td>{{ offer.giving }}</td>
                 </tr>
                 <tr>
                     <th>年間休日/休暇</th>
-                    <td>{{ job.holidays }}</td>
+                    <td>{{ offer.holiday }}</td>
                 </tr>
                 <tr>
                     <th>福利厚生</th>
-                    <td>{{ job.benefits }}</td>
+                    <td>{{ offer.welfere }}</td>
                 </tr>
             </table>
         
@@ -91,16 +94,12 @@
         </div>
             <table>
                 <tr>
-                    <th>問い合わせ先</th>
-                    <td>{{ job.contact }}</td>
-                </tr>
-                <tr>
                     <th>会社HP URL</th>
-                    <td><a href="{{ job.company_url }}">{{ job.company_url }}</a></td>
+                    <td><a href="{{ offer.url }}">{{ offer.url }}</a></td>
                 </tr>
                 <tr>
                     <th>E-mail</th>
-                    <td><a href="mailto:{{ job.email }}">{{ job.email }}</a></td>
+                    <td><a href="mailto:{{ offer.cMail }}">{{ offer.cMail }}</a></td>
                 </tr>
             </table>
     </div>
