@@ -37,14 +37,14 @@ h3 {
 }
 
 button {
-    width: 100px;
-    padding: 10px;
-    border: 1px solid;
-    border-radius: 5px;
+    padding: 12px 20px; /* ボタン内の余白を増やす */
+    background-color: #4598eb; /* ボタンの色 */
+    color: white;
+    border: none;
+    border-radius: 8px; /* 角の丸みを増やす */
     cursor: pointer;
-    background-color: transparent;
-    color: #000;
-    font-size: 0.9em;
+    width: 100px;
+    font-size: 20px;
 }
 
 button:hover {
