@@ -133,23 +133,13 @@ class Tag(Base):
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name="ユーザID", related_name="profile")
     furigana = models.CharField(max_length=256, verbose_name="フリガナ")
-    nationality = models.CharField(max_length=256, verbose_name="国籍")
     birth = models.DateField(verbose_name="生年月日")
     gender = models.CharField(max_length=16, verbose_name="性別")
     graduation = models.IntegerField(verbose_name="卒業年度")
     uSchool = models.CharField(max_length=256, verbose_name="学校名")
-    sClass = models.IntegerField(verbose_name="学校区分")
-    sol = models.IntegerField(verbose_name="文理区分")
-    department = models.CharField(max_length=32, verbose_name="学科名")
     uTel = models.CharField(max_length=16, verbose_name="電話番号")
     postalCode = models.CharField(max_length=8, verbose_name="郵便番号")
     uAddress = models.CharField(max_length=256, verbose_name="住所")
-    category00 = models.ForeignKey(Category00, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ00")
-    category01 = models.ForeignKey(Category01, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ01")
-    category10 = models.ForeignKey(Category10, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ10")
-    category11 = models.ForeignKey(Category11, on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ11")
-    area1 = models.ForeignKey(Area1, on_delete=models.SET_NULL, null=True, verbose_name="エリア1")
-    uOffer = models.CharField(max_length=256, verbose_name="内定先")
     photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True, verbose_name="プロフィール写真")
 
     class Meta:
@@ -158,13 +148,6 @@ class Profile(models.Model):
 
     def get_full_address(self):
         return f"{self.postalCode} {self.uAddress}"
-
-    def get_preferences(self):
-        return {
-            "業界": f"{self.category00.name} - {self.category01.name if self.category01 else '未設定'}",
-            "職種": f"{self.category10.name} - {self.category11.name if self.category11 else '未設定'}",
-            "エリア": f"{self.area1.name if self.area1 else '未設定'}",
-        }
 
     def __str__(self):
         return f"{self.user.name} のプロフィール"
