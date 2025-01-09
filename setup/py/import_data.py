@@ -20,10 +20,11 @@ def import_data_SettingLogs():
 def queryResults(instanceDict):
     results=['処理結果\n']
     for instance,created in instanceDict.items():
+        instance_name = getattr(instance, 'name', str(instance))
         if created:
-            results.append(f"新規作成: {instance.name}")
+            results.append(f"新規作成: {instance_name}")
         else:
-            results.append(f"既存データ取得: {instance.name}")
+            results.append(f"既存データ取得: {instance_name}")
     return results
 
 def outputQueryResults(instanceDict):
@@ -472,8 +473,8 @@ def offerEntry(filePath):
                     offerId=offerData['offerId']
                     offer=Offer.objects.get(id=offerId)
                     for userData in offerData['users']:
-                        userId=userData['userId']
-                        user=User.objects.get(id=userId)
+                        mail=userData['mail']
+                        user=User.objects.get(mail=mail)
                         _,created=OfferEntry.objects.get_or_create(offer=offer,user=user)
                         instanceDict[(offer.id,user.id)]=created
         except FileNotFoundError:
@@ -481,7 +482,7 @@ def offerEntry(filePath):
         except Offer.DoesNotExist:
             print(f"offerID: {offerId} は存在しません")
         except User.DoesNotExist:
-            print(f"userID: {userId} は存在しません")
+            print(f"mail: {mail} は存在しません")
         except Exception as e:
             print(f"エラーが発生しました: {e}")
     executeFunction(function)
@@ -514,24 +515,24 @@ def offerTag(filePath):
 
 # 実行
 functionMap={
-    # 'area0.csv':area0,
-    # 'area1.csv':area1,
+    'area0.csv':area0,
+    'area1.csv':area1,
     # 'area2.csv':area2,
-    # 'category00.csv':category00,
-    # 'category01.csv':category01,
-    # 'category10.csv':category10,
-    # 'category11.csv':category11,
-    # 'tag.csv':tag,
-    # 'user.csv':user,
-    # 'profile.csv':profile,
-    # 'question00.csv':question00,
-    # 'question01.csv':question01,
-    # 'assessment.csv':assessment,
-    # 'corporation.csv':corporation,
+    'category00.csv':category00,
+    'category01.csv':category01,
+    'category10.csv':category10,
+    'category11.csv':category11,
+    'tag.csv':tag,
+    'user.csv':user,
+    'profile.csv':profile,
+    'question00.csv':question00,
+    'question01.csv':question01,
+    'assessment.csv':assessment,
+    'corporation.csv':corporation,
     # 'DM.csv':dm,
-    # 'offer.csv':offer,
-    # 'offerEntry.json':offerEntry,
-    'offerTag': offerTag,
+    'offer.csv':offer,
+    'offerEntry.json':offerEntry,
+    # 'offerTag': offerTag,
     # 'supportDM.csv':supportDM,
 }
 logger=import_data_SettingLogs()
