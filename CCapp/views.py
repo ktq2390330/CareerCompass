@@ -145,34 +145,27 @@ class ProfileView(LoginRequiredMixin, FormView):
         初期値を設定
         """
         user = self.request.user
-        profile, created = Profile.objects.get_or_create(
-            user=user,)
-            
+        profile, created = Profile.objects.get_or_create(user=user)
         initial = super().get_initial()
         for field in self.form_class.Meta.fields:
             initial[field] = getattr(profile, field, None)
         return initial
 
     def form_valid(self, form):
-        if form.is_valid():  # フォームが正しいか再確認
-            profile, _ = Profile.objects.get_or_create(user=self.request.user)
+        profile = form.save(commit=False)  # 保存を一旦抑制
+        profile.user = self.request.user  # ユーザーをセット
+        print(profile)
+        profile.save()  # 最終保存
+        messages.success(self.request, 'プロフィール情報が更新されました。')
+        return super().form_valid(form)
 
-        # フォームの各フィールドを取得して保存
-            for field, value in form.cleaned_data.items():
-                setattr(profile, field, value)
-
-        # 保存処理が成功するか確認
-            try:
-                profile.save()
-                messages.success(self.request, 'プロフィール情報が更新されました。')
-            except Exception as e:
-                messages.error(self.request, f'エラーが発生しました: {str(e)}')
-                return self.form_invalid(form)
-
-            return super().form_valid(form)
-        else:
-            messages.error(self.request, f"フォームにエラーがあります: {form.errors}")
-            return self.form_invalid(form)
+    def form_invalid(self, form):
+        """
+        フォームが無効な場合
+        """
+        messages.error(self.request, '入力内容に誤りがあります。')
+        print(form.errors)
+        return super().form_invalid(form)
 
 # accout
 # signin

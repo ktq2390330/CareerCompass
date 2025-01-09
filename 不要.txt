@@ -1,0 +1,12 @@
+profileの不要なカラム
+
+nationality
+sClass
+sol
+department
+category00
+category01
+category10
+category11
+area1
+uOffer

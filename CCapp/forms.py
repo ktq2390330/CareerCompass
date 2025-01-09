@@ -38,66 +38,42 @@ class SignupForm(forms.Form):
 
 # プロフィール更新用フォーム
 from .models import Profile
+import datetime
+
+from django import forms
+from .models import Profile
+
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            'furigana', 'nationality', 'birth', 'gender', 'graduation', 
-            'uSchool', 'sClass', 'sol', 'department', 'uTel', 
-            'postalCode', 'uAddress', 'category00', 'category01', 
-            'category10', 'category11', 'area1', 'uOffer', 'photo'
+            'furigana', 'birth', 'gender', 'graduation',
+            'uSchool', 'uTel',
+            'postalCode', 'uAddress', 'photo'
         ]
         labels = {
             'furigana': 'フリガナ',
-            'nationality': '国籍',
             'birth': '生年月日',
             'gender': '性別',
-            'graduation': '卒業年度',
             'uSchool': '学校名',
-            'sClass': '学校区分',
-            'sol': '文理区分',
-            'department': '学科名',
             'uTel': '電話番号',
             'postalCode': '郵便番号',
             'uAddress': '住所',
-            'category00': 'カテゴリ00',
-            'category01': 'カテゴリ01',
-            'category10': 'カテゴリ10',
-            'category11': 'カテゴリ11',
-            'area1': 'エリア1',
-            'uOffer': '内定先',
+            'graduation': '卒業年度',
             'photo': 'プロフィール写真'
         }
         widgets = {
             'birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'graduation': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'uTel': forms.TextInput(attrs={'placeholder': '例: 09012345678'}),
             'postalCode': forms.TextInput(attrs={'placeholder': '例: 123-4567'}),
         }
 
     def clean(self):
         cleaned_data = super().clean()
-
-        # 必須フィールドの確認
-        if not cleaned_data.get('graduation'):
-            self.add_error('graduation', "卒業年度は必須です。")
-
         if not cleaned_data.get('birth'):
             self.add_error('birth', "生年月日は必須です。")
-
         return cleaned_data
-    
-    def clean_graduation(self):
-        graduation_date = self.cleaned_data.get('graduation')
-        if graduation_date and not isinstance(graduation_date, datetime.date):
-            raise forms.ValidationError("卒業年度は有効な日付である必要があります。")
-        return graduation_date
-   
-    def save(self, commit=True):
-        profile = super().save(commit=False)  # データベース保存を一旦抑制
-        if commit:
-            profile.save()
-        return profile
+
 
 class ContactForm(forms.Form):
     name = forms.CharField(label='お名前')
