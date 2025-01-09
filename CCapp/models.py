@@ -208,7 +208,7 @@ class Offer(models.Model):
     salaryRaise = models.CharField(max_length=64, verbose_name="昇給")
     bonus = models.CharField(max_length=32, verbose_name="賞与")
     holiday = models.TextField(verbose_name="休日休暇")
-    welfare = models.ForeignKey('Tag', on_delete=models.SET_NULL, null=True, verbose_name="福利厚生", db_index=True)
+    welfare = models.ManyToManyField('Tag', verbose_name="福利厚生", db_index=True)
     workingHours = models.CharField(max_length=256, verbose_name="勤務時間")
     area1 = models.ForeignKey('Area1', on_delete=models.SET_NULL, null=True, verbose_name="エリア1", related_name="offer_area1", db_index=True)
     category00 = models.ForeignKey('Category00', on_delete=models.SET_NULL, null=True, verbose_name="カテゴリ00", db_index=True)

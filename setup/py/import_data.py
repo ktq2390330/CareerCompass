@@ -6,6 +6,7 @@ djangoImportSetup()
 from CCapp.models import *
 from CCapp.defs import makeDirFile,makeImportPath,logconfig,logException,logsOutput,readFile,executeFunction
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 
 # ログの設定
 def import_data_SettingLogs():
@@ -365,44 +366,101 @@ def supportDM(filePath):
     outputQueryResults(instanceDict)
 
 def offer(filePath):
-    instanceDict={}
+    instanceDict = {}
     def function():
         try:
-            data=readFile(filePath)
+            data = readFile(filePath)
             with transaction.atomic():
-                for row in data:
-                    title,detail,solicitation,course,forms,roles,CoB,subject,NoP,departments,characteristic,pes,giving,allowances,salaryRaise,bonus,holiday,welfare,workingHours,area1name,category00name,category01name,category10name,category11name,corporationId,period,status=row
-                    ['title'],row['detail'],row['solicitation'],row['course'],row['forms'],row['roles'],row['CoB'],row['subject'],row['NoP'],row['departments'],row['characteristic'],row
-                    ['PES'],row['giving'],row['allowances'],row['salaryRaise'],row['bonus'],row['holiday'],row['welfare'],row['workingHours'],row['area0name'],row['area1name'],row
-                    ['category00name'],row['category01name'],row['category10name'],row['category11name'],row['corporationID'],row['applicants'],row['period'],row['status']
-                    area1=Area1.objects.get(name=area1name)
-                    category00=Category00.objects.get(name=category00name)
-                    category01=Category01.objects.get(name=category01name)
-                    category10=Category10.objects.get(name=category10name)
-                    category11=Category11.objects.get(name=category11name)
-                    corporation=Corporation.objects.get(name=corporationId)
-                    period=datetime.strptime(period,"%Y-%m-%d %H:%M")
-                    instance,created=Corporation.objects.get_or_create(name=title,detail=detail,solicitation=solicitation,course=course,forms=forms,roles=roles,CoB=CoB,subject=subject,
-                    NoP=NoP,departments=departments,characteristic=characteristic,PES=pes,giving=giving,allowances=allowances,salaryRaise=salaryRaise,bonus=bonus,holiday=holiday,
-                    welfare=welfare,workingHours=workingHours,area1=area1,category00=category00,category01=category01,category10=category10,category11=category11,corporation=corporation,
-                    applicants=None,period=period,status=status)
-                    instanceDict[instance]=created
-        except Area1.DoesNotExist:
-            print(f"area1: {area1name} は存在しません")
-        except Category00.DoesNotExist:
-            print(f"category00: {category00name} は存在しません")
-        except Category01.DoesNotExist:
-            print(f"category01: {category01name} は存在しません")
-        except Category10.DoesNotExist:
-            print(f"category10: {category10name} は存在しません")
-        except Category11.DoesNotExist:
-            print(f"category11: {category11name} は存在しません")
+                for row_num, row in enumerate(data, start=1):  # 行番号を追跡
+                    try:
+                        # 辞書形式から必要なデータを取得
+                        title = row['title']
+                        detail = row['detail']
+                        solicitation = row['solicitation']
+                        course = row['course']
+                        forms = row['forms']
+                        roles = row['roles']
+                        CoB = row['CoB']
+                        subject = row['subject']
+                        NoP = row['NoP']
+                        departments = row['departments']
+                        characteristic = row['characteristic']
+                        pes = row['PES']
+                        giving = row['giving']
+                        allowances = row['allowances']
+                        salaryRaise = row['salaryRaise']
+                        bonus = row['bonus']
+                        holiday = row['holiday']
+                        workingHours = row['workingHours']
+                        area1name = row['area1name']
+                        category00name = row['category00name']
+                        category01name = row['category01name']
+                        category10name = row['category10name']
+                        category11name = row['category11name']
+                        corporationId = row['corporationID']
+                        period_str = row['period']
+                        status_str = row['status']
+
+                        # 関連オブジェクトの取得
+                        print(f"検索値 - area1name: {area1name}, category00name: {category00name}, category01name: {category01name}, category10name: {category10name}, category11name: {category11name}, corporationId: {corporationId}")
+                        area1 = Area1.objects.get(name=area1name)
+                        category00 = Category00.objects.get(name=category00name)
+                        category01 = Category01.objects.get(name=category01name)
+                        category10 = Category10.objects.get(name=category10name)
+                        category11 = Category11.objects.get(name=category11name)
+                        corporation = Corporation.objects.get(corp=corporationId)
+                    except KeyError as e:
+                        print(f"キーエラー: {e}, 行番号={row_num}, 行データ: {row}")
+                        continue
+                    except Area1.DoesNotExist:
+                        print(f"Area1オブジェクトが見つかりません: name={area1name}, 該当データ: {row}")
+                        continue
+                    except Category00.DoesNotExist:
+                        print(f"Category00オブジェクトが見つかりません: name={category00name}, 該当データ: {row}")
+                        continue
+                    except Category01.DoesNotExist:
+                        print(f"Category01オブジェクトが見つかりません: name={category01name}, 該当データ: {row}")
+                        continue
+                    except Category10.DoesNotExist:
+                        print(f"Category10オブジェクトが見つかりません: name={category10name}, 該当データ: {row}")
+                        continue
+                    except Category11.DoesNotExist:
+                        print(f"Category11オブジェクトが見つかりません: name={category11name}, 該当データ: {row}")
+                        continue
+                    except Corporation.DoesNotExist:
+                        print(f"Corporationオブジェクトが見つかりません: corp={corporationId}, 該当データ: {row}")
+                        continue
+
+                    try:
+                        # 日付のパース
+                        period = datetime.datetime.strptime(period_str, "%Y-%m-%d %H:%M:%S")
+                    except ValueError as e:
+                        print(f"日付形式エラー: {e}, 行番号={row_num}, 日付文字列: {period_str}")
+                        continue
+
+                    # ステータスのパース
+                    status = status_str.lower() == 'true'
+
+                    # Offerインスタンス作成
+                    instance, created = Offer.objects.get_or_create(
+                        name=title, detail=detail, solicitation=solicitation, course=course,
+                        forms=forms, roles=roles, CoB=CoB, subject=subject, NoP=NoP,
+                        departments=departments, characteristic=characteristic, PES=pes, giving=giving,
+                        allowances=allowances, salaryRaise=salaryRaise, bonus=bonus, holiday=holiday,
+                        workingHours=workingHours, area1=area1, category00=category00,
+                        category01=category01, category10=category10, category11=category11,
+                        corporation=corporation, period=period, status=status
+                    )
+                    instanceDict[instance] = created
+
         except FileNotFoundError:
             print(f"ファイルが見つかりません: {filePath}")
         except Exception as e:
-            print(f"エラーが発生しました: {e}")
+            print(f"予期せぬエラーが発生しました: {e}")
+
     executeFunction(function)
     outputQueryResults(instanceDict)
+
 
 def offerEntry(filePath):
     instanceDict={}
@@ -429,25 +487,51 @@ def offerEntry(filePath):
     executeFunction(function)
     outputQueryResults(instanceDict)
 
+def offerTag(filePath):
+    instanceDict={}
+    def function():
+        try:
+            data=readFile(filePath)
+            with transaction.atomic():
+                for offerData in data:
+                    offerId=offerData['offerId']
+                    offer=Offer.objects.get(id=offerId)
+                    for tagData in offerData['tags']:
+                        name=tagData['name']
+                        tag=Tag.objects.get(name=name)
+                        _,created=offer.welfare.get_or_create(tag)
+                        instanceDict[(offer.id,tag.name)]=created
+        except FileNotFoundError:
+            print(f"ファイルが見つかりません: {filePath}")
+        except Offer.DoesNotExist:
+            print(f"offerID: {offerId} は存在しません")
+        except Tag.DoesNotExist:
+            print(f"tagName: {name} は存在しません")
+        except Exception as e:
+            print(f"エラーが発生しました: {e}")
+    executeFunction(function)
+    outputQueryResults(instanceDict)
+
 # 実行
 functionMap={
-    'area0.csv':area0,
-    'area1.csv':area1,
-    'area2.csv':area2,
-    'category00.csv':category00,
-    'category01.csv':category01,
-    'category10.csv':category10,
-    'category11.csv':category11,
-    'tag.csv':tag,
-    'user.csv':user,
-    'profile.csv':profile,
-    'question00.csv':question00,
-    'question01.csv':question01,
+    # 'area0.csv':area0,
+    # 'area1.csv':area1,
+    # 'area2.csv':area2,
+    # 'category00.csv':category00,
+    # 'category01.csv':category01,
+    # 'category10.csv':category10,
+    # 'category11.csv':category11,
+    # 'tag.csv':tag,
+    # 'user.csv':user,
+    # 'profile.csv':profile,
+    # 'question00.csv':question00,
+    # 'question01.csv':question01,
     # 'assessment.csv':assessment,
-    'corporation.csv':corporation,
+    # 'corporation.csv':corporation,
     # 'DM.csv':dm,
     # 'offer.csv':offer,
     # 'offerEntry.json':offerEntry,
+    'offerTag': offerTag,
     # 'supportDM.csv':supportDM,
 }
 logger=import_data_SettingLogs()

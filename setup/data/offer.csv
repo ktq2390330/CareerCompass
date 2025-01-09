@@ -1,1 +1,2 @@
-name,detail,solicitation,course,forms,roles,CoB,subject,NoP,departments,characteristic,PES,giving,allowances,salaryRaise,bonus,holiday,welfare,workingHours,area0name,area1name,category00name,category01name,category10name,category11name,corporationID,applicants,period,status
+title,detail,solicitation,course,forms,roles,CoB,subject,NoP,departments,characteristic,PES,giving,allowances,salaryRaise,bonus,holiday,workingHours,area1name,category00name,category01name,category10name,category11name,corporationID,period,status
+テスト求人0000001,詳細,募集要項,コース名,正社員,配属職種,提出書類,募集対象,募集人数,募集学科,募集特徴,採用後の対応,20万円,諸手当,昇給,賞与,120日,8時間,北海道,メーカー,農林・水産,事務・管理系,総務・人事・労務,1234567890123,2025-03-14 00:00:00,true
