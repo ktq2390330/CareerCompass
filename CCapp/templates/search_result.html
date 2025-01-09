@@ -30,11 +30,16 @@
 
     <!-- 検索結果がある場合 -->
     {% if page_obj.object_list %}
-        {% for company in page_obj.object_list %}
+    {% for company in page_obj.object_list %}
         <article class="company-card">
-            <h2>{{ corporation.name}}</h2>
+            <!-- 会社名を表示 -->
+            <h2>{{ corporation.name }}</h2>
+            
             <div class="company-content">
+                <!-- 詳細情報を表示 -->
                 <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
+                
+                <!-- 会社ロゴまたは代替画像 -->
                 <div class="job-item">
                     {% if company.image %}
                         <img src="{{ company.image.url }}" alt="{{ company.name }}">
@@ -43,15 +48,17 @@
                     {% endif %}
                 </div>
             </div>
+            
+            <!-- 応募ボタン -->
             <div class="controls">
                 <button class="apply-button">応募する</button>
             </div>
         </article>
-        {% endfor %}
-    {% else %}
-        <!-- 検索結果がない場合の表示 -->
-        <p class="no-results">求人情報が見つかりませんでした。</p>
-    {% endif %}
+    {% endfor %}
+{% else %}
+    <!-- 検索結果がない場合のメッセージ -->
+    <p class="no-results">求人情報が見つかりませんでした。</p>
+{% endif %}
 
     <!-- ページネーションリンク（下部） -->
     <div class="pagination">

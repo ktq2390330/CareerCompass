@@ -554,3 +554,58 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
 class AdmEditPostView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_edit_post.html'
     login_url = '#'
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from .models import Offer
+from .filters import OfferFilter, filter_offers
+from django.utils.timezone import now
+
+@login_required(login_url='CCapp:login')
+def offer_search_view(request):
+    # フィルタ条件を取得
+    filters = {
+        'name': request.GET.getlist('name'),
+        'welfare': request.GET.getlist('welfare'),
+        'area0': request.GET.getlist('area0'),
+        'area1': request.GET.getlist('area1'),
+        'category00': request.GET.getlist('category00'),
+        'category01': request.GET.getlist('category01'),
+        'category10': request.GET.getlist('category10'),
+        'category11': request.GET.getlist('category11'),
+        'corporation': request.GET.getlist('corporation'),
+    }
+    
+    # ユーザー権限を取得（管理者または一般ユーザー）
+    authority = request.user.authority  # authorityフィールドを使って判別（必要に応じて変更）
+
+    # Offerモデルをフィルタリング
+    offers = filter_offers(filters, authority)
+    
+    # ページネーション処理
+    paginator = Paginator(offers, 50)  # 1ページに50件表示
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # 絞り込み項目リストを取得
+    area0_list = Area0.objects.all()
+    area1_list = Area1.objects.all()
+    category00_list = Category00.objects.all()
+    category01_list = Category01.objects.all()
+    category10_list = Category10.objects.all()
+    category11_list = Category11.objects.all()
+    tag_list = Tag.objects.all()
+    corporation_list = Corporation.objects.all()
+
+    return render(request, 'search_result.html', {
+        'page_obj': page_obj,
+        'area0_list': area0_list,
+        'area1_list': area1_list,
+        'category00_list': category00_list,
+        'category01_list': category01_list,
+        'category10_list': category10_list,
+        'category11_list': category11_list,
+        'tag_list': tag_list,
+        'corporation_list': corporation_list,
+    })

@@ -44,8 +44,9 @@ h2::after {
 }
 
 .pagination {
-    display: inline-block;
-    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+
 }
 
 .pagination a {
