@@ -1,0 +1,64 @@
+<!-- base.htmlを継承 -->
+{% extends "base.html" %}
+
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- top page用のタイトル -->
+{% block title %}top page{% endblock %}
+
+<!-- top page用のcssを読み込む -->
+{% block head %}
+    <link href="{% static 'css/top.css' %}" rel="stylesheet">
+{% endblock %}
+
+<!-- base.htmlにぶち込む部分 -->
+{% block content %}
+
+    <!-- search-box -->
+    <div class="container">
+        <div class="search-field">
+            <!-- 検索バー-->
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="企業名や業種で探す">
+                <button type="submit">検索</button>
+            </form>
+
+            <!-- サーチフィールド内の点線 -->
+            <hr class="search-field-line">
+
+            <!-- pull down menu -->
+            <form action="/search" method="GET">
+                <label for="industry">業界:</label>
+                <select id="industry" name="industry" class="select-box">
+                    {% for category00 in category00_list %}
+                        <option value="{{ category00.id }}">{{ category00.name }}</option>
+                    {% endfor %}
+                </select>
+            
+                <label for="jobType">職種:</label>
+                <select id="jobType" name="jobType" class="select-box">
+                    {% for category10 in category10_list %}
+                        <option value="{{ category10.id }}">{{ category10.name }}</option>
+                    {% endfor %}
+                </select>
+            
+                <label for="area">エリア:</label>
+                <select id="area" name="area" class="select-box">
+                    {% for area1 in area1_list %}
+                        <option value="{{ area1.id }}">{{ area1.name }}</option>
+                    {% endfor %}
+                </select>
+            
+                <button type="submit">検索</button>
+            </form>
+            
+
+            <!-- 詳細検索遷移ボタン -->
+            <div class="refine-search">
+                <a href="{% url "CCapp:filter_area" %}">▷より詳細な条件で検索</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

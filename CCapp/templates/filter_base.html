@@ -1,0 +1,82 @@
+<!-- base.htmlを継承 -->
+{% extends "base.html" %}
+
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- 埋め込む用のタイトル -->
+{% block title %}filter base{% endblock %}
+
+<!-- 埋め込む用のcssを読み込むコード -->
+{% block head %}
+    <link href="{% static 'css/filter_base.css' %}" rel="stylesheet">
+    <!-- 各検索フィルター画面用のcss埋め込みエリア -->
+    {% block head2 %}{% endblock %}
+{% endblock %}
+
+<!-- base.htmlにぶち込む部分 -->
+{% block content %}
+    <!-- search-box -->
+    <div class="container">
+        <div class="search-field">
+            <!-- 検索バー-->
+            <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
+                <input type="text" name="query" placeholder="企業名や業種で探す">
+                <button type="submit" id="search-button">検索</button>
+            </form>
+
+            <!-- filter-navigation -->
+            {% url 'CCapp:filter_area' as filter_area_url %}
+            <nav class="filter-navigation">
+                <ul class="filter-navigation-button">
+                    <li>
+                        <a href="{{ filter_area_url }}" 
+                        class="{% if request.path == filter_area_url %}active{% endif %}">
+                            エリア
+                        </a>
+                    </li>
+                    {% url 'CCapp:filter_industry' as filter_industry_url %}
+                    <li>
+                        <a href="{{ filter_industry_url }}" 
+                        class="{% if request.path == filter_industry_url %}active{% endif %}">
+                            業界
+                        </a>
+                    </li>
+                    {% url 'CCapp:filter_jobtype' as filter_jobtype_url %}
+                    <li>
+                        <a href="{{ filter_jobtype_url }}" 
+                        class="{% if request.path == filter_jobtype_url %}active{% endif %}">
+                            職種
+                        </a>
+                    </li>
+                    {% url 'CCapp:filter_benefits' as filter_benefits_url %}
+                    <li>
+                        <a href="{{ filter_benefits_url }}" 
+                        class="{% if request.path == filter_benefits_url %}active{% endif %}">
+                            福利厚生
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            
+
+            <!-- 点線 -->
+            <div class="under_navigation-line"></div>
+
+            <!-- 各種検索機能をここにぶち込む -->
+            {% block content2 %}
+            {% endblock %}   
+            
+        </div>
+
+        <!-- 検索ボタン（枠外の下に配置） -->
+        <!-- 検索実行時にsession storageのデータをクリアする処理 -->
+        {% comment %} ここの検索ボタンと上の検索ボタンが同じものとして機能するのか？ {% endcomment %}
+        <div class="search-button-container">
+            <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
+                <button type="submit" class="search-button">検索</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}求人検索結果{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/search_result.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-box">
+    <!-- ページネーションの情報表示部分 -->
+    <section class="pagination-info">
+        <p>全{{ page_obj.paginator.count }}社 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">前の50社</a>
+            {% endif %}
+            {% for page_num in page_obj.paginator.page_range %}
+                <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %}">
+                    {{ page_num }}
+                </a>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">次の50社</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- 検索結果がある場合 -->
+    {% if page_obj.object_list %}
+    {% for company in page_obj.object_list %}
+        <article class="company-card">
+            <!-- 会社名を表示 -->
+            <h2>{{ corporation.name }}</h2>
+            
+            <div class="company-content">
+                <!-- 詳細情報を表示 -->
+                <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
+                
+                <!-- 会社ロゴまたは代替画像 -->
+                <div class="job-item">
+                    {% if company.image %}
+                        <img src="{{ company.image.url }}" alt="{{ company.name }}">
+                    {% else %}
+                        <img src="{% static 'images/no_image.png' %}" alt="画像なし">
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- 応募ボタン -->
+            <div class="controls">
+                <button class="apply-button">応募する</button>
+            </div>
+        </article>
+    {% endfor %}
+{% else %}
+    <!-- 検索結果がない場合のメッセージ -->
+    <p class="no-results">求人情報が見つかりませんでした。</p>
+{% endif %}
+
+    <!-- ページネーションリンク（下部） -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">前の50社</a>
+        {% endif %}
+        {% for page_num in page_obj.paginator.page_range %}
+            <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %}">
+                {{ page_num }}
+            </a>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">次の50社</a>
+        {% endif %}
+    </div>
+</div>
+
+<div id="brands">
+    <a class="brands" href="#"><i>Career
+        <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
+</div>
+{% endblock %}

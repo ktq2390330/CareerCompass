@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+/* 1. 全体レイアウト */
+.selection-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+    margin-bottom: 20px;
+}
+
+/* 2. 大分類ボタンエリア */
+.selection-button {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.selection-button li {
+    margin: 0;
+    padding: 0;
+}
+
+.selection-button a {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    background-color: #ffffff;
+    width: 200px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.selection-button a:hover {
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
+}
+
+.selection-button a.active {
+    background-color: #ffffff;
+    color: #000;
+    border: 2px solid #4598eb;  /* 四角枠の色 */
+}
+
+/* 3. エリア詳細部分 */
+.checkbox-field {
+    flex-grow: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 600px;
+}
+
+.industry-details {
+    display: none; /* 初期は非表示 */
+    margin-bottom: 20px;
+}
+
+.industry-details.active {
+    display: block; /* 表示する際に使用 */
+}
+
+/* 4. 「すべて選択」「選択解除」ボタン */
+.industry-details button {
+    background: none;
+    border: none;
+    color: #4598eb;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+    margin-right: 10px;
+}
+
+.industry-details button:hover {
+    color: #ff7f50;
+}
+
+/* 5. チェックボックス部分のスタイル */
+.checkbox-field label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.checkbox-field label input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.checkbox-field label span {
+    font-size: 14px;
+}
+
+/* 6. レスポンシブ対応 */
+@media (max-width: 768px) {
+    .selection-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .selection-button a {
+        width: 100%;
+    }
+
+    .checkbox-field {
+        max-width: 100%;
+    }
+}

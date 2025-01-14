@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/* body */
+body {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto; /* 中央揃え */
+    margin-top: 20px;
+}
+
+/* header内の要素のレイアウト */
+.header {
+    width: 100%;  /* 横幅を100%に */
+    padding: 10px 20px;  /* 余白 */
+}
+
+/* brand */
+.brand {
+    font-size: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1; /* 行間を狭くする */
+    color: black; /* リンクの色を青に固定 */
+}
+
+/* ホバー、訪問済み、フォーカス、アクティブ状態でも青色に固定 */
+.brand:link,
+.brand:visited,
+.brand:hover,
+.brand:focus,
+.brand:active {
+    color: black; /* クリック後も常に青色にする */
+    text-decoration: none; /* 下線を消す（必要なら） */
+}
+
+/* brand（ロゴ）部分 */
+#brand {
+    display: flex;  /* 横並び */
+    align-items: center;  /* 上下中央揃え */
+    text-align: left;  /* 左寄せ */
+}
+
+/* brand横のh1タグの体裁 */
+#brand h1 {
+    /* margin-right: 50px; */
+    margin: 0 auto; /* 左右のマージンを自動調整 */
+    text-align: center; /* テキストの中央揃え */
+    transform: translateX(-85px); /* 左にずらす */
+}
+
+/* navigation */
+.navigation {
+    text-align: center; /* ナビゲーション全体を中央に配置 */
+}
+
+.navigation-button {
+    list-style-type: none; /* リストのマーカーを消す */
+    padding: 0;
+    display: inline-flex; /* 横並びに配置 */
+    gap: 100px; /* 各ボタンの間にスペースを追加 */
+    margin-top: 20px;
+}
+
+.navigation-button li a {
+    display: inline-block;
+    width: 150px; /* ボタンの固定幅を設定 */
+    padding: 10px 0; /* 上下のスペースのみを設定 */
+    text-align: center; /* テキストを中央揃え */
+    border: 2px solid #ccc;  /* 四角枠の色 */
+    border-radius: 8px; /* 角丸四角にする */
+    background-color: #ffffff; /* ボタンの背景色 */
+    text-decoration: none; /* リンクの下線を消す */
+    color: #333; /* テキストの色 */
+    font-size: 20px; /* フォントサイズ */
+    transition: background-color 0.3s; /* 背景色が変わるトランジション */
+}
+
+.navigation-button li a:hover {
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
+}
+
+.navigation-button li a.active {
+    background-color: #ffffff;
+    color: #000;
+    border: 2px solid #4598eb;  /* 四角枠の色 */
+}
+
+/* ナビゲーション下の実線 */
+.header-line {
+    border: none;
+    border-top: solid 2px black;
+    height: 1px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30 auto; /* 実線の上下の余白中央揃え */
+}
+
+/* footer */
+.row {
+    text-align: center;
+    font-size: 20px;
+}

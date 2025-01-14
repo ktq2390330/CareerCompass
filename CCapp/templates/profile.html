@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}プロフィール{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="{% url 'CCapp:profile' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="profile-box">
+            <div class="photo-container">
+                <div class="photo-box">
+                    {{ form.photo }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="furigana">氏名(カナ)</label>
+                {{ form.furigana }}
+            </div>
+            <div class="form-group">
+                <label for="birth">生年月日</label>
+                {{ form.birth }}
+            </div>
+            <div class="form-group">
+                <label for="gender">性別</label>
+                {{ form.gender }}
+            </div>
+            <div class="form-group">
+                <label for="postalCode">郵便番号</label>
+                {{ form.postalCode }}
+            </div>
+            <div class="form-group">
+                <label for="uAddress">住所</label>
+                {{ form.uAddress }}
+            </div>
+            <div class="form-group">
+                <label for="uTel">電話番号</label>
+                {{ form.uTel }}
+            </div>
+            <div class="form-group">
+                <label for="uSchool">学校名</label>
+                {{ form.uSchool }}
+            </div>
+            <div class="form-group">
+                <label for="graduation">卒業年度</label>
+                {{ form.graduation }}
+            </div>
+            <div class="button-group">
+                <button type="submit" name="save" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

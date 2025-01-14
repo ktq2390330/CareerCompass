@@ -1,0 +1,35 @@
+/* contact_done.css */
+
+.container {
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    justify-content: center; /* 縦方向に中央揃え */
+    align-items: center; /* 横方向に中央揃え */
+    text-align: center; /* テキストを中央揃え */
+}
+
+.message {
+    font-size: 24px; /* メッセージのフォントサイズ */
+    margin-bottom: 20px; /* メッセージとボタンの間の余白 */
+}
+
+.button-container {
+    margin-top: 20px; /* ボタンの上に余白を追加 */
+    margin-bottom: 170px;
+}
+
+.back-button {
+    display: inline-block; /* ボタンをインラインブロックに */
+    padding: 10px 20px; /* ボタンの内側の余白 */
+    font-size: 16px; /* ボタンのフォントサイズ */
+    color: black; /* ボタンの文字色 */
+    background-color: transparent; /* ボタンの背景色を透明に */
+    border: 2px solid black; /* 黒色の外枠を追加 */
+    border-radius: 5px; /* ボタンの角を丸くする */
+    text-decoration: none; /* ボタンの下線をなしに */
+    transition: background-color 0.3s; /* ホバー時の背景色の変化をスムーズに */
+}
+
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* ホバー時の背景色を薄い黒に */
+}
