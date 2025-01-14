@@ -35,6 +35,9 @@ urlpatterns = [
     path('adm_logout/', views.AdmLogoutView, name='adm_logout'),
     path('adm_post_list/', views.AdmPostListView.as_view(), name='adm_post_list'),
     path('adm_post/', views.AdmPostView.as_view(), name='adm_post'),
+    path('get_category01/<int:category00_id>/', views.get_category01_options, name='get_category01'),
+    path('get_category11/<int:category10_id>/', views.get_category11_options, name='get_category11'),
+    path('get_area/<str:area1_name>/', views.get_area_options, name='get_area'),
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
     path('adm_edit_post/', views.AdmEditPostView.as_view(), name='adm_edit_post'),
 
