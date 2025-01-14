@@ -154,7 +154,7 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         profile = form.save(commit=False)  # 保存を一旦抑制
         profile.user = self.request.user  # ユーザーをセット
-        print(profile)
+        print(profile.photo)
         profile.save()  # 最終保存
         messages.success(self.request, 'プロフィール情報が更新されました。')
         return super().form_valid(form)
