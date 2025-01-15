@@ -176,6 +176,7 @@ class Corporation(models.Model):
 class Offer(models.Model):
     name = models.CharField(max_length=64, verbose_name="求人名", db_index=True)
     detail = models.TextField(verbose_name="詳細")
+    photo = models.ImageField(upload_to='offer_photos/', null=True, blank=True, verbose_name="宣材写真")
     solicitation = models.TextField(verbose_name="募集要項")
     course = models.CharField(max_length=256, verbose_name="コース名")
     forms = models.CharField(max_length=32, verbose_name="雇用形態")

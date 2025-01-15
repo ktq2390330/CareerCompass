@@ -1,19 +1,19 @@
 [
     {
-    "offerId": 1,
+    "offerName": "求人000001",
     "users": [
         {"mail": "ktq2390312@stu.o-hara.ac.jp"}
         ]
     },
     {
-    "offerId": 2,
+    "offerName": "求人000002",
     "users": [
         {"mail": "usertest001@test1.com"},
         {"mail": "usertest002@test2.com"}
         ]
     },
     {
-    "offerId": 3,
+    "offerName": "求人000003",
     "users": [
         {"mail": "usertest003@test3.com"},
         {"mail": "usertest004@test4.com"},
@@ -21,7 +21,7 @@
         ]
     },
     {
-    "offerId": 4,
+    "offerName": "求人000004",
     "users": [
         {"mail": "usertest006@test6.com"},
         {"mail": "usertest007@test7.com"},
@@ -30,7 +30,7 @@
         ]
     },
     {
-    "offerId": 5,
+    "offerName": "求人000005",
     "users": [
         {"mail": "usertest0010@test10.com"},
         {"mail": "usertest0011@test11.com"},
@@ -40,7 +40,7 @@
         ]
     },
     {
-    "offerId": 6,
+    "offerName": "求人000006",
     "users": [
         {"mail": "usertest0015@test15.com"},
         {"mail": "usertest0016@test16.com"},
@@ -51,7 +51,7 @@
         ]
     },
     {
-    "offerId": 7,
+    "offerName": "求人000007",
     "users": [
         {"mail": "sunshine21@randommail.com"},
         {"mail": "greenfox22@mailpro.com"},
@@ -63,7 +63,7 @@
         ]
     },
     {
-    "offerId": 8,
+    "offerName": "求人000008",
     "users": [
         {"mail": "sunshine21@randommail.com"},
         {"mail": "greenfox22@mailpro.com"},
@@ -76,7 +76,7 @@
         ]
     },
     {
-    "offerId": 9,
+    "offerName": "求人000009",
     "users": [
         {"mail": "silver29@openmail.com"},
         {"mail": "goldenday30@mailhub.com"},
@@ -90,7 +90,7 @@
         ]
     },
     {
-    "offerId": 10,
+    "offerName": "求人000010",
     "users": [
         {"mail": "whitecloud38@protonmail.com"},
         {"mail": "yellowstar39@randommail.com"},
