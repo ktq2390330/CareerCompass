@@ -266,9 +266,31 @@ def filter_benefits_view(request):
 
 # admin
 # dashboard
-class AdmTopView(TemplateView):
+from django.db.models import Q
+from django.views.generic import ListView
+from .models import Offer, Corporation
+
+class AdmTopView(ListView):
+    model = Offer
     template_name = 'adm_dashboard.html'
-    login_url = '#'
+    context_object_name = 'offers'
+
+    def get_queryset(self):
+        query = self.request.GET.get('query', '')  # 検索クエリを取得
+        if query:
+            # queryが数字かどうかを判定し、法人番号として検索する
+            if query.isdigit():
+                # 法人番号（corp）を文字列として検索
+                return Offer.objects.filter(
+                    Q(name__icontains=query) | Q(corporation__corp=query)
+                )
+            else:
+                # 企業名に対して部分一致検索（法人名でも検索）
+                return Offer.objects.filter(
+                    Q(name__icontains=query) | Q(corporation__name__icontains=query)
+                )
+        return Offer.objects.all()  # クエリがない場合は全ての求人情報を表示
+
 # login
 class AdmLoginView(FormView):
     template_name = 'adm_login.html'
