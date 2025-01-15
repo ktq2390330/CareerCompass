@@ -5,25 +5,53 @@
 {% load static %}
 
 <!-- top page用のタイトル -->
-{% block title %}[adm]dashboard{% endblock %}
+{% block title %}[adm]求人検索{% endblock %}
 
 <!-- top page用のcssを読み込む -->
 {% block head %}
-    <link href="{% static 'css/adm_dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'css/adm_post_list.css' %}" rel="stylesheet">
 {% endblock %}
 
 <!-- base.htmlにぶち込む部分 -->
 {% block content %}
-
     <!-- search-box -->
     <div class="container">
         <div class="search-field">
             <!-- 検索バー-->
-            <form action="/search" method="GET">
-                <input type="text" name="query" placeholder="企業名または法人番号で探す" required>
+            <form action="" method="GET">
+                <input type="text" name="query" placeholder="法人番号または企業名を入力" value="{{ request.GET.query }}">
                 <button type="submit">検索</button>
             </form>
         </div>
     </div>
 
+    <!-- 求人リスト -->
+    <div class="job-list">
+        {% if offers %}
+            <!-- 求人情報をループで表示 -->
+            {% for offer in offers %}
+            <div class="job-item">
+                <div class="job-info">
+                    <p><strong>企業名:</strong> {{ offer.corporation.name }}</p>
+                    <p><strong>法人番号:</strong> {{ offer.corporation.corp }}</p>
+                    <div class="job-buttons">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">求人削除</button>
+                        </form>
+                        <a href="">
+                            <button type="button">求人編集</button>
+                        </a>
+                    </div>                    
+                </div>
+            </div>
+            {% empty %}
+            <!-- 検索結果がない場合の表示 -->
+            <p class="no-results">求人情報が見つかりませんでした。</p>
+            {% endfor %}
+        {% else %}
+            <!-- 検索結果がない場合の表示 -->
+            <p class="no-results">求人情報が見つかりませんでした。</p>
+        {% endif %}
+    </div>
 {% endblock %}

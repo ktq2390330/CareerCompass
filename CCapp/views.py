@@ -154,17 +154,17 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         profile = form.save(commit=False)  # 保存を一旦抑制
         profile.user = self.request.user  # ユーザーをセット
-        print(profile)
-        profile.save()  # 最終保存
+        if self.request.FILES.get('photo'):  # 画像がアップロードされている場合
+            profile.photo = self.request.FILES['photo']
+        profile.save()  # 保存
         messages.success(self.request, 'プロフィール情報が更新されました。')
         return super().form_valid(form)
-
+    
     def form_invalid(self, form):
         """
         フォームが無効な場合
         """
         messages.error(self.request, '入力内容に誤りがあります。')
-        print(form.errors)
         return super().form_invalid(form)
 
 # accout
@@ -266,9 +266,31 @@ def filter_benefits_view(request):
 
 # admin
 # dashboard
-class AdmTopView(TemplateView):
+from django.db.models import Q
+from django.views.generic import ListView
+from .models import Offer, Corporation
+
+class AdmTopView(ListView):
+    model = Offer
     template_name = 'adm_dashboard.html'
-    login_url = '#'
+    context_object_name = 'offers'
+
+    def get_queryset(self):
+        query = self.request.GET.get('query', '')  # 検索クエリを取得
+        if query:
+            # queryが数字かどうかを判定し、法人番号として検索する
+            if query.isdigit():
+                # 法人番号（corp）を文字列として検索
+                return Offer.objects.filter(
+                    Q(name__icontains=query) | Q(corporation__corp=query)
+                )
+            else:
+                # 企業名に対して部分一致検索（法人名でも検索）
+                return Offer.objects.filter(
+                    Q(name__icontains=query) | Q(corporation__name__icontains=query)
+                )
+        return Offer.objects.all()  # クエリがない場合は全ての求人情報を表示
+
 # login
 class AdmLoginView(FormView):
     template_name = 'adm_login.html'
@@ -581,9 +603,8 @@ class AdmEditPostView(LoginRequiredMixin, TemplateView):
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Offer
-from .filters import OfferFilter, filter_offers
-from django.utils.timezone import now
+from .models import Offer, Area0, Area1, Category00, Category01, Category10, Category11, Tag, Corporation
+from .filters import filter_offers
 
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
@@ -599,17 +620,24 @@ def offer_search_view(request):
         'category11': request.GET.getlist('category11'),
         'corporation': request.GET.getlist('corporation'),
     }
-    
+
     # ユーザー権限を取得（管理者または一般ユーザー）
-    authority = request.user.authority  # authorityフィールドを使って判別（必要に応じて変更）
+    authority = getattr(request.user, 'authority', None)  # authorityフィールドが存在しない場合に対応
 
     # Offerモデルをフィルタリング
-    offers = filter_offers(filters, authority)
-    
-    # ページネーション処理
+    offers = filter_offers(filters, authority) if 'filter_offers' in globals() else Offer.objects.filter(status=True)
+
+    # ページネーション処理（1ページに50件表示）
     paginator = Paginator(offers, 50)  # 1ページに50件表示
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('page', 1)  # デフォルトページを1に設定
     page_obj = paginator.get_page(page_number)
+
+    # 表示するページ番号を5件以内に制限
+    current_page = page_obj.number
+    total_pages = paginator.num_pages
+    start_page = max(current_page - 2, 1)
+    end_page = min(current_page + 2, total_pages)
+    page_range = range(start_page, end_page + 1)
 
     # 絞り込み項目リストを取得
     area0_list = Area0.objects.all()
@@ -623,6 +651,7 @@ def offer_search_view(request):
 
     return render(request, 'search_result.html', {
         'page_obj': page_obj,
+        'page_range': page_range,
         'area0_list': area0_list,
         'area1_list': area1_list,
         'category00_list': category00_list,
@@ -632,3 +661,10 @@ def offer_search_view(request):
         'tag_list': tag_list,
         'corporation_list': corporation_list,
     })
+
+from django.shortcuts import render, get_object_or_404
+from .models import Offer
+
+def job_detail(request, id):
+    offer = get_object_or_404(Offer, id=id)
+    return render(request, 'jobs.html', {'offer': offer})

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'CCapp'
 
@@ -54,6 +56,7 @@ urlpatterns = [
     # search
     path('search_result/', views.SearchresultView.as_view(), name='search_result'),
     path('search/', views.offer_search_view, name='offer_search'),
+    path('offer/<int:id>/', views.job_detail, name='job_detail'),
 
     # self
     path('self_analy/', views.self_analy_view, name='self_analy'),
@@ -61,4 +64,4 @@ urlpatterns = [
     path('industry/', views.industry_view, name='industry'),
     path('jobtype/', views.jobtype_view, name='jobtype'),
     path('save_answer/', views.save_answer_view, name='save_answer'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
