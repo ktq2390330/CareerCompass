@@ -54,6 +54,7 @@ urlpatterns = [
     # search
     path('search_result/', views.SearchresultView.as_view(), name='search_result'),
     path('search/', views.offer_search_view, name='offer_search'),
+    path('offer/<int:id>/', views.job_detail, name='job_detail'),
 
     # self
     path('self_analy/', views.self_analy_view, name='self_analy'),

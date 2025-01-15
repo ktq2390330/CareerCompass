@@ -6,7 +6,9 @@ djangoImportSetup()
 from CCapp.models import *
 from CCapp.defs import makeDirFile,makeImportPath,logconfig,logException,logsOutput,readFile,executeFunction
 from django.db import transaction
-from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ログの設定
 def import_data_SettingLogs():
@@ -366,93 +368,114 @@ def supportDM(filePath):
     executeFunction(function)
     outputQueryResults(instanceDict)
 
+#更新対応Ver
 def offer(filePath):
-    instanceDict = {}
+    def process_data(data):
+        # 既存データを一括取得してキャッシュ
+        existing_offers = {o.name: o for o in Offer.objects.all()}  # 'name' をユニークキーと仮定
+        rows_to_insert = []
+        rows_to_update = []
+        errors = []
+
+        for row_num, row in enumerate(tqdm(data, desc="Processing Rows", unit="row"), start=1):
+            try:
+                required_keys = ['title', 'detail', 'solicitation', 'course', 'forms', 'roles',
+                                'CoB', 'subject', 'NoP', 'departments', 'characteristic', 'PES',
+                                'giving', 'allowances', 'salaryRaise', 'bonus', 'holiday',
+                                'workingHours', 'area1name', 'category00name', 'category01name',
+                                'category10name', 'category11name', 'corporationID', 'period', 'status']
+
+                if not all(key in row for key in required_keys):
+                    raise KeyError(f"欠損キー: {set(required_keys) - row.keys()}")
+
+                area1 = Area1.objects.get(name=row['area1name'])
+                category00 = Category00.objects.get(name=row['category00name'])
+                category01 = Category01.objects.get(name=row['category01name'])
+                category10 = Category10.objects.get(name=row['category10name'])
+                category11 = Category11.objects.get(name=row['category11name'])
+                corporation = Corporation.objects.get(corp=row['corporationID'])
+
+                period = datetime.strptime(row['period'], "%Y-%m-%d %H:%M:%S")
+                status = row['status'].lower() == 'true'
+
+                # 挿入または更新の判断
+                if row['title'] in existing_offers:
+                    # 既存レコードのインスタンスを取得して更新
+                    existing_offer = existing_offers[row['title']]
+                    existing_offer.detail = row['detail']
+                    existing_offer.solicitation = row['solicitation']
+                    existing_offer.course = row['course']
+                    existing_offer.forms = row['forms']
+                    existing_offer.roles = row['roles']
+                    existing_offer.CoB = row['CoB']
+                    existing_offer.subject = row['subject']
+                    existing_offer.NoP = row['NoP']
+                    existing_offer.departments = row['departments']
+                    existing_offer.characteristic = row['characteristic']
+                    existing_offer.PES = row['PES']
+                    existing_offer.giving = row['giving']
+                    existing_offer.allowances = row['allowances']
+                    existing_offer.salaryRaise = row['salaryRaise']
+                    existing_offer.bonus = row['bonus']
+                    existing_offer.holiday = row['holiday']
+                    existing_offer.workingHours = row['workingHours']
+                    existing_offer.area1 = area1
+                    existing_offer.category00 = category00
+                    existing_offer.category01 = category01
+                    existing_offer.category10 = category10
+                    existing_offer.category11 = category11
+                    existing_offer.corporation = corporation
+                    existing_offer.period = period
+                    existing_offer.status = status
+                    rows_to_update.append(existing_offer)
+                else:
+                    # 新規挿入
+                    rows_to_insert.append(Offer(
+                        name=row['title'], detail=row['detail'], solicitation=row['solicitation'], course=row['course'],
+                        forms=row['forms'], roles=row['roles'], CoB=row['CoB'], subject=row['subject'], NoP=row['NoP'],
+                        departments=row['departments'], characteristic=row['characteristic'], PES=row['PES'],
+                        giving=row['giving'], allowances=row['allowances'], salaryRaise=row['salaryRaise'],
+                        bonus=row['bonus'], holiday=row['holiday'], workingHours=row['workingHours'], area1=area1,
+                        category00=category00, category01=category01, category10=category10, category11=category11,
+                        corporation=corporation, period=period, status=status
+                    ))
+
+            except Exception as e:
+                errors.append((row_num, str(e)))
+
+        return rows_to_insert, rows_to_update, errors
+
     def function():
         try:
             data = readFile(filePath)
+            rows_to_insert, rows_to_update, errors = process_data(data)
+
             with transaction.atomic():
-                for row_num, row in enumerate(data, start=1):  # 行番号を追跡
-                    try:
-                        # 辞書形式から必要なデータを取得
-                        title = row['title']
-                        detail = row['detail']
-                        solicitation = row['solicitation']
-                        course = row['course']
-                        forms = row['forms']
-                        roles = row['roles']
-                        CoB = row['CoB']
-                        subject = row['subject']
-                        NoP = row['NoP']
-                        departments = row['departments']
-                        characteristic = row['characteristic']
-                        pes = row['PES']
-                        giving = row['giving']
-                        allowances = row['allowances']
-                        salaryRaise = row['salaryRaise']
-                        bonus = row['bonus']
-                        holiday = row['holiday']
-                        workingHours = row['workingHours']
-                        area1name = row['area1name']
-                        category00name = row['category00name']
-                        category01name = row['category01name']
-                        category10name = row['category10name']
-                        category11name = row['category11name']
-                        corporationId = row['corporationID']
-                        period_str = row['period']
-                        status_str = row['status']
+                # 新規挿入
+                Offer.objects.bulk_create(rows_to_insert, batch_size=1000, ignore_conflicts=True)
 
-                        # 関連オブジェクトの取得
-                        print(f"検索値 - area1name: {area1name}, category00name: {category00name}, category01name: {category01name}, category10name: {category10name}, category11name: {category11name}, corporationId: {corporationId}")
-                        area1 = Area1.objects.get(name=area1name)
-                        category00 = Category00.objects.get(name=category00name)
-                        category01 = Category01.objects.get(name=category01name)
-                        category10 = Category10.objects.get(name=category10name)
-                        category11 = Category11.objects.get(name=category11name)
-                        corporation = Corporation.objects.get(corp=corporationId)
-                    except KeyError as e:
-                        print(f"キーエラー: {e}, 行番号={row_num}, 行データ: {row}")
-                        continue
-                    except Area1.DoesNotExist:
-                        print(f"Area1オブジェクトが見つかりません: name={area1name}, 該当データ: {row}")
-                        continue
-                    except Category00.DoesNotExist:
-                        print(f"Category00オブジェクトが見つかりません: name={category00name}, 該当データ: {row}")
-                        continue
-                    except Category01.DoesNotExist:
-                        print(f"Category01オブジェクトが見つかりません: name={category01name}, 該当データ: {row}")
-                        continue
-                    except Category10.DoesNotExist:
-                        print(f"Category10オブジェクトが見つかりません: name={category10name}, 該当データ: {row}")
-                        continue
-                    except Category11.DoesNotExist:
-                        print(f"Category11オブジェクトが見つかりません: name={category11name}, 該当データ: {row}")
-                        continue
-                    except Corporation.DoesNotExist:
-                        print(f"Corporationオブジェクトが見つかりません: corp={corporationId}, 該当データ: {row}")
-                        continue
-
-                    try:
-                        # 日付のパース
-                        period = datetime.datetime.strptime(period_str, "%Y-%m-%d %H:%M:%S")
-                    except ValueError as e:
-                        print(f"日付形式エラー: {e}, 行番号={row_num}, 日付文字列: {period_str}")
-                        continue
-
-                    # ステータスのパース
-                    status = status_str.lower() == 'true'
-
-                    # Offerインスタンス作成
-                    instance, created = Offer.objects.get_or_create(
-                        name=title, detail=detail, solicitation=solicitation, course=course,
-                        forms=forms, roles=roles, CoB=CoB, subject=subject, NoP=NoP,
-                        departments=departments, characteristic=characteristic, PES=pes, giving=giving,
-                        allowances=allowances, salaryRaise=salaryRaise, bonus=bonus, holiday=holiday,
-                        workingHours=workingHours, area1=area1, category00=category00,
-                        category01=category01, category10=category10, category11=category11,
-                        corporation=corporation, period=period, status=status
+                # 更新処理
+                if rows_to_update:
+                    Offer.objects.bulk_update(
+                        rows_to_update,
+                        fields=[
+                            'detail', 'solicitation', 'course', 'forms', 'roles', 'CoB', 'subject', 'NoP',
+                            'departments', 'characteristic', 'PES', 'giving', 'allowances', 'salaryRaise',
+                            'bonus', 'holiday', 'workingHours', 'area1', 'category00', 'category01', 'category10',
+                            'category11', 'corporation', 'period', 'status'
+                        ],
+                        batch_size=1000
                     )
-                    instanceDict[instance] = created
+
+            # 処理結果の出力
+            print(f"新規挿入: {len(rows_to_insert)}件")
+            print(f"更新: {len(rows_to_update)}件")
+            if errors:
+                print(f"エラーが発生しました ({len(errors)}件):")
+                for row_num, error_msg in errors[:10]:
+                    print(f"行 {row_num}: {error_msg}")
+                if len(errors) > 10:
+                    print("...他にもエラーがあります")
 
         except FileNotFoundError:
             print(f"ファイルが見つかりません: {filePath}")
@@ -460,8 +483,87 @@ def offer(filePath):
             print(f"予期せぬエラーが発生しました: {e}")
 
     executeFunction(function)
-    outputQueryResults(instanceDict)
 
+
+#パフォーマンス優先
+# def offer(filePath):
+#     def process_data(data):
+#         # 事前キャッシュ
+#         area1_cache = {a.name: a for a in Area1.objects.all()}
+#         category00_cache = {c.name: c for c in Category00.objects.all()}
+#         category01_cache = {c.name: c for c in Category01.objects.all()}
+#         category10_cache = {c.name: c for c in Category10.objects.all()}
+#         category11_cache = {c.name: c for c in Category11.objects.all()}
+#         corporation_cache = {c.corp: c for c in Corporation.objects.all()}
+
+#         rows_to_insert = []
+#         errors = []  # エラーを記録するリスト
+#         success_count = 0
+
+#         for row_num, row in enumerate(tqdm(data, desc="Processing Rows", unit="row"), start=1):
+#             try:
+#                 # 必要なデータの取得と検証
+#                 required_keys = ['title', 'detail', 'solicitation', 'course', 'forms', 'roles',
+#                                 'CoB', 'subject', 'NoP', 'departments', 'characteristic', 'PES',
+#                                 'giving', 'allowances', 'salaryRaise', 'bonus', 'holiday',
+#                                 'workingHours', 'area1name', 'category00name', 'category01name',
+#                                 'category10name', 'category11name', 'corporationID', 'period', 'status']
+
+#                 if not all(key in row for key in required_keys):
+#                     raise KeyError(f"欠損キー: {set(required_keys) - row.keys()}")
+
+#                 area1 = area1_cache.get(row['area1name'])
+#                 category00 = category00_cache.get(row['category00name'])
+#                 category01 = category01_cache.get(row['category01name'])
+#                 category10 = category10_cache.get(row['category10name'])
+#                 category11 = category11_cache.get(row['category11name'])
+#                 corporation = corporation_cache.get(row['corporationID'])
+
+#                 if not all([area1, category00, category01, category10, category11, corporation]):
+#                     raise ValueError(f"関連オブジェクトが見つかりません: {row}")
+
+#                 period = datetime.strptime(row['period'], "%Y-%m-%d %H:%M:%S")
+#                 status = row['status'].lower() == 'true'
+
+#                 rows_to_insert.append(Offer(
+#                     name=row['title'], detail=row['detail'], solicitation=row['solicitation'], course=row['course'],
+#                     forms=row['forms'], roles=row['roles'], CoB=row['CoB'], subject=row['subject'], NoP=row['NoP'],
+#                     departments=row['departments'], characteristic=row['characteristic'], PES=row['PES'],
+#                     giving=row['giving'], allowances=row['allowances'], salaryRaise=row['salaryRaise'],
+#                     bonus=row['bonus'], holiday=row['holiday'], workingHours=row['workingHours'], area1=area1,
+#                     category00=category00, category01=category01, category10=category10, category11=category11,
+#                     corporation=corporation, period=period, status=status
+#                 ))
+
+#             except Exception as e:
+#                 errors.append((row_num, str(e)))  # エラー情報を記録
+
+#         return rows_to_insert, errors, success_count
+
+#     def function():
+#         try:
+#             data = readFile(filePath)
+#             rows_to_insert, errors, success_count = process_data(data)
+
+#             with transaction.atomic():
+#                 created_instances = Offer.objects.bulk_create(rows_to_insert, batch_size=1000)
+#                 success_count = len(created_instances)  # 成功したレコード数を記録
+
+#             # 処理結果を出力
+#             print(f"処理完了: {success_count}件のレコードが成功しました")
+#             if errors:
+#                 print(f"エラーが発生しました ({len(errors)}件):")
+#                 for row_num, error_msg in errors[:10]:  # 最初の10件のみ表示
+#                     print(f"行 {row_num}: {error_msg}")
+#                 if len(errors) > 10:
+#                     print("...他にもエラーがあります")
+
+#         except FileNotFoundError:
+#             print(f"ファイルが見つかりません: {filePath}")
+#         except Exception as e:
+#             print(f"予期せぬエラーが発生しました: {e}")
+
+#     executeFunction(function)
 
 def offerEntry(filePath):
     instanceDict={}
@@ -514,33 +616,55 @@ def offerTag(filePath):
     outputQueryResults(instanceDict)
 
 # 実行
-functionMap={
-    # 'area0.csv':area0,
-    # 'area1.csv':area1,
-    # 'area2.csv':area2,
-    # 'category00.csv':category00,
-    # 'category01.csv':category01,
-    # 'category10.csv':category10,
-    # 'category11.csv':category11,
-    # 'tag.csv':tag,
-    # 'user.csv':user,
-    # 'profile.csv':profile,
-    # 'question00.csv':question00,
-    # 'question01.csv':question01,
-    # 'assessment.csv':assessment,
-    # 'corporation.csv':corporation,
-    # 'DM.csv':dm,
-    # 'offer.csv':offer,
-    # 'offerEntry.json':offerEntry,
-    'offerTag': offerTag,
-    # 'supportDM.csv':supportDM,
+functionMap = {
+    # 'area0.csv': area0,
+    'area1.csv': area1,
+    # 'area2.csv': area2,
+    # 'category00.csv': category00,
+    # 'category01.csv': category01,
+    # 'category10.csv': category10,
+    # 'category11.csv': category11,
+    # 'tag.csv': tag,
+    # 'user.csv': user,
+    # 'profile.csv': profile,
+    # 'question00.csv': question00,
+    # 'question01.csv': question01,
+    # 'assessment.csv': assessment,
+    # 'corporation.csv': corporation,
+    # 'DM.csv': dm,
+    # 'offer1.csv': offer,
+    # 'offerEntry.json': offerEntry,
+    # 'offerTag': offerTag,
+    # 'supportDM.csv': supportDM,
 }
-logger=import_data_SettingLogs()
 
-for file_key,function in functionMap.items():
-    basePath='../setup/data/'
-    file_path=makeImportPath(basePath,file_key)
-    logger.info(f"Loading data for {file_key} from {file_path}...")
-    function(file_path)
+logger = import_data_SettingLogs()
+basePath = '../setup/data/'
 
-logging.info('Executed all.')
+results = []
+with ThreadPoolExecutor() as executor:
+    futures = []
+
+    # 各ファイルに対する処理を並列で実行
+    for file_key, function in functionMap.items():
+        file_path = makeImportPath(basePath, file_key)
+        logger.info(f"Loading data for {file_key} from {file_path}...")
+
+        def task(file_key=file_key, function=function, file_path=file_path):
+            try:
+                function(file_path)
+                return file_key, "Success"
+            except Exception as e:
+                logger.error(f"Error processing {file_key}: {e}")
+                return file_key, f"Error: {e}"
+
+        futures.append(executor.submit(task))
+
+    for future in as_completed(futures):
+        results.append(future.result())
+
+# 処理結果をログに記録
+for file_key, status in results:
+    logger.info(f"{file_key}: {status}")
+
+logging.info("Executed all.")

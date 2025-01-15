@@ -40,16 +40,26 @@ fixed_data = {
     "salaryRaise": "年2回",
     "bonus": "基本給6か月分",
     "allowances": "家賃手当",
+    "solicitation":"募集要項",
+    "course":"コース名",
+    "forms":"雇用形態",
+    "roles":"配属職種",
+    "CoB":"提出書類",
+    "subject":"募集対象",
+    "NoP":"募集人数",
+    "departments":"募集学部",
+    "characteristic":"募集特徴",
 }
 
 # 出力ファイルのパス
-output_file = "offer.csv"
+output_file = ".setup/data/offer.csv"
 
 # ヘッダー定義
 header = [
     "title", "giving", "holiday", "area1name",
     "category00name", "category01name", "category10name", "category11name", "corporationID",
-    "workingHours", "period", "status", "detail", "PES", "salaryRaise", "bonus", "allowances"
+    "workingHours", "period", "status", "detail", "PES", "salaryRaise", "bonus", "allowances",
+    "solicitation","course","forms","roles","CoB","subject","NoP","departments","characteristic"
 ]
 
 # CSVファイルを初期化（ヘッダーを書き込み）
