@@ -536,9 +536,39 @@ def save_answer_view(request):
         'form': form,  # フォームも渡す
     })
 
-class AdmPostView(LoginRequiredMixin, TemplateView):
+from django.http import JsonResponse
+from .forms import AdmPostForm
+from .models import Offer, Category01, Category11
+from django.shortcuts import render, get_object_or_404
+
+class AdmPostView(View):
     template_name = 'adm_post.html'
-    login_url = '#'
+
+    def get(self, request):
+        form = AdmPostForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = AdmPostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('adm_dashboard')  # 管理者ダッシュボードにリダイレクト
+        return render(request, self.template_name, {'form': form})
+
+def get_category01_options(request, category00_id):
+    """カテゴリ00に関連するカテゴリ01を取得"""
+    categories = Category01.objects.filter(category00_id=category00_id).values('id', 'name')
+    return JsonResponse({'category01': list(categories)})
+
+def get_category11_options(request, category10_id):
+    """カテゴリ10に関連するカテゴリ11を取得"""
+    categories = Category11.objects.filter(category10_id=category10_id).values('id', 'name')
+    return JsonResponse({'category11': list(categories)})
+
+def get_area_options(request, area1_id):
+    """エリアの都道府県を取得"""
+    area = get_object_or_404(Area1, pk=area1_id)
+    return JsonResponse({'area': area.name.split('-')[-1]})
 
 class AdmPostDoneView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post_done.html'
