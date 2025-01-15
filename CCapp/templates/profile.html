@@ -6,6 +6,26 @@
 
 {% block head %}
 <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const photoInput = document.querySelector("#id_photo"); // ファイル入力フィールド
+        const previewImage = document.querySelector("#preview-image"); // プレビュー画像
+
+        photoInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = "block"; // プレビュー画像を表示
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewImage.style.display = "none"; // ファイルが選択されていない場合非表示
+            }
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +35,20 @@
         <div class="profile-box">
             <div class="photo-container">
                 <div class="photo-box">
-                    {{ form.photo }}
+                    <!-- 保存された画像があれば表示、なければ画像アップロードフォームを表示 -->
+                    {% if form.instance.photo %}
+                        <img id="preview-image" 
+                             src="{{ form.instance.photo.url }}" 
+                             alt="プロフィール写真" 
+                             style="max-width: 200px; max-height: 200px; display: block;" />
+                    {% else %}
+                        <img id="preview-image" 
+                             src="#" 
+                             alt="プロフィール写真" 
+                             style="display: none; max-width: 200px; max-height: 200px;" />
+                    {% endif %}
+                    <!-- 画像アップロード用のフォーム -->
+                    {{ form.photo }}  
                 </div>
             </div>
             <div class="form-group">
