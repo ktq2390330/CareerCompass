@@ -154,17 +154,17 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         profile = form.save(commit=False)  # 保存を一旦抑制
         profile.user = self.request.user  # ユーザーをセット
-        print(profile.photo)
-        profile.save()  # 最終保存
+        if self.request.FILES.get('photo'):  # 画像がアップロードされている場合
+            profile.photo = self.request.FILES['photo']
+        profile.save()  # 保存
         messages.success(self.request, 'プロフィール情報が更新されました。')
         return super().form_valid(form)
-
+    
     def form_invalid(self, form):
         """
         フォームが無効な場合
         """
         messages.error(self.request, '入力内容に誤りがあります。')
-        print(form.errors)
         return super().form_invalid(form)
 
 # accout

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'CCapp'
 
@@ -62,4 +64,4 @@ urlpatterns = [
     path('industry/', views.industry_view, name='industry'),
     path('jobtype/', views.jobtype_view, name='jobtype'),
     path('save_answer/', views.save_answer_view, name='save_answer'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
