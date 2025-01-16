@@ -5,7 +5,7 @@
 {% load static %}
 
 <!-- filter_area用のタイトル -->
-{% block title %}filter area{% endblock %}
+{% block title %}Filter Area{% endblock %}
 
 <!-- 埋め込む用のcssを読み込む -->
 {% block head2 %}
@@ -14,14 +14,14 @@
 
 <!-- filter_base.htmlにぶち込む部分 -->
 {% block content2 %}
-    <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
-    <div class="selection-wrapper">
+    <!-- フォームの開始 -->
+    <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm">
         <!-- 大分類ボタン -->
         <nav class="selection">
             <ul class="selection-button">
                 {% for area0 in area0_list %}
                 <li>
-                    <a href="javascript:void(0);" onclick="showArea('area{{ area0.id }}')">
+                    <a href="javascript:void(0);" onclick="showArea('area{{ area0.id }}')" aria-label="エリア {{ area0.name }}">
                         {{ area0.name }}
                     </a>
                 </li>
@@ -29,58 +29,45 @@
             </ul>
         </nav>
 
-
+        <!-- 各エリアのチェックボックス -->
         <div class="checkbox-field">
-            <!-- 各エリアのチェックボックス -->
             {% for area0 in area0_list %}
-            <!-- 初期表示したいエリアに 'active' クラスを追加 -->
             <div id="area{{ area0.id }}" class="area-details {% if forloop.first %}active{% endif %}">
                 <button type="button" onclick="selectAll('area{{ area0.id }}', true)">すべて選択</button>
                 <button type="button" onclick="selectAll('area{{ area0.id }}', false)">選択解除</button>
-                
                 {% for area1 in area1_list %}
                     {% if area1.area0_id == area0.id %}
                     <label>
-                        <input type="checkbox" name="area[]" value="{{ area1.id }}"> {{ area1.name }}
+                        <input type="checkbox" name="area1" value="{{ area1.id }}" 
+                            {% if area1.id|stringformat:"s" in checked_areas %}checked{% endif %}>
+                        {{ area1.name }}
                     </label><br>
                     {% endif %}
                 {% endfor %}
             </div>
             {% endfor %}
         </div>
-    </div>
+
+        <!-- フォーム送信ボタン -->
+        <button type="submit">検索</button>
+    </form>
 
     <!-- 内部スクリプト -->
     <script>
-        // ページ読み込み時に最初のエリアを表示
+        // ページ読み込み時に初期表示を設定
         window.onload = function() {
-            // 該当するチェックボックスを表示
-            const firstArea = document.querySelector('.area-details');
-            if (firstArea) {
-                firstArea.classList.add('active');
-            }
-
-            // 最初のボタンをアクティブにする
-            const firstButton = document.querySelector('.selection-button a');
-            if (firstButton) {
-                firstButton.classList.add('active');
-            }
-
             restoreAreaState();
         };
 
-        // ボタンをクリックして対応するチェックボックスを表示
+        // ボタンをクリックしてチェックボックスを表示
         function showArea(areaId) {
-            const allAreas = document.querySelectorAll('.area-details');
-            allAreas.forEach(area => area.classList.remove('active'));
+            document.querySelectorAll('.area-details').forEach(area => {
+                area.classList.toggle('active', area.id === areaId);
+            });
 
-            const targetArea = document.getElementById(areaId);
-            if (targetArea) {
-                targetArea.classList.add('active');
-            }
-
-            const allButtons = document.querySelectorAll('.selection-button a');
-            allButtons.forEach(button => button.classList.remove('active'));
+            document.querySelectorAll('.selection-button a').forEach(button => {
+                button.classList.remove('active');
+            });
 
             const clickedButton = document.querySelector(`.selection-button a[onclick="showArea('${areaId}')"]`);
             if (clickedButton) {
@@ -88,58 +75,33 @@
             }
         }
 
-        // すべて選択/解除
+        // すべて選択または解除
         function selectAll(areaId, isChecked) {
-            const checkboxes = document.querySelectorAll('#' + areaId + ' input[type="checkbox"]');
+            const checkboxes = document.querySelectorAll(`#${areaId} input[type="checkbox"]`);
             checkboxes.forEach(checkbox => checkbox.checked = isChecked);
-            // チェックボックスの状態をローカルストレージに保存
             saveAreaState();
         }
 
-        // チェックボックスの状態を保存
+        // チェックボックスの状態をローカルストレージに保存
         function saveAreaState() {
             const filterState = {};
-            document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
-                const value = checkbox.value;
-                filterState[value] = checkbox.checked || false;
+            document.querySelectorAll('input[type="checkbox"][name="area"]').forEach(checkbox => {
+                filterState[checkbox.value] = checkbox.checked || false;
             });
-            saveToCookies(filterState);
+            localStorage.setItem('filterStates_area', JSON.stringify(filterState));
         }
 
-        // チェックボックスの状態をクッキーに保存
-        function saveToCookies(filterState) {
-            const filterStateJSON = JSON.stringify(filterState);
-            document.cookie = `filterStates_area=${encodeURIComponent(filterStateJSON)}; path=/;`;
-        }
-        
-        // チェックボックスの状態をクッキーから読み込む
-        function loadFromCookies() {
-            const cookies = document.cookie.split(';');
-            let filterState = {};
-            cookies.forEach(cookie => {
-                const [name, value] = cookie.split('=').map(c => c.trim());
-                if (name === 'filterStates_area') {
-                    filterState = JSON.parse(decodeURIComponent(value));
-                }
-            });
-            return filterState || {};
-        }
-
-        // チェックボックスの状態を復元
+        // チェックボックスの状態をローカルストレージから読み込み
         function restoreAreaState() {
-            const filterState = loadFromCookies();
-            document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
-                const value = checkbox.value;
-                if (filterState.hasOwnProperty(value)) {
-                    checkbox.checked = !!filterState[value];
-                }
+            const filterState = JSON.parse(localStorage.getItem('filterStates_area') || '{}');
+            document.querySelectorAll('input[type="checkbox"][name="area"]').forEach(checkbox => {
+                checkbox.checked = !!filterState[checkbox.value];
             });
         }
 
         // チェックボックスの変更時に保存
-        document.querySelectorAll('input[type="checkbox"][name="area[]"]').forEach(checkbox => {
+        document.querySelectorAll('input[type="checkbox"][name="area"]').forEach(checkbox => {
             checkbox.addEventListener('change', saveAreaState);
         });
     </script>
-     
 {% endblock %}

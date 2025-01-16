@@ -10,9 +10,12 @@
 
 {% block content %}
 <div class="container-box">
-    <!-- ページネーションの情報表示部分 -->
     <section class="pagination-info">
-        <p>全{{ page_obj.paginator.count }}社 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
+        {% if page_obj.paginator.count > 0 %}
+        <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
+        {% else %}
+        <p>該当する求人情報は見つかりませんでした。</p>
+        {% endif %}
         <div class="pagination">
             {% if page_obj.has_previous %}
                 <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
@@ -25,24 +28,20 @@
             {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}">次へ</a>
             {% endif %}
-        </div>  
+        </div>
     </section>
 
-    {% if page_obj.object_list %}
     {% for offer in page_obj.object_list %}
     <article class="company-card">
-        <!-- 会社名にリンクを追加 -->
         <h2>
-            <a href="/offer/{{ offer.id }}/">
-                {{ offer.name }}
-            </a>
+            <a href="/offer/{{ offer.id }}/">{{ offer.name }}</a>
         </h2>
         <h3>{{ offer.corporation.name }}</h3>
         <div class="company-content">
             <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
             <div class="job-item">
-                {% if offer.corporation.url %}
-                    <img src="{{ offer.corporation.url }}" alt="{{ offer.corporation.name }}">
+                {% if offer.photo %}
+                    <img src="{{ offer.photo.url }}" alt="{{ offer.name }}">
                 {% else %}
                     <img src="{% static 'images/no_image.png' %}" alt="画像なし">
                 {% endif %}
@@ -50,26 +49,5 @@
         </div>
     </article>
     {% endfor %}
-    {% else %}
-        <p class="no-results">求人情報が見つかりませんでした。</p>
-    {% endif %}
-
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
-        {% endif %}
-        {% for page_num in page_range %}
-            <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %}">
-                {{ page_num }}
-            </a>
-        {% endfor %}
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">次へ</a>
-        {% endif %}
-    </div>
-</div>
-<div id="brands">
-    <a class="brands" href="#"><i>Career
-        <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
 </div>
 {% endblock %}
