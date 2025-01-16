@@ -323,7 +323,43 @@ class AdmLoginView(FormView):
         else:
             form.add_error(None, '管理者権限がありません')
             return self.form_invalid(form)
+        
+from django.shortcuts import render, redirect
+from django.views import View
+from .models import Offer
 
+class AdmPostDelView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        # 削除確認画面を表示
+        try:
+            offer = Offer.objects.get(pk=pk)
+            return render(request, 'adm_post_del.html', {'offer': offer})
+        except Offer.DoesNotExist:
+            return redirect('adm_dashboard')  # Offerが存在しない場合はダッシュボードにリダイレクト
+
+    def post(self, request, pk):
+        # OfferのステータスをFalseに変更（削除）
+        try:
+            offer = Offer.objects.get(pk=pk)
+            offer.status = False
+            offer.save()
+            # 削除完了画面にリダイレクト
+            return redirect('delete_done', pk=pk)
+        except Offer.DoesNotExist:
+            return redirect('adm_dashboard')  # Offerが存在しない場合はダッシュボードにリダイレクト
+
+class AdmPostDelDoneView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        # 削除完了画面を表示
+        try:
+            offer = Offer.objects.get(pk=pk)
+            if offer.status == False:
+                return render(request, 'offer_delete_done.html')
+            else:
+                return redirect('adm_dashboard')  # ステータスがFalseでない場合はダッシュボードへ
+        except Offer.DoesNotExist:
+            return redirect('adm_dashboard')  # Offerが存在しない場合はダッシュボードにリダイレクト
+        
 # logout_conf
 class AdmLogoutConfView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_logout.html'
@@ -596,9 +632,26 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post_done.html'
     login_url = '#'
 
-class AdmEditPostView(LoginRequiredMixin, TemplateView):
-    template_name = 'adm_edit_post.html'
-    login_url = '#'
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import View
+from .forms import AdmEditForm
+from .models import Offer
+
+class AdmEditPostView(View):
+    template_name = 'adm_edit.html'
+
+    def get(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)  # 編集対象のOfferを取得
+        form = AdmEditForm(instance=offer)  # 既存データをフォームに反映
+        return render(request, self.template_name, {'form': form, 'offer': offer})
+
+    def post(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)  # 編集対象のOfferを取得
+        form = AdmEditForm(request.POST, instance=offer)  # 既存データをフォームに反映
+        if form.is_valid():
+            form.save()
+            return redirect('adm_dashboard')  # 編集後は管理者ダッシュボードにリダイレクト
+        return render(request, self.template_name, {'form': form, 'offer': offer})
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required

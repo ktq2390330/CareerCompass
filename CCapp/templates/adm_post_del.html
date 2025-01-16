@@ -20,10 +20,15 @@
     </header>
 
     <div class="container">
-        <h3>求人を削除しますか？</h3>
+        <h3>{{ offer.name }} の求人を削除しますか？</h3>
         <div class="button-group">
-            <button class="Yes">はい</button>
-            <button class="No">いいえ</button>
+            <!-- 削除のためのフォーム -->
+            <form action="{% url 'delete_offer' offer.pk %}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+                {% csrf_token %}
+                <button type="submit" class="Yes">はい</button>
+            </form>
+            <!-- キャンセル用のリンク -->
+            <a href="{% url 'adm_dashboard' %}" class="No"><button>いいえ</button></a>
         </div>
     </div>
 </body>

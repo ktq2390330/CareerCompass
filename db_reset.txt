@@ -1,0 +1,7 @@
+# データベース
+drop database careercompassdb;
+create database careercompassdb;
+
+# ターミナル
+python manage.py migrate
+python setup/py/import_data.py
