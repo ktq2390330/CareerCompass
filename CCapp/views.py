@@ -271,6 +271,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Offer, Area0, Area1, Category00, Category01, Category10, Category11, Tag, Corporation
 from .filters import filter_offers
+from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from .models import Offer
 
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
@@ -286,19 +290,23 @@ def offer_search_view(request):
         'corporation': request.GET.getlist('corporation'),
     }
 
-    # デバッグ用
-    print(filters)
-
     # 基本のクエリセット
     offers = Offer.objects.all()
 
-    # 各パラメータに基づいてフィルタリング
+    # 各パラメータの内容を確認
+    print("フィルターパラメータ:", filters)
+
+    # name（検索バー）の内容でフィルタリング
     if filters['name']:
-        offers = offers.filter(name__in=filters['name'])
+        offers = offers.filter(name__icontains=filters['name'])  # 部分一致検索
+
+    # 各フィルターの内容でフィルタリング
     if filters['welfare']:
         offers = offers.filter(welfare__id__in=filters['welfare'])
+    if filters['area0']:
+        offers = offers.filter(area0__id__in=filters['area0'])  # area0フィルター
     if filters['area1']:
-        offers = offers.filter(area1__id__in=filters['area1'])
+        offers = offers.filter(area1__id__in=filters['area1'])  # area1フィルター
     if filters['category00']:
         offers = offers.filter(category00__id__in=filters['category00'])
     if filters['category01']:
@@ -309,8 +317,6 @@ def offer_search_view(request):
         offers = offers.filter(category11__id__in=filters['category11'])
     if filters['corporation']:
         offers = offers.filter(corporation__id__in=filters['corporation'])
-
-    print(offers)
 
     # ページネーション処理
     paginator = Paginator(offers, 10)  # 1ページに10件表示
@@ -329,6 +335,7 @@ def offer_search_view(request):
         'page_obj': page_obj,
         'page_range': page_range,
     })
+
 
 
 # search_result
