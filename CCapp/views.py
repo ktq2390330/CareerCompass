@@ -563,7 +563,7 @@ from .forms import AdmPostForm
 from .models import Offer, Category01, Category11
 from django.shortcuts import render, get_object_or_404
 
-class AdmPostView(View):
+class AdmPostView(LoginRequiredMixin,View):
     template_name = 'adm_post.html'
 
     def get(self, request):
