@@ -279,7 +279,7 @@ from .models import Offer
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
     filters = {
-        'name': request.GET.getlist('name'),
+        'name': request.GET.get('name'),  # 検索バーの入力内容
         'welfare': request.GET.getlist('welfare'),
         'area0': request.GET.getlist('area0'),
         'area1': request.GET.getlist('area1'),
@@ -335,7 +335,6 @@ def offer_search_view(request):
         'page_obj': page_obj,
         'page_range': page_range,
     })
-
 
 
 # search_result

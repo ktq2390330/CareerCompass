@@ -21,9 +21,9 @@
         <div class="search-field">
             <!-- 検索バー-->
             <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
-                <input type="text" name="query" placeholder="企業名や業種で探す">
+                <input type="text" name="name" placeholder="企業名や業種で探す">
                 <button type="submit" id="search-button">検索</button>
-            </form>
+            
 
             <!-- filter-navigation -->
             {% url 'CCapp:filter_area' as filter_area_url %}
@@ -58,7 +58,7 @@
                     </li>
                 </ul>
             </nav>
-
+            </form>
             
 
             <!-- 点線 -->
