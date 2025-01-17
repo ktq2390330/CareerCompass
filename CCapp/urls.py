@@ -41,7 +41,7 @@ urlpatterns = [
     path('get_category11/<int:category10_id>/', views.get_category11_options, name='get_category11'),
     path('get_area/<str:area1_name>/', views.get_area_options, name='get_area'),
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
-    path('adm_edit_post/', views.AdmEditPostView.as_view(), name='adm_edit_post'),
+    path("edit_job/<int:pk>/", views.AdmEditPostView.as_view(), name="edit_job"),
     path('search/', views.AdmPostList.as_view(), name='adm_post_list'),
     path('job/delete/<int:pk>/', views.AdmPostDelView.as_view(), name='delete_job'),
 
