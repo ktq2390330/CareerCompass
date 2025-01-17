@@ -4,7 +4,7 @@ import datetime
 from django_setup_def import djangoImportSetup
 djangoImportSetup()
 from CCapp.models import *
-from CCapp.defs import makeDirFile,makeImportPath,logconfig,logException,logsOutput,readFile,executeFunction
+from CCapp.defs import *
 from django.db import transaction
 from datetime import datetime
 from tqdm import tqdm
@@ -199,41 +199,79 @@ def user(filePath):
     outputQueryResults(instanceDict)
 
 def profile(filePath):
-    instanceDict={}
+    instanceDict = {}
+
+    def clean_data(data):
+        required_columns = {'mail', 'furigana', 'birth', 'gender', 'graduation', 'school', 'tel', 'address'}
+        cleaned_data = []
+
+        # ファイルに存在するカラムをチェック
+        actual_columns = data[0].keys() if data else []
+        if not all(col in actual_columns for col in required_columns):
+            missing_columns = [col for col in required_columns if col not in actual_columns]
+            print(f"ファイルに必要なカラムが存在しません: {missing_columns}")
+            print(f"ファイル内のカラム: {list(actual_columns)}")  # 現在のカラム一覧を出力
+            return []
+
+        for row in data:
+            # 必要なカラムのみ抽出
+            filtered_row = {key: row.get(key) for key in required_columns}
+
+            # 必須カラムの欠損チェック
+            missing_values = [key for key in required_columns if not filtered_row.get(key)]
+            if missing_values:
+                print(f"以下のカラムが不足しています: {missing_values}")
+                continue
+
+            # データ型の検証と変換
+            try:
+                filtered_row['birth'] = datetime.strptime(filtered_row['birth'], '%Y/%m/%d').date()
+            except ValueError:
+                print(f"無効な日付形式: {filtered_row['birth']}")
+                continue
+
+            cleaned_data.append(filtered_row)
+
+        return cleaned_data
+
     def function():
         try:
-            data=readFile(filePath)
+            # ファイルを読み込む
+            data = readFile(filePath)
+            if not data or not isinstance(data, list):
+                print("データが空または無効です。処理を終了します。")
+                return
+
+            # データをクリーニング
+            data = clean_data(data)
+            if not data:
+                print("有効なデータが存在しません。")
+                return
+
             with transaction.atomic():
                 for row in data:
-                    mail,furigana,nationality,birth,gender,graduation,school,sClass,sol,departments,tel,address,category00name,category01name,category10name,category11name,area1name,uOffer=row
-                    ['mail'],row['furigana'],row['nationality'],row['birth'].split('-'),row['gender'],row['graduation'],row['school'],row['class'],row['sol'],row['departments'],row['tel'],row['address'],row
-                    ['category00name'],row['category01name'],row['category10name'],row['category11name'],row['area1name'],row['uOffer']
-                    birth=datetime.date(birth)
-                    user=User.objects.get(mail=mail)
-                    area1=Area1.objects.get(name=area1name)
-                    category00=Category00.objects.get(name=category00name)
-                    category01=Category01.objects.get(name=category01name)
-                    category10=Category10.objects.get(name=category10name)
-                    category11=Category11.objects.get(name=category11name)
-                    instance,created=Profile.objects.get_or_create(user=user,furigana=furigana,nationality=nationality,birth=birth,gender=gender,graduation=graduation,uSchool=school,sClass=sClass,sol=sol,
-                    departments=departments,uTel=tel,uAddress=address,category00=category00,category01=category01,category10=category10,category11=category11,area1=area1,uOffer=uOffer)
-                    instanceDict[instance]=created
-        except User.DoesNotExist:
-            print(f"mail: {mail} は存在しません")
-        except Area1.DoesNotExist:
-            print(f'area1: {area1name} は存在しません')
-        except Category00.DoesNotExist:
-            print(f"category00: {category00name} は存在しません")
-        except Category01.DoesNotExist:
-            print(f"category01: {category01name} は存在しません")
-        except Category10.DoesNotExist:
-            print(f"category10: {category10name} は存在しません")
-        except Category10.DoesNotExist:
-            print(f"category11: {category11name} は存在しません")
-        except FileNotFoundError:
-            print(f"ファイルが見つかりません: {filePath}")
+                    try:
+                        user = User.objects.get(mail=row['mail'])
+                        instance, created = Profile.objects.get_or_create(
+                            user=user,
+                            furigana=row['furigana'],
+                            birth=row['birth'],
+                            gender=row['gender'],
+                            graduation=row['graduation'],
+                            uSchool=row['school'],
+                            uTel=row['tel'],
+                            uAddress=row['address']
+                        )
+                        instanceDict[instance] = created
+
+                    except User.DoesNotExist:
+                        print(f"mail: {row['mail']} は存在しません")
+                    except KeyError as key_error:
+                        print(f"データが不正です。キーが見つかりません: {key_error}")
+
         except Exception as e:
             print(f"エラーが発生しました: {e}")
+
     executeFunction(function)
     outputQueryResults(instanceDict)
 
