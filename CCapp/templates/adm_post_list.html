@@ -18,7 +18,7 @@
     <div class="container">
         <div class="search-field">
             <!-- 検索バー-->
-            <form action="/search" method="GET">
+            <form action="{% url 'CCapp:adm_post_list' %}" method="GET">
                 <input type="text" name="query" placeholder="企業名または法人番号で探す" required>
                 <button type="submit">検索</button>
             </form>
@@ -29,16 +29,16 @@
         <!-- 求人情報をループで表示 -->
         {% for job in jobs %}
         <div class="job-item">
-            <img src="{{ job.company_image_url|default:'placeholder.jpg' }}" alt="会社写真">
+            <img src="{{ job.corporation.image_url|default:'placeholder.jpg' }}" alt="会社写真">
             <div class="job-info">
-                <p class="company-name">{{ job.company_name }}</p>
-                <p>法人番号：{{ job.corporate_number }}</p>
+                <p class="company-name">{{ job.corporation.name }}</p>
+                <p>法人番号：{{ job.corporation.corp }}</p>
                 <div class="job-buttons">
-                    <form action="{% url 'delete_job' job.id %}" method="POST">
+                    <form action="{% url 'CCapp:delete_job' job.id %}" method="POST">
                         {% csrf_token %}
                         <button type="submit">求人削除</button>
                     </form>
-                    <a href="{% url 'edit_job' job.id %}">
+                    <a href="#">
                         <button type="button">求人編集</button>
                     </a>
                 </div>

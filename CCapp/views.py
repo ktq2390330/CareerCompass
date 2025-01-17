@@ -368,31 +368,44 @@ def search_result_view(request):
     return render(request, 'search_result.html', context)
 
 # admin
-# dashboard
 from django.db.models import Q
-from django.views.generic import ListView
-from .models import Offer, Corporation
-
-class AdmTopView(ListView):
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import ListView, View
+from .models import Offer
+# dashboard
+class AdmTopView(LoginRequiredMixin, ListView):
     model = Offer
     template_name = 'adm_dashboard.html'
     context_object_name = 'offers'
+    def get_queryset(self):
+        return Offer.objects.none()  # クエリがない場合は何も表示しない
+    
+# 検索結果
+class AdmPostList(LoginRequiredMixin, ListView):
+    model = Offer
+    template_name = 'adm_post_list.html'
+    context_object_name = 'jobs'
+    paginate_by = 50  # 1ページあたりの表示件数を設定
 
     def get_queryset(self):
         query = self.request.GET.get('query', '')  # 検索クエリを取得
         if query:
-            # queryが数字かどうかを判定し、法人番号として検索する
             if query.isdigit():
-                # 法人番号（corp）を文字列として検索
                 return Offer.objects.filter(
-                    Q(name__icontains=query) | Q(corporation__corp=query)
+                    Q(corporation__corp=query)
                 )
             else:
-                # 企業名に対して部分一致検索（法人名でも検索）
                 return Offer.objects.filter(
-                    Q(name__icontains=query) | Q(corporation__name__icontains=query)
+                    Q(corporation__name__icontains=query)
                 )
-        return Offer.objects.all()  # クエリがない場合は全ての求人情報を表示
+        return Offer.objects.none()  # クエリが空なら空リスト
+# 
+class AdmPostDelView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        job = get_object_or_404(Offer, pk=pk)
+        job.status = 0  # ステータスを「削除済み」に変更
+        job.save()
+        return redirect('adm_post_list')  # 検索結果ページにリダイレクト
 
 # login
 class AdmLoginView(FormView):
@@ -426,42 +439,6 @@ class AdmLoginView(FormView):
         else:
             form.add_error(None, '管理者権限がありません')
             return self.form_invalid(form)
-        
-from django.shortcuts import render, redirect
-from django.views import View
-from .models import Offer
-
-class AdmPostDelView(LoginRequiredMixin, View):
-    def get(self, request, pk):
-        # 削除確認画面を表示
-        try:
-            offer = Offer.objects.get(pk=pk)
-            return render(request, 'adm_post_del.html', {'offer': offer})
-        except Offer.DoesNotExist:
-            return redirect('adm_dashboard')  # Offerが存在しない場合はダッシュボードにリダイレクト
-
-    def post(self, request, pk):
-        # OfferのステータスをFalseに変更（削除）
-        try:
-            offer = Offer.objects.get(pk=pk)
-            offer.status = False
-            offer.save()
-            # 削除完了画面にリダイレクト
-            return redirect('delete_done', pk=pk)
-        except Offer.DoesNotExist:
-            return redirect('adm_dashboard')  # Offerが存在しない場合はダッシュボードにリダイレクト
-
-class AdmPostDelDoneView(LoginRequiredMixin, View):
-    def get(self, request, pk):
-        # 削除完了画面を表示
-        try:
-            offer = Offer.objects.get(pk=pk)
-            if offer.status == False:
-                return render(request, 'offer_delete_done.html')
-            else:
-                return redirect('adm_dashboard')  # ステータスがFalseでない場合はダッシュボードへ
-        except Offer.DoesNotExist:
-            return redirect('adm_dashboard')  # Offerが存在しない場合はダッシュボードにリダイレクト
         
 # logout_conf
 class AdmLogoutConfView(LoginRequiredMixin, TemplateView):

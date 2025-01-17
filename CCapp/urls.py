@@ -42,8 +42,8 @@ urlpatterns = [
     path('get_area/<str:area1_name>/', views.get_area_options, name='get_area'),
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
     path('adm_edit_post/', views.AdmEditPostView.as_view(), name='adm_edit_post'),
-    path('adm_post_del/<int:pk>/', views.AdmPostDelView.as_view(), name='adm_post_del'),
-    path('adm_post_del_done/<int:pk>/', views.AdmPostDelDoneView.as_view(), name='adm_post_del_done'),
+    path('search/', views.AdmPostList.as_view(), name='adm_post_list'),
+    path('job/delete/<int:pk>/', views.AdmPostDelView.as_view(), name='delete_job'),
 
     # subscription
     path('subscription/', views.SubscriptionView.as_view(), name='subscription'),
