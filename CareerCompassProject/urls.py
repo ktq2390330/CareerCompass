@@ -24,5 +24,4 @@ urlpatterns = [
 
     path('', include('CCapp.urls')),
 ]
-if settings.DEBUG:  # DEBUGモードが有効なとき（開発環境）
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
