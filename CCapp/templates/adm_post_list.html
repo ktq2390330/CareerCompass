@@ -38,7 +38,7 @@
                         {% csrf_token %}
                         <button type="submit">求人削除</button>
                     </form>
-                    <a href="#">
+                    <a href="{% url 'CCapp:edit_job' job.id %}">
                         <button type="button">求人編集</button>
                     </a>
                 </div>

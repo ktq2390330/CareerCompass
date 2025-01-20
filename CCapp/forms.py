@@ -189,63 +189,17 @@ class AdmPostForm(forms.ModelForm):
         # 福利厚生タグの表示をnameで設定
         self.fields['welfare'].label_from_instance = lambda obj: obj.name
 
-class AdmEditForm(forms.ModelForm):
+from django import forms
+from .models import Offer
+
+class OfferEditForm(forms.ModelForm):
     class Meta:
         model = Offer
-        fields = [
-            'name', 'detail', 'solicitation', 'course', 'forms', 'roles',
-            'CoB', 'subject', 'NoP', 'departments', 'characteristic', 'PES',
-            'giving', 'allowances', 'salaryRaise', 'bonus', 'holiday',
-            'workingHours', 'area1', 'category00', 'category01',
-            'category10', 'category11', 'corporation', 'period', 'status', 'welfare'
-        ]
-
+        fields = '__all__'  # 全てのフィールドを編集対象にする
+    
+    # welfareフィールドを複数選択できるように変更
     welfare = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        label="福利厚生",
-        required=False,
-        widget=forms.CheckboxSelectMultiple
+        queryset=Offer.objects.all(),  # Welfareの選択肢を適切に設定
+        widget=forms.CheckboxSelectMultiple,
+        required=False  # 必須ではない場合はFalseに
     )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # カテゴリ01をカテゴリ00に基づいて動的に変更
-        if 'category00' in self.data:
-            try:
-                category00_id = int(self.data.get('category00'))
-                self.fields['category01'].queryset = Category01.objects.filter(category00_id=category00_id)
-            except (ValueError, TypeError):
-                self.fields['category01'].queryset = Category01.objects.none()
-        else:
-            self.fields['category01'].queryset = Category01.objects.none()
-
-        # カテゴリ11をカテゴリ10に基づいて動的に変更
-        if 'category10' in self.data:
-            try:
-                category10_id = int(self.data.get('category10'))
-                self.fields['category11'].queryset = Category11.objects.filter(category10_id=category10_id)
-            except (ValueError, TypeError):
-                self.fields['category11'].queryset = Category11.objects.none()
-        else:
-            self.fields['category11'].queryset = Category11.objects.none()
-
-        # エリアのラベルを都道府県名のみ表示
-        self.fields['area1'].label_from_instance = lambda obj: obj.name.split('-')[-1]
-
-        # カテゴリ00、カテゴリ10、福利厚生（タグ）のリストを設定
-        self.fields['category00'].queryset = Category00.objects.all()
-        self.fields['category10'].queryset = Category10.objects.all()
-        self.fields['welfare'].queryset = Tag.objects.all()
-
-        # カテゴリ00とカテゴリ10の選択肢をnameで表示
-        self.fields['category00'].label_from_instance = lambda obj: obj.name
-        self.fields['category10'].label_from_instance = lambda obj: obj.name
-
-        # 福利厚生タグの表示をnameで設定
-        self.fields['welfare'].label_from_instance = lambda obj: obj.name
-
-        # 既存のデータを反映するため、statusとperiodを編集不可にする
-        if self.instance.pk:
-            self.fields['status'].widget = forms.HiddenInput()  # statusを非表示
-            self.fields['period'].widget = forms.HiddenInput()  # periodを非表示
