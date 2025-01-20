@@ -14,15 +14,15 @@
 
 <!-- filter_base.htmlにぶち込む部分 -->
 {% block content2 %}
-    <!-- 選択ボタンと詳細を横並びにするためのラッパー -->
-    <div class="selection-wrapper">
+    <!-- フォームの開始 -->
+    <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm">
         <!-- 大分類ボタン -->
         <nav class="selection">
             <ul class="selection-button">
                 {% for category00 in category00_list %}
                 <li>
                     <!-- 各ボタンに onclick で業界IDを渡す -->
-                    <a href="javascript:void(0);" onclick="showIndustry('industry{{ category00.id }}')">
+                    <a href="javascript:void(0);" onclick="showIndustry('industry{{ category00.id }}')" industry-label="業界 {{ category00.name }}">
                         {{ category00.name }}
                     </a>
                 </li>
@@ -42,14 +42,19 @@
                 {% for category01 in category01_list %}
                     {% if category01.category00_id == category00.id %}
                     <label>
-                        <input type="checkbox" name="industry[]" value="{{ category01.id }}"> {{ category01.name }}
+                        <input type="checkbox" name="category01" value="{{ category01.id }}"
+                            {% if category01.id|stringformat:"s" in checked_industries %}checked{% endif %}>
+                        {{ category01.name }}
                     </label><br>
                     {% endif %}
                 {% endfor %}
             </div>
             {% endfor %}
         </div>
-    </div>
+
+        <!-- フォーム送信ボタン -->
+        <button type="submit">検索</button>
+    </form>
 
 
     <script>
@@ -102,7 +107,7 @@
         // チェックボックスの状態を保存
         function saveIndustryState() {
             const filterState = {};
-            document.querySelectorAll('input[type="checkbox"][name="industry[]"]').forEach(checkbox => {
+            document.querySelectorAll('input[type="checkbox"][name="category01"]').forEach(checkbox => {
                 const value = checkbox.value;
                 filterState[value] = checkbox.checked || false;
             });
@@ -131,7 +136,7 @@
         // チェックボックスの状態を復元
         function restoreIndustryState() {
             const filterState = loadFromCookies();
-            document.querySelectorAll('input[type="checkbox"][name="industry[]"]').forEach(checkbox => {
+            document.querySelectorAll('input[type="checkbox"][name="category01"]').forEach(checkbox => {
                 const value = checkbox.value;
                 if (filterState.hasOwnProperty(value)) {
                     checkbox.checked = !!filterState[value];
@@ -140,7 +145,7 @@
         }
 
         // チェックボックスの変更時に保存
-        document.querySelectorAll('input[type="checkbox"][name="industry[]"]').forEach(checkbox => {
+        document.querySelectorAll('input[type="checkbox"][name="category01"]').forEach(checkbox => {
             checkbox.addEventListener('change', saveIndustryState);
         });
     </script>

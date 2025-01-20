@@ -18,15 +18,15 @@
         {% endif %}
         <div class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">前へ</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.area1 %}&area1={{ request.GET.area1 }}{% endif %}">前へ</a>
             {% endif %}
-            {% for page_num in page_range %}
-                <a href="?page={{ page_num }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="{% if page_num == page_obj.number %}active{% endif %}">
+            {% for page_num in page_obj.paginator.page_range %}
+                <a href="?page={{ page_num }}{% if request.GET.area1 %}&area1={{ request.GET.area1 }}{% endif %}" class="{% if page_num == page_obj.number %}active{% endif %}">
                     {{ page_num }}
                 </a>
             {% endfor %}
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">次へ</a>
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.area1 %}&area1={{ request.GET.area1 }}{% endif %}">次へ</a>
             {% endif %}
         </div>
     </section>
@@ -58,15 +58,15 @@
         {% endif %}
         <div class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">前へ</a>
+                <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}">前へ</a>
             {% endif %}
-            {% for page_num in page_range %}
-                <a href="?page={{ page_num }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="{% if page_num == page_obj.number %}active{% endif %}">
+            {% for page_num in page_obj.paginator.page_range %}
+                <a href="?page={{ page_num }}&{{ request.GET.urlencode }}" class="{% if page_num == page_obj.number %}active{% endif %}">
                     {{ page_num }}
                 </a>
             {% endfor %}
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">次へ</a>
+                <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}">次へ</a>
             {% endif %}
         </div>
     </section>

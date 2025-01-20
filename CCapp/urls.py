@@ -56,7 +56,7 @@ urlpatterns = [
     path('jobs/', views.JobsView.as_view(), name='jobs'),
 
     # search
-    path('search_result/', views.search_result_view, name='search_result'),
+    # path('search_result/', views.search_result_view, name='search_result'),
     path('offer_search/', views.offer_search_view, name='offer_search'),
     path('offer/<int:id>/', views.job_detail, name='job_detail'),
 

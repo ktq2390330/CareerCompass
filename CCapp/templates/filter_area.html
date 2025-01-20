@@ -35,6 +35,8 @@
             <div id="area{{ area0.id }}" class="area-details {% if forloop.first %}active{% endif %}">
                 <button type="button" onclick="selectAll('area{{ area0.id }}', true)">すべて選択</button>
                 <button type="button" onclick="selectAll('area{{ area0.id }}', false)">選択解除</button>
+                
+                <!-- チェックボックスを動的に生成 -->
                 {% for area1 in area1_list %}
                     {% if area1.area0_id == area0.id %}
                     <label>
@@ -85,7 +87,7 @@
         // チェックボックスの状態をローカルストレージに保存
         function saveAreaState() {
             const filterState = {};
-            document.querySelectorAll('input[type="checkbox"][name="area"]').forEach(checkbox => {
+            document.querySelectorAll('input[type="checkbox"][name="area1"]').forEach(checkbox => {
                 filterState[checkbox.value] = checkbox.checked || false;
             });
             localStorage.setItem('filterStates_area', JSON.stringify(filterState));
@@ -94,13 +96,13 @@
         // チェックボックスの状態をローカルストレージから読み込み
         function restoreAreaState() {
             const filterState = JSON.parse(localStorage.getItem('filterStates_area') || '{}');
-            document.querySelectorAll('input[type="checkbox"][name="area"]').forEach(checkbox => {
+            document.querySelectorAll('input[type="checkbox"][name="area1"]').forEach(checkbox => {
                 checkbox.checked = !!filterState[checkbox.value];
             });
         }
 
         // チェックボックスの変更時に保存
-        document.querySelectorAll('input[type="checkbox"][name="area"]').forEach(checkbox => {
+        document.querySelectorAll('input[type="checkbox"][name="area1"]').forEach(checkbox => {
             checkbox.addEventListener('change', saveAreaState);
         });
     </script>
