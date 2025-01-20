@@ -705,26 +705,26 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post_done.html'
     login_url = '#'
 
-from django.views.generic.edit import UpdateView
-from django.urls import reverse_lazy
-from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import View
+from .forms import AdmEditForm
 from .models import Offer
-from .forms import OfferEditForm
 
-class AdmEditPostView(UpdateView):
-    model = Offer
-    form_class = OfferEditForm
-    template_name = "adm_edit_post.html"
-    context_object_name = "job"
+class AdmEditPostView(View):
+    template_name = 'adm_edit.html'
 
-    def get_success_url(self):
-        messages.success(self.request, f"求人情報 '{self.object.name}' が更新されました。")
-        return reverse_lazy("CCapp:adm_post_list")
+    def get(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)  # 編集対象のOfferを取得
+        form = AdmEditForm(instance=offer)  # 既存データをフォームに反映
+        return render(request, self.template_name, {'form': form, 'offer': offer})
 
-    def form_invalid(self, form):
-        messages.error(self.request, "入力内容に誤りがあります。もう一度確認してください。")
-        return super().form_invalid(form)
-
+    def post(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)  # 編集対象のOfferを取得
+        form = AdmEditForm(request.POST, instance=offer)  # 既存データをフォームに反映
+        if form.is_valid():
+            form.save()
+            return redirect('adm_dashboard')  # 編集後は管理者ダッシュボードにリダイレクト
+        return render(request, self.template_name, {'form': form, 'offer': offer})
 
 from django.shortcuts import render, get_object_or_404
 from .models import Offer
