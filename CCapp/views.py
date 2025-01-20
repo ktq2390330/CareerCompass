@@ -270,8 +270,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Offer, Area0, Area1, Category00, Category01, Category10, Category11, Tag, Corporation
-from .filters import filter_offers
 from django.shortcuts import render
+from .filters import filter_offers
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import Offer
@@ -279,7 +279,7 @@ from .models import Offer
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
     filters = {
-        'name': request.GET.get('name'),  # 検索バーの入力内容
+        'name': request.GET.getlist('name'),
         'welfare': request.GET.getlist('welfare'),
         'area0': request.GET.getlist('area0'),
         'area1': request.GET.getlist('area1'),
@@ -290,68 +290,16 @@ def offer_search_view(request):
         'corporation': request.GET.getlist('corporation'),
     }
 
-    # 基本のクエリセット
-    offers = Offer.objects.all()
+    print(filters)  # デバッグ用ログ出力
 
-    # 各パラメータの内容を確認
-    print("フィルターパラメータ:", filters)
-
-    # name（検索バー）の内容でフィルタリング
-    if filters['name']:
-        offers = offers.filter(name__icontains=filters['name'])  # 部分一致検索
-
-    # 各フィルターの内容でフィルタリング
-    if filters['welfare']:
-        offers = offers.filter(welfare__id__in=filters['welfare'])
-    if filters['area0']:
-        offers = offers.filter(area0__id__in=filters['area0'])  # area0フィルター
-    if filters['area1']:
-        offers = offers.filter(area1__id__in=filters['area1'])  # area1フィルター
-    if filters['category00']:
-        offers = offers.filter(category00__id__in=filters['category00'])
-    if filters['category01']:
-        offers = offers.filter(category01__id__in=filters['category01'])
-    if filters['category10']:
-        offers = offers.filter(category10__id__in=filters['category10'])
-    if filters['category11']:
-        offers = offers.filter(category11__id__in=filters['category11'])
-    if filters['corporation']:
-        offers = offers.filter(corporation__id__in=filters['corporation'])
-
-    # ページネーション処理
-    paginator = Paginator(offers, 10)  # 1ページに10件表示
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-
-    # 表示するページ番号の範囲を設定
-    current_page = page_obj.number
-    total_pages = paginator.num_pages
-    start_page = max(current_page - 2, 1)
-    end_page = min(current_page + 2, total_pages)
-    page_range = range(start_page, end_page + 1)
-
-    # テンプレートへのデータ渡し
-    return render(request, 'search_result.html', {
-        'page_obj': page_obj,
-        'page_range': page_range,
-    })
-
-
-# search_result
-from django.core.paginator import Paginator
-
-def search_result_view(request):
-    # 検索条件の収集
-    area1 = request.GET.get('area1', None)
-
-    # データのフィルタリング
-    offers = Offer.objects.all()  # 一旦全件取得して絞り込む（適宜調整）
-    if area1:
-        offers = offers.filter(area1__id=area1)
+    authority = int(request.GET.get("authority", 2))  # デフォルトはユーザー権限（2）
+    offers = filter_offers(filters, authority)
+    
+    print("フィルタ結果:", offers)  # クエリセットの内容を確認
 
     # ページネーションの設定
     paginator = Paginator(offers, 10)  # 1ページあたり10件表示
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
     # デバッグ用ログ出力
@@ -359,6 +307,11 @@ def search_result_view(request):
     print("合計件数:", paginator.count)
     print("現在のページ:", page_obj.number if page_obj else None)
     print("検索結果:", list(page_obj.object_list))
+    print("送信されたGETパラメータ:", request.GET)
+    print("フィルターパラメータ area1:", filters["area1"])
+
+
+
 
     # コンテキストにデータを渡す
     context = {
