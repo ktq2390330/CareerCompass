@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% load static %}
 
 {% block title %}プロフィール{% endblock %}
@@ -10,7 +9,15 @@
     document.addEventListener("DOMContentLoaded", function() {
         const photoInput = document.querySelector("#id_photo"); // ファイル入力フィールド
         const previewImage = document.querySelector("#preview-image"); // プレビュー画像
+        const currentImage = "{% if form.instance.photo and form.instance.photo.url %}{{ form.instance.photo.url }}{% else %}{% endif %}"; // 画像がある場合のみURLを設定
 
+        // ページロード時に保存された画像をプレビュー
+        if (currentImage.trim() !== "") {
+            previewImage.src = currentImage;
+            previewImage.style.display = "block";
+        }
+
+        // 画像選択時にプレビュー更新
         photoInput.addEventListener("change", function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -35,19 +42,10 @@
         <div class="profile-box">
             <div class="photo-container">
                 <div class="photo-box">
-                    <!-- 保存された画像があれば表示、なければ画像アップロードフォームを表示 -->
-                    {% if form.instance.photo %}
-                        <img id="preview-image" 
-                             src="{{ form.instance.photo.url }}" 
-                             alt="プロフィール写真" 
-                             style="max-width: 200px; max-height: 200px; display: block;" />
-                    {% else %}
-                        <img id="preview-image" 
-                             src="#" 
-                             alt="プロフィール写真" 
-                             style="display: none; max-width: 200px; max-height: 200px;" />
-                    {% endif %}
-                    <!-- 画像アップロード用のフォーム -->
+                    <img id="preview-image"
+                        src="{% if form.instance.photo and form.instance.photo.url %}{{ form.instance.photo.url }}{% else %}#{% endif %}"
+                        alt="プロフィール写真"
+                        style="max-width: 200px; max-height: 200px; {% if not form.instance.photo %}display: none;{% endif %}" />
                     {{ form.photo }}  
                 </div>
             </div>

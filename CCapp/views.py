@@ -298,7 +298,7 @@ def offer_search_view(request):
     print("フィルタ結果:", offers)  # クエリセットの内容を確認
 
     # ページネーションの設定
-    paginator = Paginator(offers, 10)  # 1ページあたり10件表示
+    paginator = Paginator(offers, 50)  # 1ページあたり10件表示
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
