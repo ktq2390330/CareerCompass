@@ -5,6 +5,8 @@ import json
 import csv
 import logging
 import django
+import codecs
+import chardet
 
 #Djangoプロジェクトの設定
 def djangoSetup():
@@ -104,3 +106,44 @@ def writeFile(filePath, data):
         print(f'error in writeFile: {e}')
         return False
     return True
+
+def detect_encoding(file_path):
+    """
+    ファイルのエンコーディングを検出します。
+
+    Parameters:
+        file_path (str): 検出するファイルのパス
+
+    Returns:
+        str: 検出されたエンコーディング
+    """
+    with open(file_path, 'rb') as f:
+        raw_data = f.read()
+        result = chardet.detect(raw_data)
+        return result['encoding']
+
+def convert_to_utf8_with_detection(input_file, output_file):
+    """
+    ファイルのエンコーディングを自動検出してUTF-8に変換します。
+
+    Parameters:
+        input_file (str): 入力ファイルのパス
+        output_file (str): 変換後の出力ファイルのパス
+    """
+    try:
+        # ファイルのエンコーディングを検出
+        detected_encoding = detect_encoding(input_file)
+        print(f"検出されたエンコーディング: {detected_encoding}")
+
+        # 入力ファイルを検出されたエンコーディングで読み込む
+        with codecs.open(input_file, 'r', encoding=detected_encoding) as infile:
+            content = infile.read()
+
+        # UTF-8 エンコードで出力ファイルに書き込む
+        with codecs.open(output_file, 'w', encoding='utf-8') as outfile:
+            outfile.write(content)
+
+        print(f"変換が完了しました: {output_file}")
+
+    except Exception as e:
+        print(f"エンコード変換中にエラーが発生しました: {e}")
