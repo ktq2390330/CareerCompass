@@ -290,34 +290,21 @@ def offer_search_view(request):
         'corporation': request.GET.getlist('corporation'),
     }
 
-    print(filters)  # デバッグ用ログ出力
-
     authority = int(request.GET.get("authority", 2))  # デフォルトはユーザー権限（2）
     offers = filter_offers(filters, authority)
-    
-    print("フィルタ結果:", offers)  # クエリセットの内容を確認
 
     # ページネーションの設定
-    paginator = Paginator(offers, 50)  # 1ページあたり10件表示
+    paginator = Paginator(offers, 50)  # 1ページあたり50件表示
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-
-    # デバッグ用ログ出力
-    print("ページ番号:", page_number)
-    print("合計件数:", paginator.count)
-    print("現在のページ:", page_obj.number if page_obj else None)
-    print("検索結果:", list(page_obj.object_list))
-    print("送信されたGETパラメータ:", request.GET)
-    print("フィルターパラメータ area1:", filters["area1"])
-
-
-
 
     # コンテキストにデータを渡す
     context = {
         'page_obj': page_obj,
         'page_range': paginator.page_range,
+        'filters': filters,  # 検索クエリをコンテキストに追加
     }
+
     return render(request, 'search_result.html', context)
 
 # admin

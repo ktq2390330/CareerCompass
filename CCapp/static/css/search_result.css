@@ -49,31 +49,6 @@ h2::after {
     height: 140px;
 }
 
-.pagination-info {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.pagination {
-    margin-bottom: 20px;
-    text-align: center;
-
-}
-
-.pagination a {
-    color: #333;
-    padding: 8px 16px;
-    text-decoration: none;
-    border: 1px solid #ddd;
-    margin: 0 2px;
-}
-
-.pagination a.active {
-    background-color: #333;
-    color: white;
-    border: 1px solid #333;
-}
-
 .company-card {
     margin: 20px auto;
     padding: 5px 15px;
@@ -187,4 +162,72 @@ h2::after {
         padding: 12px 30px;
         font-size: 0.9em;
     }
+}
+
+/* ページネーション全体 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* ボタングループ */
+.pagination-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 左側のボタン（前へ） */
+.pagination-btn-left {
+    display: flex;
+    align-items: center;
+}
+
+/* 右側のボタン（次へ） */
+.pagination-btn-right {
+    display: flex;
+    align-items: center;
+}
+
+/* ページ番号グループ */
+.page-group {
+    display: flex;
+    gap: 5px;
+}
+
+/* ページ番号のスタイル */
+.pagination-btn {
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+}
+
+/* アクティブなページ番号 */
+.pagination-btn.active {
+    background-color: #333;
+    color: white;
+    border: 1px solid #333;
+}
+
+/* 「前へ」「次へ」ボタンのスタイル */
+.pagination-btn.prev, .pagination-btn.next {
+    font-weight: bold;
+}
+
+/* 省略記号「...」のスタイル */
+.pagination-btn.ellipsis {
+    padding: 3px 7px;
+    background-color: #f1f1f1;
+    cursor: default;
+}
+
+/* ボタンが非活性のとき */
+.pagination-btn.disabled {
+    color: #aaa;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
 }
