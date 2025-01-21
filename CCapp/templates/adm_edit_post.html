@@ -13,14 +13,149 @@
     <h2>求人編集</h2>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        
-        <!-- フォームのフィールドを表示 -->
-        {{ form.as_p }}  <!-- これですべてのフィールドがパラグラフ形式で表示されます。 -->
 
-        <!-- welfareフィールドのみ個別にカスタマイズ表示する場合 -->
+        <div class="form-group">
+            <label for="id_name">求人名</label>
+            {{ form.name }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_detail">詳細</label>
+            {{ form.detail }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_photo">宣材写真</label>
+            {{ form.photo }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_solicitation">募集要項</label>
+            {{ form.solicitation }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_course">コース名</label>
+            {{ form.course }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_forms">雇用形態</label>
+            {{ form.forms }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_roles">配属職種</label>
+            {{ form.roles }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_CoB">提出書類</label>
+            {{ form.CoB }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_subject">募集対象</label>
+            {{ form.subject }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_NoP">募集人数</label>
+            {{ form.NoP }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_departments">募集学部・学科</label>
+            {{ form.departments }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_characteristic">募集特徴</label>
+            {{ form.characteristic }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_PES">採用後の対応</label>
+            {{ form.PES }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_giving">初任給</label>
+            {{ form.giving }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_allowances">諸手当</label>
+            {{ form.allowances }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_salaryRaise">昇給</label>
+            {{ form.salaryRaise }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_bonus">賞与</label>
+            {{ form.bonus }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_holiday">休日休暇</label>
+            {{ form.holiday }}
+        </div>
+
         <div class="form-group">
             <label for="id_welfare">福利厚生</label>
-            {{ form.welfare }} <!-- welfareフィールドのみ個別に表示 -->
+            {% for option in form.welfare %}
+                <div>
+                    {{ option.tag }} {{ option.choice_label }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_workingHours">勤務時間</label>
+            {{ form.workingHours }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_area1">エリア1</label>
+            {{ form.area1 }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_category00">カテゴリ00</label>
+            {{ form.category00 }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_category01">カテゴリ01</label>
+            {{ form.category01 }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_category10">カテゴリ10</label>
+            {{ form.category10 }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_category11">カテゴリ11</label>
+            {{ form.category11 }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_corporation">法人</label>
+            {{ form.corporation }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_period">公開期限</label>
+            {{ form.period }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_status">公開状況</label>
+            {{ form.status }}
         </div>
 
         <button type="submit">保存</button>

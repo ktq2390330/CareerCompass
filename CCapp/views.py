@@ -704,11 +704,13 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post_done.html'
     login_url = '#'
 
-from django.views.generic.edit import UpdateView
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from .models import Offer
+from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
+from .models import Offer, Category01, Category11, Area1, Tag
 from .forms import OfferEditForm
+from django.http import JsonResponse
 
 class AdmEditPostView(UpdateView):
     model = Offer
@@ -724,7 +726,8 @@ class AdmEditPostView(UpdateView):
         messages.error(self.request, "入力内容に誤りがあります。もう一度確認してください。")
         return super().form_invalid(form)
 
-
+    def get_object(self, queryset=None):
+        return super().get_object(queryset)
 
 from django.shortcuts import render, get_object_or_404
 from .models import Offer

@@ -190,16 +190,47 @@ class AdmPostForm(forms.ModelForm):
         self.fields['welfare'].label_from_instance = lambda obj: obj.name
 
 from django import forms
-from .models import Offer
+from .models import Offer, Tag, Area1, Category00, Category01, Category10, Category11, Corporation
 
 class OfferEditForm(forms.ModelForm):
     class Meta:
         model = Offer
-        fields = '__all__'  # 全てのフィールドを編集対象にする
-    
-    # welfareフィールドを複数選択できるように変更
+        fields = [
+            'name', 'detail', 'solicitation', 'course', 'forms', 'roles',
+            'CoB', 'subject', 'NoP', 'departments', 'characteristic', 'PES',
+            'giving', 'allowances', 'salaryRaise', 'bonus', 'holiday',
+            'workingHours', 'area1', 'category00', 'category01',
+            'category10', 'category11', 'corporation', 'period', 'status', 'welfare'
+        ]
+
     welfare = forms.ModelMultipleChoiceField(
-        queryset=Offer.objects.all(),  # Welfareの選択肢を適切に設定
-        widget=forms.CheckboxSelectMultiple,
-        required=False  # 必須ではない場合はFalseに
+        queryset=Tag.objects.all(),
+        label="福利厚生",
+        required=False,
+        widget=forms.CheckboxSelectMultiple
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # カテゴリ01とカテゴリ11をすべて表示
+        self.fields['category01'].queryset = Category01.objects.all()
+        self.fields['category11'].queryset = Category11.objects.all()
+
+        # エリアのラベルを都道府県名のみ表示
+        self.fields['area1'].label_from_instance = lambda obj: obj.name.split('-')[-1]
+
+        # カテゴリ00、カテゴリ10、福利厚生（タグ）のリストを設定
+        self.fields['category00'].queryset = Category00.objects.all()
+        self.fields['category10'].queryset = Category10.objects.all()
+        self.fields['welfare'].queryset = Tag.objects.all()
+
+        # カテゴリ00、カテゴリ10、カテゴリ01、カテゴリ11の選択肢をnameで表示
+        self.fields['category00'].label_from_instance = lambda obj: obj.name
+        self.fields['category10'].label_from_instance = lambda obj: obj.name
+        self.fields['category01'].label_from_instance = lambda obj: obj.name
+        self.fields['category11'].label_from_instance = lambda obj: obj.name
+
+        # 福利厚生タグの表示をnameで設定
+        self.fields['welfare'].label_from_instance = lambda obj: obj.name
+
