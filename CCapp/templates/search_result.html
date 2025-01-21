@@ -9,58 +9,93 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-box">
-    <section class="pagination-info">
-        {% if page_obj.paginator.count > 0 %}
-        <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
-        {% else %}
-        <p>該当する求人情報は見つかりませんでした。</p>
-        {% endif %}
-        <div class="pagination">
-            {% if page_obj.has_previous %}
-                <a href="?page=1&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">1</a>
-                {% if page_obj.number > 3 %}
-                    <span>...</span>
-                {% endif %}
-                <a href="?page={{ page_obj.previous_page_number }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">前へ</a>
+<div class="container">
+    <div class="search-field">
+        <section class="pagination-info">
+            {% if page_obj.paginator.count > 0 %}
+            <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
+            {% else %}
+            <p>該当する求人情報は見つかりませんでした。</p>
             {% endif %}
-            
-            {% for page_num in page_range %}
-                {% if page_num == page_obj.number or page_num in page_obj.paginator.page_range|slice:":2" or page_num in page_obj.paginator.page_range|slice:"-2:" or page_num|add:"-2" == page_obj.number or page_num|add:"2" == page_obj.number %}
-                    <a href="?page={{ page_num }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="{% if page_num == page_obj.number %}active{% endif %}">
-                        {{ page_num }}
-                    </a>
-                {% elif page_num == 1 or page_num == page_obj.paginator.num_pages %}
-                    <a href="?page={{ page_num }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">{{ page_num }}</a>
-                {% elif page_num == page_obj.number|add:"-3" or page_num == page_obj.number|add:"3" %}
-                    <span>...</span>
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">1</a>
+                    {% if page_obj.number > 3 %}
+                        <span>...</span>
+                    {% endif %}
+                    <a href="?page={{ page_obj.previous_page_number }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">前へ</a>
                 {% endif %}
-            {% endfor %}
-            
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">次へ</a>
-            {% endif %}
-        </div>
-    </section>
-
-    {% for offer in page_obj.object_list %}
-    <article class="company-card">
-        <h2>
-            <a href="/offer/{{ offer.id }}/">{{ offer.name }}</a>
-        </h2>
-        <h3>{{ offer.corporation.name }}</h3>
-        <div class="company-content">
-            <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
-            <div class="job-item">
-                {% if offer.photo %}
-                    <img src="{{ offer.photo.url }}" alt="{{ offer.name }}">
-                {% else %}
-                    <img src="{% static 'images/no_image.png' %}" alt="画像なし">
+                
+                {% for page_num in page_range %}
+                    {% if page_num == page_obj.number or page_num in page_obj.paginator.page_range|slice:":2" or page_num in page_obj.paginator.page_range|slice:"-2:" or page_num|add:"-2" == page_obj.number or page_num|add:"2" == page_obj.number %}
+                        <a href="?page={{ page_num }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="{% if page_num == page_obj.number %}active{% endif %}">
+                            {{ page_num }}
+                        </a>
+                    {% elif page_num == 1 or page_num == page_obj.paginator.num_pages %}
+                        <a href="?page={{ page_num }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">{{ page_num }}</a>
+                    {% elif page_num == page_obj.number|add:"-3" or page_num == page_obj.number|add:"3" %}
+                        <span>...</span>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">次へ</a>
                 {% endif %}
             </div>
-        </div>
-    </article>
-    {% endfor %}
+        </section>
+
+        {% for offer in page_obj.object_list %}
+        <article class="company-card">
+            <h2>
+                <a href="/offer/{{ offer.id }}/">{{ offer.name }}</a>
+            </h2>
+            <h3>{{ offer.corporation.name }}</h3>
+            <div class="company-content">
+                <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
+                <div class="job-item">
+                    {% if offer.photo %}
+                        <img src="{{ offer.photo.url }}" alt="{{ offer.name }}">
+                    {% else %}
+                        <img src="{% static 'images/no_image.png' %}" alt="画像なし">
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+
+        <section class="pagination-info">
+            {% if page_obj.paginator.count > 0 %}
+            <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
+            {% else %}
+            <p>該当する求人情報は見つかりませんでした。</p>
+            {% endif %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">1</a>
+                    {% if page_obj.number > 3 %}
+                        <span>...</span>
+                    {% endif %}
+                    <a href="?page={{ page_obj.previous_page_number }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">前へ</a>
+                {% endif %}
+                
+                {% for page_num in page_range %}
+                    {% if page_num == page_obj.number or page_num in page_obj.paginator.page_range|slice:":2" or page_num in page_obj.paginator.page_range|slice:"-2:" or page_num|add:"-2" == page_obj.number or page_num|add:"2" == page_obj.number %}
+                        <a href="?page={{ page_num }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="{% if page_num == page_obj.number %}active{% endif %}">
+                            {{ page_num }}
+                        </a>
+                    {% elif page_num == 1 or page_num == page_obj.paginator.num_pages %}
+                        <a href="?page={{ page_num }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">{{ page_num }}</a>
+                    {% elif page_num == page_obj.number|add:"-3" or page_num == page_obj.number|add:"3" %}
+                        <span>...</span>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&per_page=50&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'per_page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">次へ</a>
+                {% endif %}
+            </div>
+        </section>
+    </div>
 </div>
 
 {% endblock %}

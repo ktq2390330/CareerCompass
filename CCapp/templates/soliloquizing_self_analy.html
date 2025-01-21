@@ -7,16 +7,17 @@
 <!-- カスタムフィルターを読み込む -->
 {% load custom_filters %}
 
-<!-- タイトル -->
-{% block title %}soliloquizing_self_analy{% endblock %}
-
-<!-- 埋め込む用のCSSを読み込む -->
-{% block head2 %}
-    <link href="{% static 'css/soliloquizing.css' %}" rel="stylesheet">
-{% endblock %}
-
-<!-- soliloquizing_base.htmlにぶち込む部分 -->
+<!-- Djangoのmessagesを使用 -->
 {% block soliloquizing %}
+
+    <!-- エラーメッセージ表示 -->
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <form method="POST" action="{% url 'CCapp:self_analy' %}">
         {% csrf_token %}
@@ -33,7 +34,7 @@
             <div class="form-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
-                <!-- エラーメッセージを表示 -->
+                <!-- 各フィールドのエラーメッセージを表示 -->
                 {% if field.errors %}
                     <div class="error-message">
                         {{ field.errors|join:", " }}
@@ -50,6 +51,7 @@
 
 {% endblock %}
 
+<!-- エラーメッセージの表示時間を設定 -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // すべてのtextareaに対して高さ自動調整機能を適用
@@ -63,13 +65,35 @@
 
         // 各textareaに対してイベントリスナーを追加
         textareas.forEach(textarea => {
-            // ページ読み込み時に初期サイズを設定
             adjustHeight(textarea);
-
-            // 入力イベントごとに高さを調整
             textarea.addEventListener('input', function() {
                 adjustHeight(this);
             });
         });
+
+        // エラーメッセージを3秒後に非表示にする
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.error-message');
+            messages.forEach(msg => {
+                msg.style.opacity = '0';
+                setTimeout(() => msg.style.display = 'none', 500);
+            });
+        }, 3000);
     });
 </script>
+
+<!-- CSS（適宜追加） -->
+<style>
+    .message-container {
+        margin: 10px 0;
+    }
+    .error-message {
+        background-color: #ffdddd;
+        color: #d8000c;
+        padding: 10px;
+        border: 1px solid #d8000c;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        transition: opacity 0.5s ease-out;
+    }
+</style>
