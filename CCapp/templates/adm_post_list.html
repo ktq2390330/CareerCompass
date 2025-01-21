@@ -18,10 +18,11 @@
         <!-- 検索バー -->
         <div class="search-field">
             <form action="{% url 'CCapp:adm_post_list' %}" method="GET"> <!-- 検索フォーム -->
-                <input type="text" name="query" placeholder="企業名または法人番号で探す" required> <!-- 入力フィールド -->
+                <input type="text" name="query" value="{{ query }}" placeholder="企業名または法人番号で探す" required> <!-- 入力フィールド -->
                 <button type="submit">検索</button> <!-- 検索ボタン -->
             </form>
         </div>
+        
 
         <!-- 求人情報のリスト -->
         <div class="job-list">
@@ -63,7 +64,7 @@
         <div class="pagination">
             <!-- 前へボタン -->
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn prev">前へ</a>
+                <a href="?page={{ page_obj.previous_page_number }}&query={{ query }}" class="pagination-btn prev">前へ</a>
             {% else %}
                 <span class="pagination-btn prev disabled">前へ</span>
             {% endif %}
@@ -74,7 +75,7 @@
                     {% if page_num == '...' %}
                         <span class="pagination-btn ellipsis">...</span> <!-- 省略記号 -->
                     {% else %}
-                        <a href="?page={{ page_num }}" class="pagination-btn {% if page_num == page_obj.number %}active{% endif %}">
+                        <a href="?page={{ page_num }}&query={{ query }}" class="pagination-btn {% if page_num == page_obj.number %}active{% endif %}">
                             {{ page_num }} <!-- 現在ページを強調表示 -->
                         </a>
                     {% endif %}
@@ -83,7 +84,7 @@
 
             <!-- 次へボタン -->
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn next">次へ</a>
+                <a href="?page={{ page_obj.next_page_number }}&query={{ query }}" class="pagination-btn next">次へ</a>
             {% else %}
                 <span class="pagination-btn next disabled">次へ</span>
             {% endif %}

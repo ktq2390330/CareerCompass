@@ -337,39 +337,48 @@ class AdmTopView(LoginRequiredMixin, ListView):
 class AdmPostList(LoginRequiredMixin, ListView):
     model = Offer
     template_name = 'adm_post_list.html'
-    context_object_name = 'jobs'
+    context_object_name = 'jobs'  # コンテキストに渡す求人情報の名前
     paginate_by = 50  # 1ページあたり50件表示
 
     def get_queryset(self):
         query = self.request.GET.get('query', '')  # 検索クエリを取得
-        queryset = Offer.objects.filter(status=1)  # status=1の求人のみ取得
+        queryset = Offer.objects.filter(status=1)  # 公開状態（status=1）の求人のみ取得
 
         if query:
-            if query.isdigit():
+            if query.isdigit():  # クエリが数字の場合（法人番号での検索）
                 queryset = queryset.filter(
-                    Q(corporation__corp=query)
+                    Q(corporation__corp=query)  # 法人番号でフィルタリング
                 )
-            else:
+            else:  # クエリが文字列の場合（企業名での検索）
                 queryset = queryset.filter(
-                    Q(corporation__name__icontains=query)
+                    Q(corporation__name__icontains=query)  # 企業名を部分一致でフィルタリング
                 )
-        return queryset
+        return queryset  # 最終的な検索結果を返す
 
     def get_context_data(self, **kwargs):
+        # 基本的なコンテキスト情報を取得
         context = super().get_context_data(**kwargs)
+        
+        # ページネーション情報を取得
         paginator = context['page_obj'].paginator
-        current_page = context['page_obj'].number
-        total_pages = paginator.num_pages
+        current_page = context['page_obj'].number  # 現在のページ番号
+        total_pages = paginator.num_pages  # 総ページ数
 
-        # ページ番号を現在のページを中心に前後2ページを表示
+        # ページ番号を現在のページを中心に前後2ページを表示するように設定
         page_range = []
         for num in range(1, total_pages + 1):
+            # 現在のページを中心に前後2ページと、1ページ目・最後のページを表示
             if abs(num - current_page) <= 2 or num == 1 or num == total_pages:
                 page_range.append(num)
+            # 現在のページから3ページ離れたページに省略記号を表示
             elif num == current_page - 3 or num == current_page + 3:
-                page_range.append('...')  # 省略記号を表示
+                page_range.append('...')  # 省略記号
 
+        # ページ番号範囲をコンテキストに追加
         context['page_range'] = page_range
+        # 検索クエリ（query）をコンテキストに追加（ページ遷移時にクエリを保持するため）
+        context['query'] = self.request.GET.get('query', '')  # デフォルトは空文字
+
         return context
     
 # 求人削除
