@@ -35,15 +35,14 @@ urlpatterns = [
     path('adm_login/', views.AdmLoginView.as_view(), name='adm_login'),
     path('adm_logout_conf/', views.AdmLogoutConfView.as_view(), name='adm_logout_conf'),
     path('adm_logout/', views.AdmLogoutView, name='adm_logout'),
-    path('adm_post_list/', views.AdmPostListView.as_view(), name='adm_post_list'),
+    path('search/', views.AdmPostList.as_view(), name='adm_post_list'),
     path('adm_post/', views.AdmPostView.as_view(), name='adm_post'),
     path('get_category01/<int:category00_id>/', views.get_category01_options, name='get_category01'),
     path('get_category11/<int:category10_id>/', views.get_category11_options, name='get_category11'),
     path('get_area/<str:area1_name>/', views.get_area_options, name='get_area'),
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
     path("edit_job/<int:pk>/", views.AdmEditPostView.as_view(), name="edit_job"),
-    # path('search/', views.AdmPostList.as_view(), name='adm_post_list'),
-    path('job/delete/<int:pk>/', views.AdmPostDelView.as_view(), name='delete_job'),
+    path('job/delete/<int:pk>/', views.AdmPostDelView.as_view(), name='adm_post_del'),
 
     # subscription
     path('subscription/', views.SubscriptionView.as_view(), name='subscription'),

@@ -338,27 +338,47 @@ class AdmPostList(LoginRequiredMixin, ListView):
     model = Offer
     template_name = 'adm_post_list.html'
     context_object_name = 'jobs'
-    paginate_by = 50  # 1ページあたりの表示件数を設定
+    paginate_by = 50  # 1ページあたり50件表示
 
     def get_queryset(self):
         query = self.request.GET.get('query', '')  # 検索クエリを取得
+        queryset = Offer.objects.filter(status=1)  # status=1の求人のみ取得
+
         if query:
             if query.isdigit():
-                return Offer.objects.filter(
+                queryset = queryset.filter(
                     Q(corporation__corp=query)
                 )
             else:
-                return Offer.objects.filter(
+                queryset = queryset.filter(
                     Q(corporation__name__icontains=query)
                 )
-        return Offer.objects.none()  # クエリが空なら空リスト
-# 
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['page_obj'].paginator
+        current_page = context['page_obj'].number
+        total_pages = paginator.num_pages
+
+        # ページ番号を現在のページを中心に前後2ページを表示
+        page_range = []
+        for num in range(1, total_pages + 1):
+            if abs(num - current_page) <= 2 or num == 1 or num == total_pages:
+                page_range.append(num)
+            elif num == current_page - 3 or num == current_page + 3:
+                page_range.append('...')  # 省略記号を表示
+
+        context['page_range'] = page_range
+        return context
+    
+# 求人削除
 class AdmPostDelView(LoginRequiredMixin, View):
     def post(self, request, pk):
         job = get_object_or_404(Offer, pk=pk)
         job.status = 0  # ステータスを「削除済み」に変更
         job.save()
-        return redirect('adm_post_list')  # 検索結果ページにリダイレクト
+        return redirect('CCapp:adm_post_list')  # 検索結果ページにリダイレクト
 
 # login
 class AdmLoginView(FormView):
