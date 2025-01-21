@@ -1,3 +1,22 @@
+.container {
+    width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+/* search-field */
+.search-field {
+    background-color: #ffffff; /* 背景色 */
+    border: 2px solid #000000; /* 枠線 */
+    padding: 60px 40px; /* 内側の余白を上下60px、左右40pxに増やす */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    max-width: 1000px; /* 幅を制限 */
+    text-align: center; /* テキストとボタンを中央揃え */
+}
+
 h2 {
     display: inline-block;
     position: relative;
@@ -28,14 +47,6 @@ h2::after {
     border: 3px solid #000;
     width: 300px;
     height: 140px;
-}
-
-.container-box {
-    margin: 20px auto;
-    padding: 20px;
-    border: 3px solid #333;
-    max-width: 1000px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .pagination-info {
