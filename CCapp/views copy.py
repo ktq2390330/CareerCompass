@@ -276,6 +276,8 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import Offer
 
+from django.core.paginator import Paginator
+
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
     filters = {
@@ -294,18 +296,57 @@ def offer_search_view(request):
     offers = filter_offers(filters, authority)
 
     # ページネーションの設定
-    paginator = Paginator(offers, 50)  # 1ページあたり50件表示
+    paginator = Paginator(offers, 3)  # 1ページあたり10件表示
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
+
+    # ページリンクの範囲を5個まで表示するように設定
+    on_each_side = 2  # 現在のページの両側に2ページを表示
+    on_ends = 2  # 両端に2ページを表示
+    page_range = paginator.get_elided_page_range(page_obj.number, on_each_side=on_each_side, on_ends=on_ends)
 
     # コンテキストにデータを渡す
     context = {
         'page_obj': page_obj,
-        'page_range': paginator.page_range,
-        'filters': filters,  # 検索クエリをコンテキストに追加
+        'page_range': page_range,
     }
-
     return render(request, 'search_result.html', context)
+
+
+# @login_required(login_url='CCapp:login')
+# def offer_search_view(request):
+#     filters = {
+#         'name': request.GET.getlist('name'),
+#         'welfare': request.GET.getlist('welfare'),
+#         'area0': request.GET.getlist('area0'),
+#         'area1': request.GET.getlist('area1'),
+#         'category00': request.GET.getlist('category00'),
+#         'category01': request.GET.getlist('category01'),
+#         'category10': request.GET.getlist('category10'),
+#         'category11': request.GET.getlist('category11'),
+#         'corporation': request.GET.getlist('corporation'),
+#     }
+
+#     authority = int(request.GET.get("authority", 2))  # デフォルトはユーザー権限（2）
+#     offers = filter_offers(filters, authority)
+
+#     # ページネーションの設定
+#     paginator = Paginator(offers, 10)  # 1ページあたり10件表示
+#     page_number = request.GET.get('page', 1)
+#     page_obj = paginator.get_page(page_number)
+
+#     # リストの範囲を生成（両端と中央の範囲を調整）
+#     on_each_side = 2
+#     on_ends = 2
+#     page_range = paginator.get_elided_page_range(page_obj.number, on_each_side=on_each_side, on_ends=on_ends)
+
+#     # コンテキストにデータを渡す
+#     context = {
+#         'page_obj': page_obj,
+#         'page_range': page_range,
+#     }
+#     return render(request, 'search_result.html', context)
+
 
 # admin
 from django.db.models import Q
@@ -324,48 +365,39 @@ class AdmTopView(LoginRequiredMixin, ListView):
 class AdmPostList(LoginRequiredMixin, ListView):
     model = Offer
     template_name = 'adm_post_list.html'
-    context_object_name = 'jobs'  # コンテキストに渡す求人情報の名前
+    context_object_name = 'jobs'
     paginate_by = 50  # 1ページあたり50件表示
 
     def get_queryset(self):
         query = self.request.GET.get('query', '')  # 検索クエリを取得
-        queryset = Offer.objects.filter(status=1)  # 公開状態（status=1）の求人のみ取得
+        queryset = Offer.objects.filter(status=1)  # status=1の求人のみ取得
 
         if query:
-            if query.isdigit():  # クエリが数字の場合（法人番号での検索）
+            if query.isdigit():
                 queryset = queryset.filter(
-                    Q(corporation__corp=query)  # 法人番号でフィルタリング
+                    Q(corporation__corp=query)
                 )
-            else:  # クエリが文字列の場合（企業名での検索）
+            else:
                 queryset = queryset.filter(
-                    Q(corporation__name__icontains=query)  # 企業名を部分一致でフィルタリング
+                    Q(corporation__name__icontains=query)
                 )
-        return queryset  # 最終的な検索結果を返す
+        return queryset
 
     def get_context_data(self, **kwargs):
-        # 基本的なコンテキスト情報を取得
         context = super().get_context_data(**kwargs)
-        
-        # ページネーション情報を取得
         paginator = context['page_obj'].paginator
-        current_page = context['page_obj'].number  # 現在のページ番号
-        total_pages = paginator.num_pages  # 総ページ数
+        current_page = context['page_obj'].number
+        total_pages = paginator.num_pages
 
-        # ページ番号を現在のページを中心に前後2ページを表示するように設定
+        # ページ番号を現在のページを中心に前後2ページを表示
         page_range = []
         for num in range(1, total_pages + 1):
-            # 現在のページを中心に前後2ページと、1ページ目・最後のページを表示
             if abs(num - current_page) <= 2 or num == 1 or num == total_pages:
                 page_range.append(num)
-            # 現在のページから3ページ離れたページに省略記号を表示
             elif num == current_page - 3 or num == current_page + 3:
-                page_range.append('...')  # 省略記号
+                page_range.append('...')  # 省略記号を表示
 
-        # ページ番号範囲をコンテキストに追加
         context['page_range'] = page_range
-        # 検索クエリ（query）をコンテキストに追加（ページ遷移時にクエリを保持するため）
-        context['query'] = self.request.GET.get('query', '')  # デフォルトは空文字
-
         return context
     
 # 求人削除

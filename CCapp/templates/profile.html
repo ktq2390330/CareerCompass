@@ -40,15 +40,6 @@
     <form action="{% url 'CCapp:profile' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="profile-box">
-            <div class="photo-container">
-                <div class="photo-box">
-                    <img id="preview-image"
-                        src="{% if form.instance.photo and form.instance.photo.url %}{{ form.instance.photo.url }}{% else %}#{% endif %}"
-                        alt="プロフィール写真"
-                        style="max-width: 200px; max-height: 200px; {% if not form.instance.photo %}display: none;{% endif %}" />
-                    {{ form.photo }}  
-                </div>
-            </div>
             <div class="form-group">
                 <label for="furigana">氏名(カナ)</label>
                 {{ form.furigana }}

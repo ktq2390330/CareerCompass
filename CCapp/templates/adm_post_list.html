@@ -14,39 +14,80 @@
 
 <!-- base.htmlにぶち込む部分 -->
 {% block content %}
-    <!-- search-box -->
     <div class="container">
+        <!-- 検索バー -->
         <div class="search-field">
-            <!-- 検索バー-->
-            <form action="{% url 'CCapp:adm_post_list' %}" method="GET">
-                <input type="text" name="query" placeholder="企業名または法人番号で探す" required>
-                <button type="submit">検索</button>
+            <form action="{% url 'CCapp:adm_post_list' %}" method="GET"> <!-- 検索フォーム -->
+                <input type="text" name="query" value="{{ query }}" placeholder="企業名または法人番号で探す" required> <!-- 入力フィールド -->
+                <button type="submit">検索</button> <!-- 検索ボタン -->
             </form>
         </div>
-    </div>
+        
 
-    <div class="job-list">
-        <!-- 求人情報をループで表示 -->
-        {% for job in jobs %}
-        <div class="job-item">
-            <img src="{{ job.corporation.image_url|default:'placeholder.jpg' }}" alt="会社写真">
-            <div class="job-info">
-                <p class="company-name">{{ job.corporation.name }}</p>
-                <p>法人番号：{{ job.corporation.corp }}</p>
-                <div class="job-buttons">
-                    <form action="{% url 'CCapp:delete_job' job.id %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit">求人削除</button>
-                    </form>
-                    <a href="{% url 'CCapp:edit_job' job.id %}">
-                        <button type="button">求人編集</button>
-                    </a>
+        <!-- 求人情報のリスト -->
+        <div class="job-list">
+            {% for job in jobs %}
+            <div class="job-item">
+                <img src="{{ job.corporation.image_url|default:'placeholder.jpg' }}" alt="会社写真"> <!-- 会社画像 -->
+                <div class="job-info">
+                    <p class="company-name">{{ job.corporation.name }}</p> <!-- 会社名 -->
+                    <p>法人番号：{{ job.corporation.corp }}</p> <!-- 法人番号 -->
+                    <div class="job-buttons">
+                        <!-- 求人削除ボタン -->
+                        <form action="{% url 'CCapp:adm_post_del' job.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">求人削除</button>
+                        </form>
+                        <!-- 求人編集ボタン -->
+                        <a href="#">
+                            <button type="button">求人編集</button>
+                        </a>
+                    </div>
                 </div>
             </div>
+            {% empty %}
+            <p class="no-results">求人情報が見つかりませんでした。</p> <!-- 求人情報がない場合 -->
+            {% endfor %}
         </div>
-        {% empty %}
-        <!-- 検索結果がない場合の表示 -->
-        <p class="no-results">求人情報が見つかりませんでした。</p>
-        {% endfor %}
+
+        <!-- ページネーション情報 -->
+        <section class="pagination-info" style="text-align: center;">
+            {% if page_obj.paginator.count > 0 %}
+                <!-- 求人数と表示されるページ番号 -->
+                <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
+            {% else %}
+                <p>該当する求人情報は見つかりませんでした。</p> <!-- 求人情報が見つからない場合 -->
+            {% endif %}
+        </section>
+
+        <!-- ページネーション -->
+        <div class="pagination">
+            <!-- 前へボタン -->
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&query={{ query }}" class="pagination-btn prev">前へ</a>
+            {% else %}
+                <span class="pagination-btn prev disabled">前へ</span>
+            {% endif %}
+
+            <!-- ページ番号のグループ -->
+            <div class="page-group">
+                {% for page_num in page_range %}
+                    {% if page_num == '...' %}
+                        <span class="pagination-btn ellipsis">...</span> <!-- 省略記号 -->
+                    {% else %}
+                        <a href="?page={{ page_num }}&query={{ query }}" class="pagination-btn {% if page_num == page_obj.number %}active{% endif %}">
+                            {{ page_num }} <!-- 現在ページを強調表示 -->
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- 次へボタン -->
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&query={{ query }}" class="pagination-btn next">次へ</a>
+            {% else %}
+                <span class="pagination-btn next disabled">次へ</span>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
