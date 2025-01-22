@@ -15,7 +15,7 @@
 <!-- filter_base.htmlにぶち込む部分 -->
 {% block content2 %}
     <!-- フォームの開始 -->
-    <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm">
+    {% comment %} <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm"> {% endcomment %}
         <!-- 大分類ボタン -->
         <nav class="selection">
             <ul class="selection-button">
@@ -53,8 +53,8 @@
         </div>
 
         <!-- フォーム送信ボタン -->
-        <button type="submit">検索</button>
-    </form>
+        {% comment %} <button type="submit">検索</button> {% endcomment %}
+    {% comment %} </form> {% endcomment %}
 
 
     <script>

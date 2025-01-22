@@ -20,7 +20,7 @@
     <div class="container">
         <div class="search-field">
             <!-- 検索バー-->
-            <form action="/search" method="GET" onsubmit="sessionStorage.clear();">
+            <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm" onsubmit="sessionStorage.clear();">
                 <input type="text" name="name" placeholder="企業名や業種で探す">
                 <button type="button" onclick="submitCombinedForm()">検索</button>
 
@@ -57,15 +57,18 @@
                     </li>
                 </ul>
             </nav>
-            </form>
 
             <!-- 点線 -->
             <div class="under_navigation-line"></div>
 
             <!-- 各種検索機能をここにぶち込む -->
             {% block content2 %}
-            {% endblock %}   
-            
+            {% endblock %} 
+
+            <!-- フォーム送信ボタン -->
+            <button type="submit">検索</button>
+
+            </form>            
         </div>
     </div>
 {% endblock %}

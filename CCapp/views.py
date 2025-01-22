@@ -290,6 +290,8 @@ def offer_search_view(request):
         'corporation': request.GET.getlist('corporation'),
     }
 
+    print(filters)
+
     authority = int(request.GET.get("authority", 2))  # デフォルトはユーザー権限（2）
     offers = filter_offers(filters, authority)
 
