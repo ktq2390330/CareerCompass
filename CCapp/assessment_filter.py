@@ -1,5 +1,3 @@
-# file: assessment_filter.py
-
 import google.generativeai as genai
 import concurrent.futures
 from tqdm import tqdm  # tqdmライブラリをインポート
