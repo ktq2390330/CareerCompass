@@ -223,27 +223,44 @@ class Edit_acView(LoginRequiredMixin, TemplateView):
 
 # filter
 # filter_area
-@login_required(login_url='CCapp:login')
 def filter_area_view(request):
-    # データベースからエリアの情報を取得
+    # セッションからチェックされたエリアを取得
+    checked_areas = request.session.get('checked_areas', [])
+    
+    # GETパラメータをセッションに保存
+    if request.method == 'GET':
+        if 'area1' in request.GET:
+            checked_areas = request.GET.getlist('area1')
+            request.session['checked_areas'] = checked_areas
+
+    # データベースからエリアのリストを取得
     area0_list = Area0.objects.all()
     area1_list = Area1.objects.all()
-    # テンプレートにデータを渡す
+
     return render(request, 'filter_area.html', {
         'area0_list': area0_list,
-        'area1_list': area1_list
+        'area1_list': area1_list,
+        'checked_areas': checked_areas,
     })
-    
-# filter_industry
-@login_required(login_url='CCapp:login')
+
 def filter_industry_view(request):
-    # データベースから業界の情報を取得
+    # セッションからチェックされた業界を取得
+    checked_industries = request.session.get('checked_industries', [])
+    
+    # GETパラメータをセッションに保存
+    if request.method == 'GET':
+        if 'category01' in request.GET:
+            checked_industries = request.GET.getlist('category01')
+            request.session['checked_industries'] = checked_industries
+
+    # データベースから業界のリストを取得
     category00_list = Category00.objects.all()
     category01_list = Category01.objects.all()
-    # テンプレートにデータを渡す
+
     return render(request, 'filter_industry.html', {
         'category00_list': category00_list,
-        'category01_list': category01_list
+        'category01_list': category01_list,
+        'checked_industries': checked_industries,
     })
 
 # filter_jobtype
