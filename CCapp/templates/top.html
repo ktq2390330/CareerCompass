@@ -19,7 +19,7 @@
     <div class="container">
         <div class="search-field">
             <!-- 検索バー-->
-            <form action="/search" method="GET">
+            <form action="{% url 'CCapp:offer_search' %}" method="GET">
                 <input type="text" name="query" placeholder="企業名や業種で探す">
                 <button type="submit">検索</button>
             </form>
@@ -28,7 +28,7 @@
             <hr class="search-field-line">
 
             <!-- pull down menu -->
-            <form action="/search" method="GET">
+            <form action="{% url 'CCapp:offer_search' %}" method="GET">
                 <label for="industry">業界:</label>
                 <select id="industry" name="industry" class="select-box">
                     {% for category00 in category00_list %}
@@ -50,7 +50,7 @@
                     {% endfor %}
                 </select>
             
-                <button type="submit">検索</button>
+                    <button type="submit">検索</button>
             </form>
             
 

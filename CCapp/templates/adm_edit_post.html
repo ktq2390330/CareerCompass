@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container1">
     <h2>求人編集</h2>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -132,11 +132,11 @@
                 <td>{{ form.status }}</td>
             </tr>
         </table>
-        {% endblock %}
-    </div>
 
         <div class="form-actions">
             <button type="submit">保存</button>
             <a href="{% url 'CCapp:adm_post_list' %}" class="cancel-btn">キャンセル</a>
         </div>
     </form>
+</div>
+{% endblock %}
