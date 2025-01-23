@@ -1,74 +1,104 @@
-<!-- base.htmlを継承 -->
 {% extends "base.html" %}
 
-<!-- staticタグを使うために追加 -->
 {% load static %}
 
-<!-- 埋め込む用のタイトル -->
-{% block title %}filter base{% endblock %}
+{% block title %}Filter Unified{% endblock %}
 
-<!-- 埋め込む用のcssを読み込むコード -->
 {% block head %}
-    <link href="{% static 'css/filter_base.css' %}" rel="stylesheet">
-    <!-- 各検索フィルター画面用のcss埋め込みエリア -->
-    {% block head2 %}{% endblock %}
+<link href="{% static 'css/filter_base.css' %}" rel="stylesheet">
 {% endblock %}
 
-<!-- base.htmlにぶち込む部分 -->
 {% block content %}
-    <!-- search-box -->
-    <div class="container">
-        <div class="search-field">
-            <!-- 検索バー-->
-            <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm" onsubmit="sessionStorage.clear();">
-                <input type="text" name="name" placeholder="企業名や業種で探す">
-                <button type="button" onclick="submitCombinedForm()">検索</button>
+<div class="container">
+    <div class="search-field">
+        <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm">
+            <input type="text" name="name" placeholder="企業名や業種で探す">
+            <button type="button" onclick="submitCombinedForm()">検索</button>
 
-            <!-- filter-navigation -->
-            {% url 'CCapp:filter_area' as filter_area_url %}
+            <!-- ボタンナビゲーション -->
             <nav class="filter-navigation">
                 <ul class="filter-navigation-button">
                     <li>
-                        <a href="{{ filter_area_url }}" 
-                        class="{% if request.path == filter_area_url %}active{% endif %}">
-                            エリア
-                        </a>
+                        <a href="javascript:void(0);" onclick="switchFilter('area')">エリア</a>
                     </li>
-                    {% url 'CCapp:filter_industry' as filter_industry_url %}
                     <li>
-                        <a href="{{ filter_industry_url }}" 
-                        class="{% if request.path == filter_industry_url %}active{% endif %}">
-                            業界
-                        </a>
+                        <a href="javascript:void(0);" onclick="switchFilter('industry')">業界</a>
                     </li>
-                    {% url 'CCapp:filter_jobtype' as filter_jobtype_url %}
                     <li>
-                        <a href="{{ filter_jobtype_url }}" 
-                        class="{% if request.path == filter_jobtype_url %}active{% endif %}">
-                            職種
-                        </a>
+                        <a href="javascript:void(0);" onclick="switchFilter('jobtype')">職種</a>
                     </li>
-                    {% url 'CCapp:filter_benefits' as filter_benefits_url %}
                     <li>
-                        <a href="{{ filter_benefits_url }}" 
-                        class="{% if request.path == filter_benefits_url %}active{% endif %}">
-                            福利厚生
-                        </a>
+                        <a href="javascript:void(0);" onclick="switchFilter('benefits')">福利厚生</a>
                     </li>
                 </ul>
             </nav>
 
-            <!-- 点線 -->
             <div class="under_navigation-line"></div>
 
-            <!-- 各種検索機能をここにぶち込む -->
-            {% block content2 %}
-            {% endblock %} 
+            <!-- 動的チェックボックスエリア -->
+            <div class="checkbox-field">
+                <!-- エリア -->
+                <div id="area" class="filter-section active">
+                    {% for area0 in area0_list %}
+                    <button type="button" onclick="selectAll('area{{ area0.id }}', true)">すべて選択</button>
+                    <button type="button" onclick="selectAll('area{{ area0.id }}', false)">選択解除</button>
+                    <div id="area{{ area0.id }}">
+                        {% for area1 in area1_list %}
+                        {% if area1.area0_id == area0.id %}
+                        <label>
+                            <input type="checkbox" name="area1" value="{{ area1.id }}">
+                            {{ area1.name }}
+                        </label><br>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
 
-            <!-- フォーム送信ボタン -->
+                <!-- 業界 -->
+                <div id="industry" class="filter-section">
+                    {% for category00 in category00_list %}
+                    <button type="button" onclick="selectAll('industry{{ category00.id }}', true)">すべて選択</button>
+                    <button type="button" onclick="selectAll('industry{{ category00.id }}', false)">選択解除</button>
+                    <div id="industry{{ category00.id }}">
+                        {% for category01 in category01_list %}
+                        {% if category01.category00_id == category00.id %}
+                        <label>
+                            <input type="checkbox" name="category01" value="{{ category01.id }}">
+                            {{ category01.name }}
+                        </label><br>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- 他の分類も同様に追加 -->
+            </div>
+
             <button type="submit">検索</button>
-
-            </form>            
-        </div>
+        </form>
     </div>
+</div>
+
+<script>
+    // フィルターの切り替え
+    function switchFilter(filterType) {
+        document.querySelectorAll('.filter-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(filterType).classList.add('active');
+    }
+
+    // すべて選択または解除
+    function selectAll(sectionId, isChecked) {
+        document.querySelectorAll(`#${sectionId} input[type="checkbox"]`).forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    }
+
+    // ページロード時の初期化
+    window.onload = function() {
+        document.getElementById('area').classList.add('active');
+    };
+</script>
 {% endblock %}

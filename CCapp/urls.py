@@ -25,6 +25,7 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
 
     # filter
+    path('filter_base/', views.filter_view, name='filter_base'),
     path('filter_area/', views.filter_area_view, name='filter_area'),
     path('filter_industry/',views.filter_industry_view, name='filter_industry'),
     path('filter_jobtype/',views.filter_jobtype_view, name='filter_jobtype'),

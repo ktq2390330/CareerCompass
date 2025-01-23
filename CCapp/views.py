@@ -221,17 +221,40 @@ class Delete_ac_doneView(View):
 class Edit_acView(LoginRequiredMixin, TemplateView):
     template_name = 'edit_ac.html'
 
+
+def save_to_session(request, key, param_name):
+    if param_name in request.GET:
+        request.session[key] = request.GET.getlist(param_name)
+
+# filter_base_view
+def filter_view(request):
+
+    # データベースから各項目のリストを取得
+    area0_list = Area0.objects.all()
+    area1_list = Area1.objects.all()
+    category00_list = Category00.objects.all()
+    category01_list = Category01.objects.all()
+
+    return render(request, 'filter_base.html', {
+        'area0_list': area0_list,
+        'area1_list': area1_list,
+        'category00_list': category00_list,
+        'category01_list': category01_list,
+    })
+
+
 # filter
 # filter_area
 def filter_area_view(request):
-    # セッションからチェックされたエリアを取得
-    checked_areas = request.session.get('checked_areas', [])
     
-    # GETパラメータをセッションに保存
-    if request.method == 'GET':
-        if 'area1' in request.GET:
-            checked_areas = request.GET.getlist('area1')
-            request.session['checked_areas'] = checked_areas
+    if 'area1' in request.GET:
+        request.session['checked_area1'] = request.GET.getlist('area1')
+
+    sample = request.GET.get('area1')
+
+    print("GET parameter 'area1':")
+    print(sample)
+
 
     # データベースからエリアのリストを取得
     area0_list = Area0.objects.all()
@@ -240,18 +263,12 @@ def filter_area_view(request):
     return render(request, 'filter_area.html', {
         'area0_list': area0_list,
         'area1_list': area1_list,
-        'checked_areas': checked_areas,
     })
 
 def filter_industry_view(request):
-    # セッションからチェックされた業界を取得
-    checked_industries = request.session.get('checked_industries', [])
     
-    # GETパラメータをセッションに保存
-    if request.method == 'GET':
-        if 'category01' in request.GET:
-            checked_industries = request.GET.getlist('category01')
-            request.session['checked_industries'] = checked_industries
+    if 'category01' in request.GET:
+       request.session['checked_category01'] = request.GET.getlist('category01')
 
     # データベースから業界のリストを取得
     category00_list = Category00.objects.all()
@@ -260,7 +277,6 @@ def filter_industry_view(request):
     return render(request, 'filter_industry.html', {
         'category00_list': category00_list,
         'category01_list': category01_list,
-        'checked_industries': checked_industries,
     })
 
 # filter_jobtype
@@ -295,13 +311,18 @@ from .models import Offer
 
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
+
+    area1 = request.GET.getlist('checked_area1')
+    print(f"GET parameter 'checked_area': {area1}")
+
+
     filters = {
         'name': request.GET.getlist('name'),
         'welfare': request.GET.getlist('welfare'),
         'area0': request.GET.getlist('area0'),
-        'area1': request.GET.getlist('area1'),
+        'area1': request.session.get('checked_area1', []),
         'category00': request.GET.getlist('category00'),
-        'category01': request.GET.getlist('category01'),
+        'category01': request.session.get('checked_category01', []),
         'category10': request.GET.getlist('category10'),
         'category11': request.GET.getlist('category11'),
         'corporation': request.GET.getlist('corporation'),
