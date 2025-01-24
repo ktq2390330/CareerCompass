@@ -312,17 +312,13 @@ from .models import Offer
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
 
-    area1 = request.GET.getlist('checked_area1')
-    print(f"GET parameter 'checked_area': {area1}")
-
-
     filters = {
         'name': request.GET.getlist('name'),
         'welfare': request.GET.getlist('welfare'),
         'area0': request.GET.getlist('area0'),
-        'area1': request.session.get('checked_area1', []),
+        'area1': request.GET.getlist('area1'),
         'category00': request.GET.getlist('category00'),
-        'category01': request.session.get('checked_category01', []),
+        'category01': request.GET.getlist('category01'),
         'category10': request.GET.getlist('category10'),
         'category11': request.GET.getlist('category11'),
         'corporation': request.GET.getlist('corporation'),
