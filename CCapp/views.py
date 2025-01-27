@@ -734,7 +734,7 @@ class AdmPostView(LoginRequiredMixin,View):
         form = AdmPostForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('adm_dashboard')  # 管理者ダッシュボードにリダイレクト
+            return redirect('CCapp:adm_dashboard')  # 管理者ダッシュボードにリダイレクト
         return render(request, self.template_name, {'form': form})
 
 def get_category01_options(request, category00_id):
