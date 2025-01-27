@@ -14,10 +14,204 @@
 
 <!-- base.htmlにぶち込む部分 -->
 {% block content %}
-<h1>新しい求人を作成</h1>
 <form method="post" enctype="multipart/form-data">
+    <h1>新しい求人を作成</h1>
     {% csrf_token %}
-    {{ form.as_p }}
+    <!-- 求人名 -->
+    <div class="form-group">
+        <label for="id_name">求人名</label>
+        <input type="text" id="id_name" name="name" value="{{ form.name.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 詳細 -->
+    <div class="form-group">
+        <label for="id_detail">詳細</label>
+        <textarea id="id_detail" name="detail" class="form-control">{{ form.detail.value|default:'' }}</textarea>
+    </div>
+
+    <!-- 募集要項 -->
+    <div class="form-group">
+        <label for="id_solicitation">募集要項</label>
+        <textarea id="id_solicitation" name="solicitation" class="form-control">{{ form.solicitation.value|default:'' }}</textarea>
+    </div>
+
+    <!-- コース名 -->
+    <div class="form-group">
+        <label for="id_course">コース名</label>
+        <input type="text" id="id_course" name="course" value="{{ form.course.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 雇用形態 -->
+    <div class="form-group">
+        <label for="id_forms">雇用形態</label>
+        <input type="text" id="id_forms" name="forms" value="{{ form.forms.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 配属職種 -->
+    <div class="form-group">
+        <label for="id_roles">配属職種</label>
+        <input type="text" id="id_roles" name="roles" value="{{ form.roles.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 提出書類 -->
+    <div class="form-group">
+        <label for="id_CoB">提出書類</label>
+        <textarea id="id_CoB" name="CoB" class="form-control">{{ form.CoB.value|default:'' }}</textarea>
+    </div>
+
+    <!-- 募集対象 -->
+    <div class="form-group">
+        <label for="id_subject">募集対象</label>
+        <input type="text" id="id_subject" name="subject" value="{{ form.subject.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 募集人数 -->
+    <div class="form-group">
+        <label for="id_NoP">募集人数</label>
+        <input type="text" id="id_NoP" name="NoP" value="{{ form.NoP.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 募集学部・学科 -->
+    <div class="form-group">
+        <label for="id_departments">募集学部・学科</label>
+        <input type="text" id="id_departments" name="departments" value="{{ form.departments.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 募集特徴 -->
+    <div class="form-group">
+        <label for="id_characteristic">募集特徴</label>
+        <textarea id="id_characteristic" name="characteristic" class="form-control">{{ form.characteristic.value|default:'' }}</textarea>
+    </div>
+
+    <!-- 採用後の対応 -->
+    <div class="form-group">
+        <label for="id_PES">採用後の対応</label>
+        <textarea id="id_PES" name="PES" class="form-control">{{ form.PES.value|default:'' }}</textarea>
+    </div>
+
+    <!-- 初任給 -->
+    <div class="form-group">
+        <label for="id_giving">初任給</label>
+        <input type="text" id="id_giving" name="giving" value="{{ form.giving.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 諸手当 -->
+    <div class="form-group">
+        <label for="id_allowances">諸手当</label>
+        <input type="text" id="id_allowances" name="allowances" value="{{ form.allowances.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 昇給 -->
+    <div class="form-group">
+        <label for="id_salaryRaise">昇給</label>
+        <input type="text" id="id_salaryRaise" name="salaryRaise" value="{{ form.salaryRaise.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 賞与 -->
+    <div class="form-group">
+        <label for="id_bonus">賞与</label>
+        <input type="text" id="id_bonus" name="bonus" value="{{ form.bonus.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 休日休暇 -->
+    <div class="form-group">
+        <label for="id_holiday">休日休暇</label>
+        <textarea id="id_holiday" name="holiday" class="form-control">{{ form.holiday.value|default:'' }}</textarea>
+    </div>
+
+    <!-- 勤務時間 -->
+    <div class="form-group">
+        <label for="id_workingHours">勤務時間</label>
+        <input type="text" id="id_workingHours" name="workingHours" value="{{ form.workingHours.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 福利厚生 -->
+    <div class="form-group">
+        <label for="id_welfare">福利厚生</label>
+        {% for tag in form.welfare.field.queryset %}
+            <div>
+                <input type="checkbox" name="welfare" value="{{ tag.id }}" id="id_welfare_{{ tag.id }}" {% if tag.id in form.welfare.value %}checked{% endif %}>
+                <label for="id_welfare_{{ tag.id }}">{{ tag.name }}</label>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- エリア -->
+    <div class="form-group">
+        <label for="id_area1">エリア</label>
+        <select id="id_area1" name="area1" class="form-control">
+            {% for area in form.area1.field.queryset %}
+                <option value="{{ area.id }}" {% if area.id == form.area1.value %}selected{% endif %}>{{ area.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- カテゴリ00 -->
+    <div class="form-group">
+        <label for="id_category00">カテゴリ00</label>
+        <select id="id_category00" name="category00" class="form-control">
+            {% for category in form.category00.field.queryset %}
+                <option value="{{ category.id }}" {% if category.id == form.category00.value %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- カテゴリ01 -->
+    <div class="form-group">
+        <label for="id_category01">カテゴリ01</label>
+        <select id="id_category01" name="category01" class="form-control">
+            {% for category in form.category01.field.queryset %}
+                <option value="{{ category.id }}" {% if category.id == form.category01.value %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- カテゴリ10 -->
+    <div class="form-group">
+        <label for="id_category10">カテゴリ10</label>
+        <select id="id_category10" name="category10" class="form-control">
+            {% for category in form.category10.field.queryset %}
+                <option value="{{ category.id }}" {% if category.id == form.category10.value %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- カテゴリ11 -->
+    <div class="form-group">
+        <label for="id_category11">カテゴリ11</label>
+        <select id="id_category11" name="category11" class="form-control">
+            {% for category in form.category11.field.queryset %}
+                <option value="{{ category.id }}" {% if category.id == form.category11.value %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- 公開期限 -->
+    <div class="form-group">
+        <label for="id_period">公開期限</label>
+        <input type="datetime-local" id="id_period" name="period" value="{{ form.period.value|date:'Y-m-d\\TH:i' }}" class="form-control">
+    </div>
+
+    <!-- 公開状況 -->
+    <div class="form-group">
+        <label for="id_status">公開状況</label>
+        <input type="checkbox" id="id_status" name="status" {% if form.status.value %}checked{% endif %}>
+    </div>
+
+    <!-- 法人 -->
+    <div class="form-group">
+        <label for="id_corporation">法人</label>
+        <select id="id_corporation" name="corporation" class="form-control">
+            {% for corporation in form.corporation.field.queryset %}
+                <option value="{{ corporation.corp }}" {% if corporation.corp == form.corporation.value %}selected{% endif %}>{{ corporation.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- 提出ボタン -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">投稿する</button>
+    </div>
 
     <script>
         // カテゴリ00選択時にカテゴリ01を動的に更新
@@ -71,13 +265,11 @@
                     const areaSelect = document.getElementById('id_area1');
                     areaSelect.innerHTML = '';
                     const defaultOption = document.createElement('option');
-                    defaultOption.textContent = data.area;  // 都道府県名
+                    defaultOption.textContent = data.area;
                     defaultOption.value = area1Id;
                     areaSelect.appendChild(defaultOption);
                 });
         });
     </script>
-
-    <button type="submit">求人投稿</button>
 </form>
 {% endblock %}

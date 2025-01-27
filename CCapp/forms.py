@@ -144,7 +144,7 @@ class AdmPostForm(forms.ModelForm):
             'category10', 'category11', 'corporation', 'period', 'status', 'welfare'
         ]
 
-    welfare = forms.ModelMultipleChoiceField(
+        welfare = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         label="福利厚生",
         required=False,

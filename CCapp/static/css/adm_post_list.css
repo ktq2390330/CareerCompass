@@ -1,43 +1,77 @@
 /* 共通のスタイル */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
+    background-color: white;
+    margin: 0 auto; /* 左右中央揃え */
     padding: 0;
 }
 
 /* コンテナ */
 .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 80%;
+    max-width: 1000px; /* 最大幅を設定 */
+    margin: 0 auto; /* 左右中央揃え */
+    padding: 0 20px;
+}
+
+/* 検索バー */
+.search-field {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 100%; /* 幅を画面にフィットさせる */
+    box-sizing: border-box; /* padding含めた幅制御 */
+    text-align: center;
+    margin: 0 auto; /* 中央揃え */
+    display: block; /* 確実に中央に配置されるように */
+}
+
+.search-field input[type="text"] {
+    width: 70%; /* バーの幅を全体の70%に調整 */
+    padding: 15px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    min-width: 150px; /* 最小幅を設定 */
+    box-sizing: border-box; /* ボックスモデル調整 */
+    margin-bottom: 10px; /* 下に少しスペースを追加 */
+}
+
+.search-field button {
+    padding: 12px 20px;
+    background-color: #3791ec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+    font-size: 18px;
+}
+
+.search-field button:hover {
+    background-color: #0056b3;
 }
 
 /* 求人リスト */
 .job-list {
     margin-top: 20px;
+    text-align: center; /* 中央揃え */
 }
 
 .job-item {
-    display: flex;
+    display: inline-block;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 15px;
     padding: 15px;
-}
-
-.job-item img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 15px;
+    width: 260px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .job-info {
-    flex: 1;
+    text-align: center;
 }
 
 .job-info .company-name {
@@ -52,6 +86,7 @@ body {
     margin: 5px 0;
 }
 
+/* 求人ボタン */
 .job-buttons {
     margin-top: 10px;
 }
@@ -72,146 +107,58 @@ body {
 }
 
 /* ページネーション */
-.pagination-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.pagination {
+    text-align: center; /* ページネーションも中央寄せ */
     margin-top: 20px;
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;  /* ボタン間のスペースを広げる */
+.pagination-btn-group {
+    display: inline-block;
+    gap: 10px;
 }
 
-/* ページ番号、前へ・次へボタンのスタイル */
 .pagination-btn {
     padding: 8px 16px;
     font-size: 14px;
-    color: #fff;
-    background-color: #007bff;
-    border: 1px solid #007bff;
+    color: #000; /* 白黒のボタン */
+    background-color: #fff;
+    border: 1px solid #000; /* 白黒のボーダー */
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
 }
 
-/* ボタンのホバー */
 .pagination-btn:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #ddd;
 }
 
-/* 現在のページを強調表示 */
 .pagination-btn.active {
-    background-color: #28a745; /* 緑色 */
-    border-color: #28a745;
+    background-color: #000;
+    color: white;
     font-weight: bold;
 }
 
-/* 無効なボタン（前へ・次へ） */
 .pagination-btn.disabled {
-    background-color: #ddd;
-    color: #999;
+    background-color: #eee;
+    color: #aaa;
     cursor: not-allowed;
 }
 
-/* ページグループ（ページ番号の集まり） */
 .page-group {
-    display: flex;
-    align-items: center;
+    display: inline-block;
+    gap: 5px;
 }
 
-/* ページ番号リンクのスタイル */
-.page-group a {
-    margin: 0 5px;
-}
-
-/* 省略記号（...）のスタイル */
 .pagination-btn.ellipsis {
     cursor: default;
     background-color: transparent;
-    color: #007bff;
+    color: #000;
 }
 
-/* 前後の「前へ」「次へ」ボタン */
-.pagination-btn.prev, .pagination-btn.next {
-    width: 80px;
-    text-align: center;
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-    .pagination-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-
-    .pagination-btn.prev, .pagination-btn.next {
-        width: 60px;
-    }
-
-    .page-group a {
-        margin: 0 3px;
-    }
-}
-
-/* 検索バー */
-.search-field {
-    margin: 20px 0;
-    text-align: center;
-}
-
-.search-field input {
-    padding: 10px;
-    font-size: 16px;
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.search-field button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.search-field button:hover {
-    background-color: #218838;
-}
-
-/* 空結果メッセージ */
+/* 無結果メッセージ */
 .no-results {
     text-align: center;
     font-size: 16px;
     color: #666;
     margin-top: 20px;
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-    .job-item {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .job-item img {
-        width: 100px;
-        height: 100px;
-    }
-
-    .job-info {
-        text-align: center;
-    }
-
-    .job-buttons {
-        margin-top: 10px;
-    }
 }

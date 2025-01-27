@@ -28,18 +28,17 @@
         <div class="job-list">
             {% for job in jobs %}
             <div class="job-item">
-                <img src="{{ job.corporation.image_url|default:'placeholder.jpg' }}" alt="会社写真"> <!-- 会社画像 -->
                 <div class="job-info">
-                    <p class="company-name">{{ job.corporation.name }}</p> <!-- 会社名 -->
+                    <p class="company-name">企業名：{{ job.corporation.name }}</p> <!-- 会社名 -->
                     <p>法人番号：{{ job.corporation.corp }}</p> <!-- 法人番号 -->
                     <div class="job-buttons">
                         <!-- 求人削除ボタン -->
-                        <a href="{% url 'CCapp:adm_post_del' job.id %}" method="POST">
+                        <form action="{% url 'CCapp:adm_post_del' job.id %}" method="POST">
                             {% csrf_token %}
                             <button type="submit">求人削除</button>
-                        </a>
+                        </form>
                         <!-- 求人編集ボタン -->
-                        <a href="{% url 'CCapp:edit_job' job.id %}">
+                        <a href="#">
                             <button type="button">求人編集</button>
                         </a>
                     </div>
