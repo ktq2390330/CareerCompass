@@ -68,7 +68,7 @@ h3 {
 
 /* button */
 button {
-    width: 120px; /* ボタンの幅を広げる */
+    width: auto; /* ボタンの幅 */
     padding: 15px; /* パディングを増やす */
     border: 1px solid;
     border-radius: 5px;

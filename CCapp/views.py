@@ -406,11 +406,22 @@ class AdmPostList(LoginRequiredMixin, ListView):
     
 # 求人削除
 class AdmPostDelView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        # 求人を取得して削除確認ページを表示
+        job = get_object_or_404(Offer, pk=pk)
+        return render(request, 'adm_post_del.html', {'offer': job})  # 確認画面のテンプレートを表示
+
     def post(self, request, pk):
+        # 削除処理
         job = get_object_or_404(Offer, pk=pk)
         job.status = 0  # ステータスを「削除済み」に変更
         job.save()
-        return redirect('CCapp:adm_post_list')  # 検索結果ページにリダイレクト
+        return redirect('CCapp:adm_post_del_done', pk=pk)  # 完了画面にリダイレクト
+
+# 削除完了画面
+class AdmPostDelDoneView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        return render(request, 'adm_post_del_done.html')  # 削除完了画面を表示
 
 # login
 class AdmLoginView(FormView):
@@ -734,8 +745,13 @@ class AdmPostView(LoginRequiredMixin,View):
         form = AdmPostForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('CCapp:adm_dashboard')  # 管理者ダッシュボードにリダイレクト
+            return redirect('CCapp:adm_post_done')  # 投稿完了画面にリダイレクト
         return render(request, self.template_name, {'form': form})
+    
+# 求人投稿完了のビュー
+class AdmPostDoneView(View):
+    def get(self, request):
+        return render(request, 'adm_post_done.html')
 
 def get_category01_options(request, category00_id):
     """カテゴリ00に関連するカテゴリ01を取得"""

@@ -4,31 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>求人削除</title>
+    <title>求人削除確認</title>
     <link href="{% static 'css/adm_post_del.css' %}" rel="stylesheet"/>
 </head>
 <body>
     <header class="header">
-        <!-- brand name -->
-        <div id="brand">
-            <a class="brand" href="#"><i>Career
-                <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
-        </div>
-
-        <!-- ナビゲーション下の実線 -->
+        <a class="brand" href="{% url 'CCapp:adm_dashboard' %}"><i>Career
+            <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
         <hr class="header-line">
-    </header>
+    </header>    
 
     <div class="container">
         <h3>{{ offer.name }} の求人を削除しますか？</h3>
+        <p>求人内容を削除する前に、再度確認してください。</p>
         <div class="button-group">
-            <!-- 削除のためのフォーム -->
-            <form action="{% url 'delete_offer' offer.pk %}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+            <!-- 削除確認フォーム -->
+            <form action="{% url 'CCapp:adm_post_del' offer.pk %}" method="post" onsubmit="return confirm('本当に削除しますか？');">
                 {% csrf_token %}
                 <button type="submit" class="Yes">はい</button>
             </form>
-            <!-- キャンセル用のリンク -->
-            <a href="{% url 'adm_dashboard' %}" class="No"><button>いいえ</button></a>
+            <!-- キャンセル用リンク -->
+            <a href="{% url 'CCapp:adm_post_list' %}" class="No"><button>いいえ</button></a>
         </div>
     </div>
 </body>

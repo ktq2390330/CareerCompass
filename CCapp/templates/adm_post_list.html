@@ -33,9 +33,8 @@
                     <p>法人番号：{{ job.corporation.corp }}</p> <!-- 法人番号 -->
                     <div class="job-buttons">
                         <!-- 求人削除ボタン -->
-                        <form action="{% url 'CCapp:adm_post_del' job.id %}" method="POST">
-                            {% csrf_token %}
-                            <button type="submit">求人削除</button>
+                        <form action="{% url 'CCapp:adm_post_del' job.id %}" method="GET" class="delete-form">
+                            <button type="submit" class="delete-btn">求人削除</button>
                         </form>
                         <!-- 求人編集ボタン -->
                         <a href="#">

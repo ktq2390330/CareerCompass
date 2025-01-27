@@ -44,8 +44,8 @@ urlpatterns = [
     path('adm_post_done/', views.AdmPostDoneView.as_view(), name='adm_post_done'),
     path("edit_job/<int:pk>/", views.AdmEditPostView.as_view(), name="edit_job"),
     path('search/', views.AdmPostList.as_view(), name='adm_post_list'),
-    path('job/delete/<int:pk>/', views.AdmPostDelView.as_view(), name='delete_job'),
-    path('job/delete/<int:pk>/', views.AdmPostDelView.as_view(), name='adm_post_del'),
+    path('post/<int:pk>/delete/', views.AdmPostDelView.as_view(), name='adm_post_del'),  # 削除確認画面
+    path('post/<int:pk>/delete/done/', views.AdmPostDelDoneView.as_view(), name='adm_post_del_done'),  # 削除完了画面
 
     # subscription
     path('subscription/', views.SubscriptionView.as_view(), name='subscription'),

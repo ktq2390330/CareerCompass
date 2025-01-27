@@ -16,10 +16,11 @@ body {
 
 /* brand */
 .brand {
-    font-size: 30px; /* フォントサイズを大きく */
+    font-size: 30px;
     text-decoration: none;
     font-weight: bold;
     line-height: 1; /* 行間を狭くする */
+    color: black; /* リンクの色を青に固定 */
 }
 
 /* header */
