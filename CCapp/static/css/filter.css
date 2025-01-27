@@ -52,12 +52,6 @@
         font-size: 20px;
     }
 
-
-    /* filter-navigation */
-    .filter-navigation {
-        text-align: center; /* ナビゲーション全体を中央に配置 */
-    }
-
     /* filter-navigation-button */
     .filter-navigation-button {
         list-style-type: none;  /* 箇条書きの点を消す */
@@ -67,11 +61,16 @@
         margin-top: 20px;
     }
 
+    .filter-navigation-button li a.active {
+        background-color: #ffffff;
+        color: #000;
+        border: 2px solid #4598eb;  /* 四角枠の色 */
+    }
+
     .filter-navigation-button li a {
         display: inline-block;
         width: 150px; /* ボタンの固定幅を設定 */
-        padding: 10px 0; /* 上下のスペースのみを設定 */
-        text-align: center; /* テキストを中央揃え */
+        padding: 10px 0; /* 上下のスペースのみを設定 */  
         border: 2px solid #ccc;  /* 四角枠の色 */
         border-radius: 8px; /* 角丸四角にする */
         background-color: #ffffff; /* ボタンの背景色 */

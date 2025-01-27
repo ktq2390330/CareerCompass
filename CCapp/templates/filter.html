@@ -13,7 +13,7 @@
     <div class="search-field">
         <form method="GET" action="{% url 'CCapp:offer_search' %}" id="filterForm">
             <input type="text" name="name" placeholder="企業名や業種で探す">
-            <button type="button" onclick="submitCombinedForm()">検索</button>
+            <button type="submit" class="search-button">検索</button>
 
             <!-- 大分類ボタン -->
             <nav class="filter-navigation">
@@ -137,7 +137,7 @@
                 </div>
             </nav>
 
-            <button type="submit">検索</button>
+            <button type="submit" class="search-button">検索</button>
         </form>
     </div>
 </div>
@@ -160,6 +160,16 @@
         let firstSubcategory = document.querySelector(`#${filterType} .subcategory-section`);
         if (firstSubcategory) {
             firstSubcategory.style.display = 'block';
+        }
+
+        // 'active' クラスを削除
+        const allButtons = document.querySelectorAll('.filter-navigation-button a');
+        allButtons.forEach(button => button.classList.remove('active'));
+
+        // クリックしたボタンに 'active' クラスを追加
+        const clickedButton = document.querySelector(`.filter-navigation-button a[onclick="switchFilter('${filterType}')"]`);
+        if (clickedButton) {
+            clickedButton.classList.add('active');
         }
     }
 
@@ -212,6 +222,12 @@
         let firstAreaSubcategory = document.querySelector('#area .subcategory-section');
         if (firstAreaSubcategory) {
             firstAreaSubcategory.style.display = 'block';
+        }
+
+        // 最初のボタンをアクティブにする
+        const firstButton = document.querySelector('.filter-navigation-button a');
+        if (firstButton) {
+            firstButton.classList.add('active');
         }
     };
 </script>
