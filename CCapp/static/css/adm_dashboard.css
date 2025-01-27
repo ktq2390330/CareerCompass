@@ -10,11 +10,11 @@
     background-color: #ffffff;
     border: 2px solid #000000;
     padding: 40px;
-    border-radius: 20px;
     max-width: 100%; /* 幅を画面にフィットさせる */
     box-sizing: border-box; /* padding含めた幅制御 */
     text-align: center;
     margin: 0 auto;
+    margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
 }
 
 /* 検索バー */

@@ -90,9 +90,11 @@
             <tr>
                 <th><label for="id_welfare">福利厚生:</label></th>
                 <td>
+                    <div class="checkbox-options">
                     {% for option in form.welfare %}
                         <div>{{ option.tag }} {{ option.choice_label }}</div>
                     {% endfor %}
+                    </div>
                 </td>
             </tr>
             <tr>

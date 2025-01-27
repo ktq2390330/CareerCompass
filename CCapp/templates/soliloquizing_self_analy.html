@@ -10,14 +10,6 @@
 <!-- Djangoのmessagesを使用 -->
 {% block soliloquizing %}
 
-    <!-- エラーメッセージ表示 -->
-    {% if messages %}
-        <div class="message-container">
-            {% for message in messages %}
-                <div class="error-message">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
 
     <form method="POST" action="{% url 'CCapp:self_analy' %}">
         {% csrf_token %}

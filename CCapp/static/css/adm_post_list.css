@@ -1,17 +1,8 @@
-/* 共通のスタイル */
-body {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    margin: 0 auto; /* 左右中央揃え */
-    padding: 0;
-}
-
 /* コンテナ */
 .container {
     width: 80%;
-    max-width: 1000px; /* 最大幅を設定 */
-    margin: 0 auto; /* 左右中央揃え */
-    padding: 0 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* 検索バー */
@@ -19,12 +10,11 @@ body {
     background-color: #ffffff;
     border: 2px solid #000000;
     padding: 40px;
-    border-radius: 20px;
     max-width: 100%; /* 幅を画面にフィットさせる */
     box-sizing: border-box; /* padding含めた幅制御 */
     text-align: center;
-    margin: 0 auto; /* 中央揃え */
-    display: block; /* 確実に中央に配置されるように */
+    margin: 0 auto;
+    margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
 }
 
 .search-field input[type="text"] {
@@ -33,9 +23,8 @@ body {
     border: 1px solid #000000;
     border-radius: 5px;
     font-size: 18px;
-    min-width: 150px; /* 最小幅を設定 */
-    box-sizing: border-box; /* ボックスモデル調整 */
-    margin-bottom: 10px; /* 下に少しスペースを追加 */
+    min-width: 150px;
+    box-sizing: border-box;
 }
 
 .search-field button {
