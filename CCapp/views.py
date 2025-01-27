@@ -238,7 +238,7 @@ def filter_view(request):
     category11_list = Category11.objects.all()
     tag_list = Tag.objects.all()
 
-    return render(request, 'filter_base.html', {
+    return render(request, 'filter.html', {
         'area0_list': area0_list, # 地方名
         'area1_list': area1_list, # 県名
         'category00_list': category00_list, # 業界の中分類
