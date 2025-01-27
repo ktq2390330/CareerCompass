@@ -8,10 +8,14 @@ body {
     margin-top: 20px;
 }
 
-/* header内の要素のレイアウト */
-.header {
-    width: 100%;  /* 横幅を100%に */
-    padding: 10px 20px;  /* 余白 */
+
+
+/* 親要素のスタイル */
+#brand {
+    position: relative;       /* 子要素を絶対配置する基準を作成 */
+    display: flex;            /* フレックスボックスを維持（レイアウトの調整） */
+    align-items: center;      /* 垂直方向の中央揃え */
+    padding: 10px;
 }
 
 /* brand */
