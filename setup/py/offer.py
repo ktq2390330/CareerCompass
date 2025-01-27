@@ -4,30 +4,8 @@ import datetime
 from django_setup_def import djangoImportSetup
 djangoImportSetup()
 from CCapp.models import *
-from CCapp.defs import makeDirFile, makeImportPath, logconfig, logException, logsOutput, readFile, executeFunction
-from django.db import transaction
-import csv
+from CCapp.defs import *
 import random
-from itertools import cycle  # 無限ループでデータを扱うためのモジュール
-
-# CSVファイルから指定カラム（name）を読み込む関数
-def load_csv_column(file_path, column_name="name"):
-    with open(file_path, mode="r", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        return [row[column_name] for row in reader if column_name in row]
-
-def load_cId_column(file_path, column_name="cId"):
-    with open(file_path, mode="r", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        return [row[column_name] for row in reader if column_name in row]
-
-# 外部CSVファイルからデータを読み込む
-area1names = cycle(load_csv_column("setup/data/area1.csv"))
-category00names = cycle(load_csv_column("setup/data/category00.csv"))  # 会社種別
-category01names = cycle(load_csv_column("setup/data/category01.csv"))  # 会社規模
-category10names = cycle(load_csv_column("setup/data/category10.csv"))  # 会社形態
-category11names = cycle(load_csv_column("setup/data/category11.csv"))  # 会社業種
-corporationIDs = cycle(load_cId_column("setup/data/corporation.csv"))  # 会社ID
 
 # 固定データ
 fixed_data = {
@@ -50,9 +28,6 @@ fixed_data = {
     "characteristic": "募集特徴",
 }
 
-# 出力ファイルのパス
-output_file = "offer.csv"
-
 # ヘッダー定義
 header = [
     "title", "giving", "holiday", "area1name",
@@ -61,36 +36,83 @@ header = [
     "solicitation", "course", "forms", "roles", "CoB", "subject", "NoP", "departments", "characteristic"
 ]
 
-# **ファイルを開いた状態でループを回す**
-with open(output_file, mode="w", encoding="utf-8", newline="") as file:
-    writer = csv.DictWriter(file, fieldnames=header)
-    writer.writeheader()  # **ヘッダーの書き込み**
+# 新しい追記用関数
 
-    count = 1
-    # 多重ループ処理
-    for area in area1names:
-        for category00 in category00names:
-            for category01 in category01names:
-                for category10 in category10names:
-                    for category11 in category11names:
-                        for corp_id in corporationIDs:
-                            row = {
-                                "title": f"求人{count:06d}",
-                                "giving": random.randint(150000, 300000),  # 給料
-                                "holiday": random.randint(100, 140),  # 休日
-                                "area1name": area,  # 都道府県
-                                "category00name": category00,  # 会社種別
-                                "category01name": category01,  # 会社規模
-                                "category10name": category10,  # 会社形態
-                                "category11name": category11,  # 会社業種
-                                "corporationID": corp_id,  # 会社ID
-                            }
-                            row.update(fixed_data)  # **固定データを追加**
-                            writer.writerow(row)  # **CSVに書き込む**
-                            count += 1
+def writeFileA(filePath, data):
+    """追記用のCSV書き込み関数"""
+    try:
+        with open(filePath, mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=header)
+            if os.stat(filePath).st_size == 0:  # ファイルが空の場合はヘッダーを書き込み
+                writer.writeheader()
+            writer.writerows(data)
+    except Exception as e:
+        print(f'error in writeFileA: {e}')
 
-        # プログレス表示（10,000件ごと）
-        if count % 10000 == 0:
-            print(f"{count}件のデータを生成・書き込み済み")
+# 入力ファイルパス生成
+try:
+    area1_path = makeImportPath("../setup/data/", "area1.csv")
+    category00_path = makeImportPath("../setup/data/", "category00.csv")
+    category01_path = makeImportPath("../setup/data/", "category01.csv")
+    category10_path = makeImportPath("../setup/data/", "category10.csv")
+    category11_path = makeImportPath("../setup/data/", "category11.csv")
+    corporation_path = makeImportPath("../setup/data/", "corporation.csv")
 
-print(f"データを {output_file} に書き出しました！")
+    # CSVデータの読み込み
+    area1names = [row['name'] for row in readFile(area1_path)]
+    category00names = [row['name'] for row in readFile(category00_path)]
+    category01names = [row['name'] for row in readFile(category01_path)]
+    category10names = [row['name'] for row in readFile(category10_path)]
+    category11names = [row['name'] for row in readFile(category11_path)]
+    corporationIDs = [row['cId'] for row in readFile(corporation_path)]
+
+    # 出力ファイル
+    output_file = "offer.csv"
+
+    # データ生成とCSV書き込み
+    def generate_and_write_data():
+        count = 1
+        data = []
+        for area in area1names:
+            for category00 in category00names:
+                for category01 in category01names:
+                    for category10 in category10names:
+                        for category11 in category11names:
+                            for corp_id in corporationIDs:
+                                row = {
+                                    "title": f"求人{count:06d}",
+                                    "giving": random.randint(150000, 300000),
+                                    "holiday": random.randint(100, 140),
+                                    "area1name": area,
+                                    "category00name": category00,
+                                    "category01name": category01,
+                                    "category10name": category10,
+                                    "category11name": category11,
+                                    "corporationID": corp_id,
+                                }
+                                row.update(fixed_data)
+                                data.append(row)
+                                count += 1
+
+                                if count % 1000 == 0:
+                                    print(f"{count}件のデータを生成中...")
+
+                                # プログレス表示（10,000件ごと）
+                                if count % 10000 == 0:
+                                    logging.info(f"{count}件のデータを生成・書き込み済み")
+
+                                # 一定量生成ごとに書き込み
+                                if len(data) >= 1000:
+                                    writeFileA(output_file, data)
+                                    data = []
+
+        # 最後のデータを書き込み
+        if data:
+            writeFileA(output_file, data)
+
+    # 実行時間計測
+    elapsed_time, _ = measureExecutionTime(generate_and_write_data)
+    logging.info(f"データ生成処理完了: {elapsed_time:.2f}秒")
+
+except Exception as e:
+    logException(logging.getLogger(__name__), "データ生成エラー", e)
