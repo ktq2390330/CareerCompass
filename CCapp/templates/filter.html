@@ -28,7 +28,7 @@
             <div class="under_navigation-line"></div>
 
             <!-- 中分類 (エリアの地方ボタン) -->
-            <nav class="area-navigation filter-section" id="area">
+            <nav class="area-navigation filter-section" id="area" style="display: none;">
                 <ul class="region-button">
                     {% for area in area0_list %}
                     <li>
@@ -38,49 +38,10 @@
                     </li>
                     {% endfor %}
                 </ul>
-            </nav>
 
-            <!-- 中分類 (業界のカテゴリボタン) -->
-            <nav class="industry-navigation filter-section" id="industry">
-                <ul class="industry-button">
-                    {% for industry in category00_list %}
-                    <li>
-                        <a href="javascript:void(0);" onclick="showSubcategories('industry{{ industry.id }}')">
-                            {{ industry.name }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </nav>
-
-            <!-- 中分類 (職種のカテゴリボタン) -->
-            <nav class="jobtype-navigation filter-section" id="jobtype">
-                <ul class="jobtype-button">
-                    {% for jobtype in category10_list %}
-                    <li>
-                        <a href="javascript:void(0);" onclick="showSubcategories('jobtype{{ jobtype.id }}')">
-                            {{ jobtype.name }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </nav>
-
-            <!-- 中分類 (福利厚生のタグボタン) -->
-            <nav class="benefits-navigation filter-section" id="benefits">
-                <ul class="benefits-button">
-                    <li>
-                        <a href="javascript:void(0);" onclick="showSubcategories('tag{{ tag.id }}')">
-                            福利厚生
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- 小分類 (チェックボックス) -->
-            <div class="checkbox-field">
+                <!-- エリアのチェックボックス -->
                 {% for area in area0_list %}
-                <div id="area{{ area.id }}" class="subcategory-section">
+                <div id="area{{ area.id }}" class="subcategory-section" style="display: none;">
                     {% for region in area1_list %}
                     {% if region.area0_id == area.id %}
                     <div class="prefecture-checkboxes">
@@ -93,9 +54,23 @@
                     {% endfor %}
                 </div>
                 {% endfor %}
+            </nav>
 
+            <!-- 中分類 (業界のカテゴリボタン) -->
+            <nav class="industry-navigation filter-section" id="industry" style="display: none;">
+                <ul class="industry-button">
+                    {% for industry in category00_list %}
+                    <li>
+                        <a href="javascript:void(0);" onclick="showSubcategories('industry{{ industry.id }}')">
+                            {{ industry.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- 業界のチェックボックス -->
                 {% for industry in category00_list %}
-                <div id="industry{{ industry.id }}" class="subcategory-section">
+                <div id="industry{{ industry.id }}" class="subcategory-section" style="display: none;">
                     {% for category in category01_list %}
                     {% if category.category00_id == industry.id %}
                     <div class="industry-checkboxes">
@@ -108,9 +83,23 @@
                     {% endfor %}
                 </div>
                 {% endfor %}
+            </nav>
 
+            <!-- 中分類 (職種のカテゴリボタン) -->
+            <nav class="jobtype-navigation filter-section" id="jobtype" style="display: none;">
+                <ul class="jobtype-button">
+                    {% for jobtype in category10_list %}
+                    <li>
+                        <a href="javascript:void(0);" onclick="showSubcategories('jobtype{{ jobtype.id }}')">
+                            {{ jobtype.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- 職種のチェックボックス -->
                 {% for jobtype in category10_list %}
-                <div id="jobtype{{ jobtype.id }}" class="subcategory-section">
+                <div id="jobtype{{ jobtype.id }}" class="subcategory-section" style="display: none;">
                     {% for category in category11_list %}
                     {% if category.category10_id == jobtype.id %}
                     <div class="jobtype-checkboxes">
@@ -123,13 +112,30 @@
                     {% endfor %}
                 </div>
                 {% endfor %}
+            </nav>
 
-                {% for tag in tag_list %}
-                <label>
-                    <input type="checkbox" name="tag" value="{{ tag.id }}"> {{ tag.name }}
-                </label><br>
-                {% endfor %}
-            </div>
+            <!-- 中分類 (福利厚生のタグボタン) -->
+            <nav class="benefits-navigation filter-section" id="benefits" style="display: none;">
+                <ul class="benefits-button">
+                    <li>
+                        <a href="javascript:void(0);" onclick="showBenefitsSubcategories()">
+                            福利厚生
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- 福利厚生のチェックボックス -->
+                <div id="benefits-checkboxes" class="subcategory-section" style="display: none;">
+                    {% for tag in tag_list %}
+                    <div class="benefits-checkboxes">
+                        <label>
+                            <input type="checkbox" name="tag" value="{{ tag.id }}">
+                            {{ tag.name }}
+                        </label><br>
+                    </div>
+                    {% endfor %}
+                </div>
+            </nav>
 
             <button type="submit">検索</button>
         </form>
@@ -139,22 +145,27 @@
 <script>
     // 大分類の切り替え
     function switchFilter(filterType) {
+        // すべての中分類を非表示にする
         document.querySelectorAll('.filter-section').forEach(section => {
             section.style.display = 'none';
         });
 
+        // 選択された大分類の中分類を表示
         let selectedSection = document.getElementById(filterType);
         if (selectedSection) {
             selectedSection.style.display = 'block';
         }
 
-        document.querySelectorAll('.subcategory-section').forEach(section => {
-            section.style.display = 'none';
-        });
+        // 大分類に対応する最初の中分類を表示
+        let firstSubcategory = document.querySelector(`#${filterType} .subcategory-section`);
+        if (firstSubcategory) {
+            firstSubcategory.style.display = 'block';
+        }
     }
 
     // 中分類の選択時に該当するチェックボックスを表示
     function showSubcategories(subcategoryId) {
+        // すべてのチェックボックスを非表示にする
         document.querySelectorAll('.subcategory-section').forEach(section => {
             section.style.display = 'none';
         });
@@ -163,19 +174,46 @@
         if (selectedSubcategory) {
             selectedSubcategory.style.display = 'block';
         }
+
+        // 中分類が表示されたら、その中のチェックボックスを表示する
+        let checkboxes = selectedSubcategory.querySelectorAll('div');
+        checkboxes.forEach(checkbox => {
+            checkbox.style.display = 'block';
+        });
     }
 
-    // ページロード時の初期化
-    window.onload = function() {
-        document.querySelectorAll('.filter-section').forEach(section => {
-            section.style.display = 'none';
-        });
-
+    // 福利厚生のチェックボックスの表示/非表示
+    function showBenefitsSubcategories() {
         document.querySelectorAll('.subcategory-section').forEach(section => {
             section.style.display = 'none';
         });
 
-        document.getElementById('area').style.display = 'block';
+        let benefitsSection = document.getElementById('benefits-checkboxes');
+        if (benefitsSection) {
+            benefitsSection.style.display = 'block';
+        }
+
+        // チェックボックスを表示
+        let checkboxes = benefitsSection.querySelectorAll('div');
+        checkboxes.forEach(checkbox => {
+            checkbox.style.display = 'block';
+        });
+    }
+
+    // ページロード時の初期化
+    window.onload = function() {
+        // エリアの中分類（北海道地方）を最初に表示
+        let areaSection = document.getElementById('area');
+        if (areaSection) {
+            areaSection.style.display = 'block';
+        }
+
+        // 最初のエリア中分類（北海道）を表示
+        let firstAreaSubcategory = document.querySelector('#area .subcategory-section');
+        if (firstAreaSubcategory) {
+            firstAreaSubcategory.style.display = 'block';
+        }
     };
 </script>
+
 {% endblock %}
