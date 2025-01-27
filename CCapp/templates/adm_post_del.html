@@ -19,7 +19,7 @@
         <p>求人内容を削除する前に、再度確認してください。</p>
         <div class="button-group">
             <!-- 削除確認フォーム -->
-            <form action="{% url 'CCapp:adm_post_del' offer.pk %}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+            <form action="{% url 'CCapp:adm_post_del' offer.pk %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="Yes">はい</button>
             </form>
