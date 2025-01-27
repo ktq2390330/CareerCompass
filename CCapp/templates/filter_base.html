@@ -15,64 +15,120 @@
             <input type="text" name="name" placeholder="企業名や業種で探す">
             <button type="button" onclick="submitCombinedForm()">検索</button>
 
-            <!-- ボタンナビゲーション -->
+            <!-- 大分類ボタン -->
             <nav class="filter-navigation">
                 <ul class="filter-navigation-button">
-                    <li>
-                        <a href="javascript:void(0);" onclick="switchFilter('area')">エリア</a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="switchFilter('industry')">業界</a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="switchFilter('jobtype')">職種</a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="switchFilter('benefits')">福利厚生</a>
-                    </li>
+                    <li><a href="javascript:void(0);" onclick="switchFilter('area')">エリア</a></li>
+                    <li><a href="javascript:void(0);" onclick="switchFilter('industry')">業界</a></li>
+                    <li><a href="javascript:void(0);" onclick="switchFilter('jobtype')">職種</a></li>
+                    <li><a href="javascript:void(0);" onclick="switchFilter('benefits')">福利厚生</a></li>
                 </ul>
             </nav>
 
             <div class="under_navigation-line"></div>
 
-            <!-- 動的チェックボックスエリア -->
-            <div class="checkbox-field">
-                <!-- エリア -->
-                <div id="area" class="filter-section active">
-                    {% for area0 in area0_list %}
-                    <button type="button" onclick="selectAll('area{{ area0.id }}', true)">すべて選択</button>
-                    <button type="button" onclick="selectAll('area{{ area0.id }}', false)">選択解除</button>
-                    <div id="area{{ area0.id }}">
-                        {% for area1 in area1_list %}
-                        {% if area1.area0_id == area0.id %}
-                        <label>
-                            <input type="checkbox" name="area1" value="{{ area1.id }}">
-                            {{ area1.name }}
-                        </label><br>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
+            <!-- 中分類 (エリアの地方ボタン) -->
+            <nav class="area-navigation filter-section" id="area">
+                <ul class="region-button">
+                    {% for area in area0_list %}
+                    <li>
+                        <a href="javascript:void(0);" onclick="showSubcategories('area{{ area.id }}')">
+                            {{ area.name }}
+                        </a>
+                    </li>
                     {% endfor %}
-                </div>
+                </ul>
+            </nav>
 
-                <!-- 業界 -->
-                <div id="industry" class="filter-section">
-                    {% for category00 in category00_list %}
-                    <button type="button" onclick="selectAll('industry{{ category00.id }}', true)">すべて選択</button>
-                    <button type="button" onclick="selectAll('industry{{ category00.id }}', false)">選択解除</button>
-                    <div id="industry{{ category00.id }}">
-                        {% for category01 in category01_list %}
-                        {% if category01.category00_id == category00.id %}
+            <!-- 中分類 (業界のカテゴリボタン) -->
+            <nav class="industry-navigation filter-section" id="industry">
+                <ul class="industry-button">
+                    {% for industry in category00_list %}
+                    <li>
+                        <a href="javascript:void(0);" onclick="showSubcategories('industry{{ industry.id }}')">
+                            {{ industry.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <!-- 中分類 (職種のカテゴリボタン) -->
+            <nav class="jobtype-navigation filter-section" id="jobtype">
+                <ul class="jobtype-button">
+                    {% for jobtype in category10_list %}
+                    <li>
+                        <a href="javascript:void(0);" onclick="showSubcategories('jobtype{{ jobtype.id }}')">
+                            {{ jobtype.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <!-- 中分類 (福利厚生のタグボタン) -->
+            <nav class="benefits-navigation filter-section" id="benefits">
+                <ul class="benefits-button">
+                    <li>
+                        <a href="javascript:void(0);" onclick="showSubcategories('tag{{ tag.id }}')">
+                            福利厚生
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- 小分類 (チェックボックス) -->
+            <div class="checkbox-field">
+                {% for area in area0_list %}
+                <div id="area{{ area.id }}" class="subcategory-section">
+                    {% for region in area1_list %}
+                    {% if region.area0_id == area.id %}
+                    <div class="prefecture-checkboxes">
                         <label>
-                            <input type="checkbox" name="category01" value="{{ category01.id }}">
-                            {{ category01.name }}
+                            <input type="checkbox" name="area1" value="{{ region.id }}">
+                            {{ region.name }}
                         </label><br>
-                        {% endif %}
-                        {% endfor %}
                     </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
-                <!-- 他の分類も同様に追加 -->
+                {% endfor %}
+
+                {% for industry in category00_list %}
+                <div id="industry{{ industry.id }}" class="subcategory-section">
+                    {% for category in category01_list %}
+                    {% if category.category00_id == industry.id %}
+                    <div class="industry-checkboxes">
+                        <label>
+                            <input type="checkbox" name="category01" value="{{ category.id }}">
+                            {{ category.name }}
+                        </label><br>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% for jobtype in category10_list %}
+                <div id="jobtype{{ jobtype.id }}" class="subcategory-section">
+                    {% for category in category11_list %}
+                    {% if category.category10_id == jobtype.id %}
+                    <div class="jobtype-checkboxes">
+                        <label>
+                            <input type="checkbox" name="category11" value="{{ category.id }}">
+                            {{ category.name }}
+                        </label><br>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% for tag in tag_list %}
+                <label>
+                    <input type="checkbox" name="tag" value="{{ tag.id }}"> {{ tag.name }}
+                </label><br>
+                {% endfor %}
             </div>
 
             <button type="submit">検索</button>
@@ -81,24 +137,45 @@
 </div>
 
 <script>
-    // フィルターの切り替え
+    // 大分類の切り替え
     function switchFilter(filterType) {
         document.querySelectorAll('.filter-section').forEach(section => {
-            section.classList.remove('active');
+            section.style.display = 'none';
         });
-        document.getElementById(filterType).classList.add('active');
+
+        let selectedSection = document.getElementById(filterType);
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
+        }
+
+        document.querySelectorAll('.subcategory-section').forEach(section => {
+            section.style.display = 'none';
+        });
     }
 
-    // すべて選択または解除
-    function selectAll(sectionId, isChecked) {
-        document.querySelectorAll(`#${sectionId} input[type="checkbox"]`).forEach(checkbox => {
-            checkbox.checked = isChecked;
+    // 中分類の選択時に該当するチェックボックスを表示
+    function showSubcategories(subcategoryId) {
+        document.querySelectorAll('.subcategory-section').forEach(section => {
+            section.style.display = 'none';
         });
+
+        let selectedSubcategory = document.getElementById(subcategoryId);
+        if (selectedSubcategory) {
+            selectedSubcategory.style.display = 'block';
+        }
     }
 
     // ページロード時の初期化
     window.onload = function() {
-        document.getElementById('area').classList.add('active');
+        document.querySelectorAll('.filter-section').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        document.querySelectorAll('.subcategory-section').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        document.getElementById('area').style.display = 'block';
     };
 </script>
 {% endblock %}
