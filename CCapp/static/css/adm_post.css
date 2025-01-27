@@ -1,5 +1,4 @@
 /* adm_postページのCSS */
-
 body {
     max-width: 1200px;
     width: 90%;
@@ -11,9 +10,9 @@ form {
     margin-top: 30px;
     background-color: white;
     border: 2px solid #000000;
-    padding: 40px 30px;  /* ボックス内の余白を調整 */
+    padding: 60px 40px;  /* パディングをprofile-boxに合わせる */
     margin: 100px auto; /* 上下に100pxの余白、左右は自動で中央揃え */
-    max-width: 1000px; /* 幅を制限 */
+    max-width: 960px; /* profile-boxに合わせる */
     text-align: left; /* 項目が左揃えになるように変更 */
     box-sizing: border-box; /* ボックスモデル調整 */
 }
@@ -85,7 +84,7 @@ button[type="submit"]:hover {
 }
 
 /* セクションごとのスタイル */
-h1 {
+h2 {
     text-align: center;
     margin-bottom: 30px;
     font-size: 24px;
