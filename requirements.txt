@@ -1,8 +1,8 @@
 Django
 django-filter
-mysqlclient
 pillow
 django-cleanup
 python-dotenv
 google-generativeai
 chardet
+pymysql
