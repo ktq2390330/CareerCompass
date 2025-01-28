@@ -51,6 +51,12 @@
         width: 100px;
         font-size: 20px;
     }
+    
+    /* fitler-navigation */
+    .filter-navigation {
+        width: 90%;  /* search-field の 90% に設定 */
+        margin: 0 auto;  /* 中央配置 */
+    }
 
     /* filter-navigation-button */
     .filter-navigation-button {
@@ -108,3 +114,84 @@
         width: 100px; /* ボタンの幅 */
         font-size: 20px;
     }
+
+    /* 中分類コンテナとチェックボックスコンテナを並べる */
+    .subcategory-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 90%; /* search-field の90%に揃える */
+        margin: 20px auto; /* 中央揃え */
+    }
+
+    /* 中分類のボタンコンテナ (左側 30%) */
+    .subcategory-buttons-container {
+        width: 30%;
+        text-align: left;
+    }
+
+    /* チェックボックスのコンテナ (右側 65%) */
+    .subcategory-checkbox-container {
+        width: 65%;
+        margin-top: 20px;
+    }
+
+    .subcategory-buttons-container li {
+        list-style-type: none;  /* 箇条書きの点を消す */
+    }
+
+    .subcategory-buttons-container li a {
+        display: inline-block;
+        width: 170px; /* ボタンの固定幅を設定 */
+        padding: 10px 0; /* 上下のスペースのみを設定 */  
+        margin-top: 10px;
+        border: 2px solid #ccc;  /* 四角枠の色 */
+        border-radius: 8px; /* 角丸四角にする */
+        background-color: #ffffff; /* ボタンの背景色 */
+        text-decoration: none; /* リンクの下線を消す */
+        color: #333; /* テキストの色 */
+        font-size: 15px; /* フォントサイズ */
+        transition: background-color 0.3s; /* 背景色が変わるトランジション */
+        text-align: center;
+        gap: 10px; /* 各ボタンの間にスペースを追加 */
+        
+    }
+
+    /* 検索ボタンを2つのコンテナの下に中央揃え */
+    .search-button-container {
+        display: flex;
+        justify-content: center;
+        width: 90%; /* 親のsearch-fieldの幅に合わせる */
+        margin: 20px auto 0; /* 余白調整 */
+    }
+
+    .search-button {
+        padding: 12px 20px;
+        background-color: #4598eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 120px;
+        font-size: 18px;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+
+    .search-button:hover {
+        background-color: #0056b3;
+    }
+
+
+    .subcategory-checkbox-container label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+
+    .subcategory-checkbox-container label input[type="checkbox"] {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+

@@ -78,6 +78,9 @@
 /* 求人ボタン */
 .job-buttons {
     margin-top: 10px;
+    display: flex; /* フレックスボックスを適用 */
+    justify-content: center; /* ボタンを中央揃え */
+    gap: 10px; /* ボタン間の隙間を設定 */
 }
 
 .job-buttons button {
@@ -88,7 +91,6 @@
     padding: 8px 16px;
     cursor: pointer;
     font-size: 14px;
-    margin-right: 10px;
 }
 
 .job-buttons button:hover {
