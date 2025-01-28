@@ -78,7 +78,6 @@ try:
                 for category01 in category01names:
                     for category10 in category10names:
                         for category11 in category11names:
-                            for corp_id in corporationIDs:
                                 row = {
                                     "title": f"求人{count:06d}",
                                     "giving": random.randint(150000, 300000),
@@ -88,7 +87,7 @@ try:
                                     "category01name": category01,
                                     "category10name": category10,
                                     "category11name": category11,
-                                    "corporationID": corp_id,
+                                    "corporationID": random.choice(corporationIDs),
                                 }
                                 row.update(fixed_data)
                                 data.append(row)
