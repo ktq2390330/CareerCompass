@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.db import connection
+
 # Create your tests here.
 User = get_user_model()
 
@@ -32,10 +34,14 @@ User = get_user_model()
 
 class LoginViewTest(TestCase):
     def setUp(self):
-        self.mail = 'admin@master.com'
-        self.password = 'password'
-        self.user = User.objects.create_user(mail=self.mail, password=self.password)
+        self.mail = 'kaneko@gmail.com'
+        self.password = 'abcd'
         self.login_url = reverse('CCapp:login')
+
+        # ORMでユーザーを作成
+        self.user = User(mail=self.mail)
+        self.user.set_password(self.password)  # パスワードはハッシュ化する必要あり
+        self.user.save()
 
     def test_login_with_valid_credentials(self):
         """正しい資格情報でログインできるかをテスト"""
@@ -43,6 +49,9 @@ class LoginViewTest(TestCase):
             'mail': self.mail,
             'password': self.password,
         })
+        print(response.status_code)
+        print(response.url)
+        self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('CCapp:top'))
 
     # def test_login_with_invalid_credentials(self):
