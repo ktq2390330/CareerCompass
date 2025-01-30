@@ -71,9 +71,14 @@ class LoginView(FormView):
         if not user.password == password:
             form.add_error(None, 'ユーザー名またはパスワードが正しくありません')
             return self.form_invalid(form)
-
-        login(self.request, user)
-        return redirect('CCapp:top')
+        
+        # authorityが0（管理者）の場合のみログインを許可
+        if user.authority == 2:
+            login(self.request, user)
+            return redirect('CCapp:top')
+        else:
+            form.add_error(None, 'このアカウントではログインできません。一般ユーザーアカウントでやり直してください。')
+            return self.form_invalid(form)
 
 
 # 新規登録のviews

@@ -5,8 +5,7 @@
     margin-right: auto;
 }
 
-/* プロフィールボックスのスタイル */
-.profile-box {
+.profile-field {
     background-color: white;
     border: 2px solid #000000;
     padding: 60 40px;
@@ -15,32 +14,13 @@
     text-align: center; /* テキストとボタンを中央揃え */
 }
 
-/* 写真のコンテナ */
-.photo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+/* プロフィールボックスのスタイル */
+.profile-box {
+    margin-top: 50px
 }
 
-/* 写真ボックスのスタイル */
-.photo-box {
-    width: 150px;
-    height: 200px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-top: 20px;
-}
-
-.photo-box input[type="file"] {
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    position: absolute;
-    cursor: pointer;
+.profile-box h1 {
+    margin-bottom: 50px;
 }
 
 /* フォームグループのスタイル */
@@ -67,8 +47,8 @@
 
 /* ボタンのグループ */
 .button-group {
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     margin-left: auto;
     margin-right: auto;
 }
