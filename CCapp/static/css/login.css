@@ -84,7 +84,7 @@ input[type="password"] {
 }
 
 button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #367bb7;
 }
 
 .button-area p {
@@ -106,7 +106,7 @@ button:hover {
 }
 
 a:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #367bb7;
 }
 
 .separator {

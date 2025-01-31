@@ -13,6 +13,7 @@ h1 {
     font-style: italic;
     color: #000000;
     margin-bottom: 20px;
+    font-size: 40px;
 }
 
 .container {
@@ -28,6 +29,7 @@ h1 {
 
 h3 {
     margin: 20px 0;
+    font-size: 20px;
 }
 
 .button-group {
@@ -48,5 +50,5 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #367bb7;
 }
