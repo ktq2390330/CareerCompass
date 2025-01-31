@@ -32,27 +32,27 @@ User = get_user_model()
 #         user = User.objects.create_user(mail=self.mail, password=self.password, username='testuser')
 #         self.assertEqual(user.username, 'testuser')
 
-class LoginViewTest(TestCase):
-    def setUp(self):
-        self.mail = 'kaneko@gmail.com'
-        self.password = 'abcd'
-        self.login_url = reverse('CCapp:login')
+# class LoginViewTest(TestCase):
+#     def setUp(self):
+#         self.mail = 'kaneko@gmail.com'
+#         self.password = 'abcd'
+#         self.login_url = reverse('CCapp:login')
 
-        # ORMでユーザーを作成
-        self.user = User(mail=self.mail)
-        self.user.set_password(self.password)  # パスワードはハッシュ化する必要あり
-        self.user.save()
+#         # ORMでユーザーを作成
+#         self.user = User(mail=self.mail)
+#         self.user.set_password(self.password)  # パスワードはハッシュ化する必要あり
+#         self.user.save()
 
-    def test_login_with_valid_credentials(self):
-        """正しい資格情報でログインできるかをテスト"""
-        response = self.client.post(self.login_url, {
-            'mail': self.mail,
-            'password': self.password,
-        })
-        print(response.status_code)
-        print(response.url)
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('CCapp:top'))
+#     def test_login_with_valid_credentials(self):
+#         """正しい資格情報でログインできるかをテスト"""
+#         response = self.client.post(self.login_url, {
+#             'mail': self.mail,
+#             'password': self.password,
+#         })
+#         print(response.status_code)
+#         print(response.url)
+#         self.assertEqual(response.status_code, 302)
+#         self.assertRedirects(response, reverse('CCapp:top'))
 
     # def test_login_with_invalid_credentials(self):
     #     """無効な資格情報でログインできないかをテスト"""
@@ -91,12 +91,12 @@ class LoginViewTest(TestCase):
 #         self.assertNotIn('_auth_user_id', self.client.session)
 
 
-# class SignupViewTest(TestCase):
+class SignupViewTest(TestCase):
 
-#     def setUp(self):
-#         self.signup_url = reverse('signup')  # サインアップURLを名前で取得
+    def setUp(self):
+        self.signup_url = reverse('CCapp:signup')  # サインアップURLを名前で取得
 
-#     def test_signup_page(self):
-#        response = self.client.get(self.signup_url)
-#        self.assertEqual(response.status_code, 200)
-#        self.assertTemplateUsed(response, 'signup.html')
+    def test_signup_page(self):
+       response = self.client.get(self.signup_url)
+       self.assertEqual(response.status_code, 200)
+       self.assertTemplateUsed(response, 'signup.html')

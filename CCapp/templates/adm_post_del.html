@@ -1,19 +1,18 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>求人削除確認</title>
-    <link href="{% static 'css/adm_post_del.css' %}" rel="stylesheet"/>
-</head>
-<body>
-    <header class="header">
-        <a class="brand" href="{% url 'CCapp:adm_dashboard' %}"><i>Career
-            <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
-        <hr class="header-line">
-    </header>    
+<!-- base.htmlを継承 -->
+{% extends "adm_base.html" %}
 
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- top page用のタイトル -->
+{% block title %}[adm]求人削除{% endblock %}
+
+<!-- top page用のcssを読み込む -->
+{% block head %}
+    <link href="{% static 'css/adm_post_del.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}  
     <div class="container">
         <h3>{{ offer.name }} の求人を削除しますか？</h3>
         <p>求人内容を削除する前に、再度確認してください。</p>
@@ -27,5 +26,4 @@
             <a href="{% url 'CCapp:adm_post_list' %}" class="No"><button>いいえ</button></a>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

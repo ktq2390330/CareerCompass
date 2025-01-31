@@ -18,7 +18,18 @@
     margin-bottom: 50px;
 }
 
+<<<<<<< HEAD
 
+=======
+.content-box {
+    margin: 20px auto; /* 上下のマージンを狭く */
+    padding: 5px 15px; /* 上下のパディングを少し狭く */
+    border: 2px solid #666;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    max-width: 90%; /* 幅を少し小さく設定 */
+}
+>>>>>>> 544d89840477d2b39d00d6e368d19f69227b7542
 
 /* content-box内の文字を右寄せ */
 .content-box p, .content-box div, .content-box span { 
@@ -37,7 +48,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px; /* 全体のパディング */
-    border-radius: 10px;
+    border-radius: 8px;
     width: 260px; /* 枠全体の幅を広げる */
 }
 
@@ -114,4 +125,9 @@ td {
 
 .button-group button:hover {
     background-color: #0056b3;
+    border: 2px solid rgb(11, 0, 0); /* 枠線を追加してシンプルな見た目に */
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
 }

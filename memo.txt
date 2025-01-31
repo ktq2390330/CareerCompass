@@ -1,43 +1,59 @@
-1. チェックボックスの状態を保存
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-    checkboxes.forEach(checkbox => {
-        // 初期ロード時にセッションストレージの値を適用
-        const savedValue = sessionStorage.getItem(checkbox.id);
-        if (savedValue !== null) {
-            checkbox.checked = savedValue === 'true';
-        }
-
-        // チェックボックスがクリックされた際に状態を保存
-        checkbox.addEventListener('change', () => {
-            sessionStorage.setItem(checkbox.id, checkbox.checked);
-        });
-    });
-});
-</script>
-
-2. HTMLのチェックボックスにid属性を追加
-
-<label><input type="checkbox" id="benefit1" name="benefit" value="salary"> 30歳平均年収が600万円以上</label>
-<label><input type="checkbox" id="benefit2" name="benefit" value="system"> 実力主義の給与体系・評価制度を導入</label>
-<label><input type="checkbox" id="benefit3" name="benefit" value="holiday"> 年間休日120日以上</label>
-
-3. 検索ボタンを押したときにセッションストレージをクリア
-
-<form action="/search" method="GET" onsubmit="sessionStorage.clear();">
-    <button type="submit">検索</button>
-</form>
-
-areaはクッキー
-industryはセッションでチェックボックスのステータスを保持している状況
-全部セッションに書き変える
-
 権限
 0管理者
 1サポート
 2一般ユーザー
 
+ーーーーーーーーーーーーーーーーーーーー
+
+・発表資料と台本、スケジュール (金子)
+発表内容の整理
+パワポ作成
+台本作成
+
+ーーーーーーーーーーーーーーーーーーーー
+
+・求人応募確認画面 (金子)
+体裁整える
+
+ーーーーーーーーーーーーーーーーーーーー
+
+・全画面の体裁の確認 (32 ~ 35画面) (金子)
+ーーーーーーーーーーーーーーーーーーーー
+
+・求人応募完了画面 (入江)
+「ユーザー側」
+企業のメールアドレスを取得して
+こちらのメールアドレスからの連絡をお待ちくださいメッセージを表示
+
+名前
+メールアドレス
+電話番号
+学校名
+
+ーーーーーーーーーーーーーーーーーーーー
+
+「企業側」
+応募者のプロフィール情報とメールアドレスを記載した自動メールを
+「この方からの応募がありました。下記メールアドレスから応募者とやり取りを開始してください。」
+企業あてに自動送信する
+
+ーーーーーーーーーーーーーーーーーーーー
+
+・求人画面 (川田)
+必要な情報の表示と体裁(css)
+
+ーーーーーーーーーーーーーーーーーーーー
+
+・プロフィール画面 (小池)
+プロフィールが正常に表示されない問題を修正
+viewsでnot nullのせいでバグが出ている可能性がある。
+データベースにもし情報がある場合はテキストボックス等に自動入力の所で
+何もないときにバグってる可能性が高いからviewsでif文を追加して何も
+値がない場合（未登録 or 新規登録直後）のエラーハンドリングをする
+
+ーーーーーーーーーーーーーーーーーーーー
+
+・ユーザートップページ (誰？)
+簡易検索ができるようにする
+現状、getでパラメーターが送信できてない
 

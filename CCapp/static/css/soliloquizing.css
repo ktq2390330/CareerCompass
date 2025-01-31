@@ -94,3 +94,7 @@ textarea {
     width: 100px;
     font-size: 20px;
 }
+
+.save-button:hover {
+    background-color: #367bb7;
+}

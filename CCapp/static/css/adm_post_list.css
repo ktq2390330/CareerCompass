@@ -21,7 +21,7 @@
     width: 70%; /* バーの幅を全体の70%に調整 */
     padding: 15px;
     border: 1px solid #000000;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 18px;
     min-width: 150px;
     box-sizing: border-box;
@@ -32,14 +32,14 @@
     background-color: #3791ec;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     width: 100px;
     font-size: 18px;
 }
 
 .search-field button:hover {
-    background-color: #0056b3;
+    background-color: #367bb7;
 }
 
 /* 求人リスト */
@@ -84,17 +84,20 @@
 }
 
 .job-buttons button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
     padding: 8px 16px;
     cursor: pointer;
     font-size: 14px;
+    border: 2px solid #ccc;  /* 四角枠の色 */
+    border-radius: 8px; /* 角丸四角にする */
+    background-color: #ffffff; /* ボタンの背景色 */
+    text-decoration: none; /* リンクの下線を消す */
+    color: #333; /* テキストの色 */
 }
 
 .job-buttons button:hover {
-    background-color: #0056b3;
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
 }
 
 /* ページネーション */
@@ -114,7 +117,7 @@
     color: #000; /* 白黒のボタン */
     background-color: #fff;
     border: 1px solid #000; /* 白黒のボーダー */
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
 }

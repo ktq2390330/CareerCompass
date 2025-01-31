@@ -1,26 +1,22 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>求人削除完了</title>
-    <link href="{% static 'css/adm_post_done.css' %}" rel="stylesheet"/>
-</head>
-<body>
-    <header class="header">
-        <div id="brand">
-            <a class="brand" href="CCapp:adm_dashboard"><i>Career
-                <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
-        </div>
-        <hr class="header-line">
-    </header>
+<!-- base.htmlを継承 -->
+{% extends "adm_base.html" %}
 
+<!-- staticタグを使うために追加 -->
+{% load static %}
+
+<!-- top page用のタイトル -->
+{% block title %}[adm]求人削除完了{% endblock %}
+
+<!-- top page用のcssを読み込む -->
+{% block head %}
+    <link href="{% static 'css/adm_post_del_done.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <h3>求人投稿が削除されました。</h3>
         <div class="button-group">
             <button onclick="window.location='{% url 'CCapp:adm_post_list' %}'">求人一覧に戻る</button>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

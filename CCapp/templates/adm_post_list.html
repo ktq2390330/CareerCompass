@@ -18,7 +18,7 @@
         <!-- 検索バー -->
         <div class="search-field">
             <form action="{% url 'CCapp:adm_post_list' %}" method="GET"> <!-- 検索フォーム -->
-                <input type="text" name="query" value="{{ query }}" placeholder="企業名または法人番号で探す" required> <!-- 入力フィールド -->
+                <input type="text" name="query" value="{{ query }}" placeholder="法人番号または企業名を入力" required> <!-- 入力フィールド -->
                 <button type="submit">検索</button> <!-- 検索ボタン -->
             </form>
         </div>
