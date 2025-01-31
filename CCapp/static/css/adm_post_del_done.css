@@ -36,13 +36,13 @@ button {
     border: 1px solid;
     border-radius: 5px;
     cursor: pointer;
-    background-color: transparent;
-    color: #000;
+    background-color: #4598eb; /* ボタンの色 */
+    color: white;
     font-size: 1em; /* フォントサイズを大きく */
 }
 
 button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #0056b3;
 }
 
 nav {
