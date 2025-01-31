@@ -47,7 +47,7 @@
     max-width: 535px; /* 最大幅を設定して中央に配置 */
     padding: 12px; /* 内部の余白を設定 */
     border: 1px solid;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 14px;
     margin-left: auto;
     margin-right: auto;

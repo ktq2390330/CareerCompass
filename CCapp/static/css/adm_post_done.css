@@ -34,7 +34,7 @@ button {
     width: auto; /* ボタンの幅 */
     padding: 15px; /* パディングを増やす */
     border: 1px solid;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     background-color: #4598eb; /* ボタンの色 */
     color: white;

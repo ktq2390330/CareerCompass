@@ -22,7 +22,7 @@
     width: 650px; /* バーの幅を調整 */
     padding: 20px; /* 入力フィールドの内側余白を増やす */
     border: 1px solid #000000; /* 枠線の色 */
-    border-radius: 5px; /* 角の丸みを増やす */
+    border-radius: 8px; /* 角の丸みを増やす */
     font-size: 20px;
 }
 
@@ -32,7 +32,7 @@
     background-color: #3791ec; /* ボタンの色 */
     color: white;
     border: none;
-    border-radius: 5px; /* 角の丸みを増やす */
+    border-radius: 8px; /* 角の丸みを増やす */
     cursor: pointer;
     width: 100px;
     font-size: 20px;
@@ -103,4 +103,6 @@ form select {
 
 .refine-search a {
     font-size: 18px;
+    text-decoration: none;
+    color: #256aaf;
 }

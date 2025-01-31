@@ -2,7 +2,7 @@
 .container {
     width: 80%; /* コンテナの幅を80%に設定 */
     padding: 30px; /* パディングを増やす */
-    border-radius: 15px;
+    border-radius: 8px;
     border: 1px solid transparent;
     text-align: center; /* 中央揃え */
     display: flex;
@@ -34,7 +34,7 @@ button {
     width: auto; /* ボタンの幅 */
     padding: 15px; /* パディングを増やす */
     border: 1px solid;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     background-color: #4598eb; /* ボタンの色 */
     color: white;
