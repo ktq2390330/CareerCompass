@@ -84,17 +84,21 @@
 }
 
 .job-buttons button {
-    background-color: #007bff;
-    color: white;
-    border: none;
     border-radius: 5px;
     padding: 8px 16px;
     cursor: pointer;
     font-size: 14px;
+    border: 2px solid #ccc;  /* 四角枠の色 */
+    border-radius: 8px; /* 角丸四角にする */
+    background-color: #ffffff; /* ボタンの背景色 */
+    text-decoration: none; /* リンクの下線を消す */
+    color: #333; /* テキストの色 */
 }
 
 .job-buttons button:hover {
-    background-color: #0056b3;
+    background-color: #d0eaff;
+    border-color: #4598eb;
+    color: #4598eb;
 }
 
 /* ページネーション */
