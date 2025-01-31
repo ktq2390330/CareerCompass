@@ -1,11 +1,13 @@
 import os
-import logging
-import datetime
 from django_setup_def import djangoImportSetup
 djangoImportSetup()
 from CCapp.models import *
 from CCapp.defs import *
+import logging
 import random
+
+
+djangoSetup()
 
 # 固定データ
 fixed_data = {
@@ -60,10 +62,17 @@ try:
 
     # CSVデータの読み込み
     area1names = [row['name'] for row in readFile(area1_path)]
-    category00names = [row['name'] for row in readFile(category00_path)]
-    category01names = [row['name'] for row in readFile(category01_path)]
-    category10names = [row['name'] for row in readFile(category10_path)]
-    category11names = [row['name'] for row in readFile(category11_path)]
+    category00_map = {row['name']: [] for row in readFile(category00_path)}
+    category10_map = {row['name']: [] for row in readFile(category10_path)}
+    
+    for row in readFile(category01_path):
+        if row['category00name'] in category00_map:
+            category00_map[row['category00name']].append(row['name'])
+    
+    for row in readFile(category11_path):
+        if row['category10name'] in category10_map:
+            category10_map[row['category10name']].append(row['name'])
+    
     corporationIDs = [row['cId'] for row in readFile(corporation_path)]
 
     # 出力ファイル
@@ -74,36 +83,37 @@ try:
         count = 1
         data = []
         for area in area1names:
-            for category00 in category00names:
-                for category01 in category01names:
-                    for category10 in category10names:
-                        for category11 in category11names:
-                                row = {
-                                    "title": f"求人{count:06d}",
-                                    "giving": random.randint(150000, 300000),
-                                    "holiday": random.randint(100, 140),
-                                    "area1name": area,
-                                    "category00name": category00,
-                                    "category01name": category01,
-                                    "category10name": category10,
-                                    "category11name": category11,
-                                    "corporationID": random.choice(corporationIDs),
-                                }
-                                row.update(fixed_data)
-                                data.append(row)
-                                count += 1
+            for category00, category01_list in category00_map.items():
+                for category01 in category01_list:
+                    for category10, category11_list in category10_map.items():
+                        for category11 in category11_list:
+                            corp_id = random.choice(corporationIDs)  # corporationIDs からランダム選定
+                            row = {
+                                "title": f"求人{count:06d}",
+                                "giving": random.randint(150000, 300000),
+                                "holiday": random.randint(100, 140),
+                                "area1name": area,
+                                "category00name": category00,
+                                "category01name": category01,
+                                "category10name": category10,
+                                "category11name": category11,
+                                "corporationID": corp_id,
+                            }
+                            row.update(fixed_data)
+                            data.append(row)
+                            count += 1
 
-                                if count % 1000 == 0:
-                                    print(f"{count}件のデータを生成中...")
+                            if count % 1000 == 0:
+                                print(f"{count}件のデータを生成中...")
 
-                                # プログレス表示（10,000件ごと）
-                                if count % 10000 == 0:
-                                    logging.info(f"{count}件のデータを生成・書き込み済み")
+                            # プログレス表示（10,000件ごと）
+                            if count % 10000 == 0:
+                                logging.info(f"{count}件のデータを生成・書き込み済み")
 
-                                # 一定量生成ごとに書き込み
-                                if len(data) >= 1000:
-                                    writeFileA(output_file, data)
-                                    data = []
+                            # 一定量生成ごとに書き込み
+                            if len(data) >= 1000:
+                                writeFileA(output_file, data)
+                                data = []
 
         # 最後のデータを書き込み
         if data:

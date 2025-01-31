@@ -103,7 +103,7 @@ def evaluate_questions(assessment_data):
                 # DBに保存 (AI評価結果は保存しない)
                 try:
                     with transaction.atomic():
-                        Assessment.objects.create(
+                        Assessment.objects.get_or_create(
                             user=user,
                             question01=question,
                             answer=answer  # 保存するのはユーザーの回答のみ
