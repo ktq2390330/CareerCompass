@@ -152,15 +152,21 @@ class ProfileView(LoginRequiredMixin, FormView):
         user = self.request.user
         profile, created = Profile.objects.get_or_create(user=user)
         initial = super().get_initial()
+        
+        # プロフィールが存在する場合、フィールドに値を設定
         for field in self.form_class.Meta.fields:
-            initial[field] = getattr(profile, field, None)
+            value = getattr(profile, field, None)
+            initial[field] = value if value is not None else ''  # Noneの場合は空文字を設定
+
+        if profile.birth is None:
+            initial['birth'] = '2000-01-01'  # 空文字を設定するか、適切なデフォルト値を設定
+    
         return initial
+    
 
     def form_valid(self, form):
         profile = form.save(commit=False)  # 保存を一旦抑制
         profile.user = self.request.user  # ユーザーをセット
-        if self.request.FILES.get('photo'):  # 画像がアップロードされている場合
-            profile.photo = self.request.FILES['photo']
         profile.save()  # 保存
         messages.success(self.request, 'プロフィール情報が更新されました。')
         return super().form_valid(form)
@@ -171,7 +177,6 @@ class ProfileView(LoginRequiredMixin, FormView):
         """
         messages.error(self.request, '入力内容に誤りがあります。')
         return super().form_invalid(form)
-
 # accout
 # signin
 class SigninView(LoginRequiredMixin,TemplateView):
