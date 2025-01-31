@@ -483,9 +483,13 @@ class AdmPostListView(TemplateView):
 
 
 # subscription
-class SubscriptionView(LoginRequiredMixin, TemplateView):
+from django.views.generic import DetailView
+from .models import Offer
+
+class SubscriptionView(DetailView):
+    model = Offer
     template_name = 'subscription.html'
-    login_url = 'CCapp:login'
+    context_object_name = 'offer'
 # subscription_done
 class Subscription_doneView(LoginRequiredMixin, TemplateView):
     template_name = 'subscription_done.html'

@@ -18,14 +18,7 @@
     margin-bottom: 50px;
 }
 
-.content-box {
-    margin: 20px auto; /* 上下のマージンを狭く */
-    padding: 5px 15px; /* 上下のパディングを少し狭く */
-    border: 2px solid #666;
-    border-radius: 2px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    max-width: 90%; /* 幅を少し小さく設定 */
-}
+
 
 /* content-box内の文字を右寄せ */
 .content-box p, .content-box div, .content-box span { 
@@ -106,15 +99,19 @@ td {
 
 .button-group {
     text-align: center;
+    margin-top: 40px; /* 上の要素との間隔を空ける */
+    margin-bottom: 40px;
 }
 
-button {
+.button-group button {
+    background-color: #3791ec;
     margin: 0 10px;
     padding: 15px 30px;
     font-size: 1em;
-    border: 2px solid rgb(11, 0, 0); /* 枠線を追加してシンプルな見た目に */
     border-radius: 5px;
-    cursor: pointer;
-    background-color: transparent;
-    color: black;
+    color: white;
+}
+
+.button-group button:hover {
+    background-color: #0056b3;
 }

@@ -48,7 +48,7 @@ urlpatterns = [
     path('post/<int:pk>/delete/done/', views.AdmPostDelDoneView.as_view(), name='adm_post_del_done'),  # 削除完了画面
 
     # subscription
-    path('subscription/', views.SubscriptionView.as_view(), name='subscription'),
+    path('offer/<int:pk>/subscription/',views.SubscriptionView.as_view(), name='subscription'),
     path('subscription_done/', views.Subscription_doneView.as_view(), name='subscription_done'),
 
     # about
