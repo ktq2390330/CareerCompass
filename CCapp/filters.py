@@ -5,7 +5,7 @@ from django.utils.timezone import now
 
 class OfferFilter(filters.FilterSet):
     name = filters.CharFilter(field_name="name", lookup_expr="icontains", label="求人名")
-    welfare = filters.NumberFilter(field_name="welfare__id", lookup_expr="exact", label="福利厚生ID")
+    welfare = filters.ModelMultipleChoiceFilter(queryset=Offer.objects.all(), field_name="welfare", label="福利厚生")
     area0 = filters.NumberFilter(field_name="area1__area0__id", lookup_expr="exact", label="エリア0ID")
     area1 = filters.NumberFilter(field_name="area1__id", lookup_expr="exact", label="エリア1ID")
     category00 = filters.NumberFilter(field_name="category00__id", lookup_expr="exact", label="カテゴリ00ID")
@@ -15,13 +15,20 @@ class OfferFilter(filters.FilterSet):
     corporation = filters.CharFilter(field_name="corporation__name", lookup_expr="icontains", label="法人名")
     status = filters.BooleanFilter(field_name="status", label="公開状況")
     period = filters.DateTimeFromToRangeFilter(field_name="period", label="公開期間")
-    
+    course = filters.CharFilter(field_name="course", lookup_expr="icontains", label="コース名")
+    forms = filters.CharFilter(field_name="forms", lookup_expr="icontains", label="雇用形態")
+    roles = filters.CharFilter(field_name="roles", lookup_expr="icontains", label="配属職種")
+    departments = filters.CharFilter(field_name="departments", lookup_expr="icontains", label="募集学部・学科")
+    characteristic = filters.CharFilter(field_name="characteristic", lookup_expr="icontains", label="募集特徴")
+    workingHours = filters.CharFilter(field_name="workingHours", lookup_expr="icontains", label="勤務時間")
+
     class Meta:
         model = Offer
         fields = [
             "name", "welfare", "area0", "area1", "category00", 
             "category01", "category10", "category11", "corporation", 
-            "status", "period"
+            "status", "period", "course", "forms", "roles", 
+            "departments", "characteristic", "workingHours"
         ]
 
 def filter_offers(filters, authority):
@@ -29,12 +36,17 @@ def filter_offers(filters, authority):
     
     if filters.get("name"):
         name_query = Q()
-        for keyword in filters["name"]:
-            name_query |= Q(name__icontains=keyword)
-        query &= name_query
+        keywords = filters["name"]
+        if isinstance(keywords, str):
+            keywords = [keywords]
+        for keyword in keywords:
+            keyword = keyword.strip()
+            name_query |= Q(name__icontains=keyword) | Q(corporation__name__icontains=keyword)
+        if name_query.children:
+            query &= name_query
     
     if filters.get("welfare"):
-        query &= Q(welfare__id__in=filters["welfare"])
+        query &= Q(welfare__in=filters["welfare"])
     
     if filters.get("area0"):
         query &= Q(area1__area0__id__in=filters["area0"])
@@ -55,7 +67,8 @@ def filter_offers(filters, authority):
         corp_query = Q()
         for keyword in filters["corporation"]:
             corp_query |= Q(corporation__name__icontains=keyword)
-        query &= corp_query
+        if corp_query.children:
+            query &= corp_query
     
     if authority == 2:
         query &= Q(status=True) & Q(period__gt=now())

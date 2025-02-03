@@ -433,6 +433,7 @@ class JobsView(LoginRequiredMixin, TemplateView):
 
 # self_analy
 from .forms import AssessmentForm  # 必要であればフォームを使う
+from .assessment_filter import run_evaluation
 
 @login_required(login_url='CCapp:login')
 def self_analy_view(request):
@@ -447,21 +448,38 @@ def self_analy_view(request):
         data=request.POST or None  # POSTデータがあれば渡す
     )
 
-    # 関数 assessment_filter に文章を渡して判定させたのち、結果がTrueの時のみ保存をする
-    # 結果がFalseの場合は、AI判定の結果文章が質問に対し不適切と判断されたため保存できませんでしたというエラー文を出すようにする
+    # POSTリクエスト処理
     if request.method == "POST" and form.is_valid():
-        # 保存処理
+        # 回答データの準備
+        assessment_data = {request.user.id: {}}
         for question in self_analy_list:
             answer_key = f'answer_{question.id}'
             if answer_key in form.cleaned_data:
                 answer_value = form.cleaned_data[answer_key]
+                assessment_data[request.user.id][question.id] = answer_value
 
-                # 既存の回答があれば更新、なければ作成
+        # 評価関数の呼び出し
+        evaluation_results = run_evaluation(assessment_data)
+
+        # 保存処理
+        errors = []
+        for question_id, is_valid in evaluation_results.get(request.user.id, {}).items():
+            if is_valid is True:
                 Assessment.objects.update_or_create(
                     user=request.user,
-                    question01=question,
-                    defaults={'answer': answer_value}
+                    question01_id=question_id,
+                    defaults={'answer': assessment_data[request.user.id][question_id]}
                 )
+            else:
+                errors.append(f"質問ID {question_id} の回答は不適切と判断されました。")
+
+        if errors:
+            return render(request, 'soliloquizing_self_analy.html', {
+                'question_title_list': question_title_list,
+                'self_analy_list': self_analy_list,
+                'form': form,
+                'errors': errors  # エラーメッセージを渡す
+            })
 
         return redirect('CCapp:self_analy')
 
