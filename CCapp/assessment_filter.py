@@ -139,10 +139,10 @@ def evaluate_questions(assessment_data):
 def run_evaluation(assessment_data):
     """
     辞書型データを受け取り、評価結果を返す
-    assessment_data: {user_id: {question_id: answer, ...}, ...}
+    assessment_data: {user_id: {question_id: answer, question_id: answer ...}, {...}, {...}, ...}
     return: bool
     """
     if not isinstance(assessment_data, dict):
         raise ValueError("assessment_dataは辞書型である必要があります。")
-
+ 
     return evaluate_questions(assessment_data)

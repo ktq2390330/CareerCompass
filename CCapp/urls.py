@@ -26,10 +26,6 @@ urlpatterns = [
 
     # filter
     path('filter/', views.filter_view, name='filter'),
-    path('filter_area/', views.filter_area_view, name='filter_area'),
-    path('filter_industry/',views.filter_industry_view, name='filter_industry'),
-    path('filter_jobtype/',views.filter_jobtype_view, name='filter_jobtype'),
-    path('filter_benefits/',views.filter_benefits_view, name='filter_benefits'),
 
     # admin
     path('adm_dashboard/', views.AdmTopView.as_view(), name='adm_dashboard'),
@@ -67,5 +63,4 @@ urlpatterns = [
     path('axis/', views.axis_view, name='axis'),
     path('industry/', views.industry_view, name='industry'),
     path('jobtype/', views.jobtype_view, name='jobtype'),
-    path('save_answer/', views.save_answer_view, name='save_answer'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

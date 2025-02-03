@@ -258,64 +258,6 @@ def filter_view(request):
         'tag_list': tag_list # 福利厚生の条件
     })
 
-
-
-# filter
-# filter_area
-def filter_area_view(request):
-    
-    if 'area1' in request.GET:
-        request.session['checked_area1'] = request.GET.getlist('area1')
-
-    sample = request.GET.get('area1')
-
-    print("GET parameter 'area1':")
-    print(sample)
-
-
-    # データベースからエリアのリストを取得
-    area0_list = Area0.objects.all()
-    area1_list = Area1.objects.all()
-
-    return render(request, 'filter_area.html', {
-        'area0_list': area0_list,
-        'area1_list': area1_list,
-    })
-
-def filter_industry_view(request):
-    
-    if 'category01' in request.GET:
-       request.session['checked_category01'] = request.GET.getlist('category01')
-
-    # データベースから業界のリストを取得
-    category00_list = Category00.objects.all()
-    category01_list = Category01.objects.all()
-
-    return render(request, 'filter_industry.html', {
-        'category00_list': category00_list,
-        'category01_list': category01_list,
-    })
-
-# filter_jobtype
-@login_required(login_url='CCapp:login')
-def filter_jobtype_view(request):
-    # データベースから職種の情報を取得
-    category10_list = Category10.objects.all()
-    category11_list = Category11.objects.all()
-    # テンプレートにデータを渡す
-    return render(request, 'filter_jobtype.html', {
-        'category10_list': category10_list,
-        'category11_list': category11_list
-    })
-
-# filter_benefits
-@login_required(login_url='CCapp:login')
-def filter_benefits_view(request):
-    # データベースから福利厚生の情報を取得
-    tag_list = Tag.objects.all()
-    # テンプレートにデータを渡す
-    return render(request, 'filter_benefits.html', {'tag_list': tag_list })
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -706,48 +648,6 @@ def jobtype_view(request):
         'question_title_list': question_title_list,
         'self_analy_list': jobtype_list,
         'form': form,
-    })
-
-@login_required(login_url='CCapp:login')
-def save_answer_view(request):
-    # データベースから自己分析の情報を取得
-    question_title_list = Question00.objects.filter(id=1)  # 特定のquestion_idに絞る
-    self_analy_list = Question01.objects.filter(question00_id=1)  # question_idが1のデータを取得
-
-    if request.method == "POST":
-        # POSTデータから回答を保存
-        for key, value in request.POST.items():
-            if key.startswith("answer_"):
-                question_id = key.split("_")[1]  # フォームの名前から質問IDを取得
-                try:
-                    question01 = Question01.objects.get(id=question_id)
-                    # 既存の回答がある場合は更新、なければ作成
-                    Assessment.objects.update_or_create(
-                        user=request.user,
-                        question01=question01,
-                        defaults={'answer': value.strip()}
-                    )
-                except Question01.DoesNotExist:
-                    # 質問が存在しない場合はスキップ
-                    continue
-
-        # 保存後に再表示
-        return redirect("CCapp:self_analy")
-
-    # GETリクエスト: 初期データを設定（既に保存された回答があれば、それをフォームに表示）
-    initial_data = {}
-    for question in self_analy_list:
-        assessment = Assessment.objects.filter(user=request.user, question01=question).first()
-        if assessment:
-            initial_data[question.id] = assessment.answer if assessment.answer is not None else ""  # 保存された回答を初期値に設定
-
-    form = AssessmentForm(initial=initial_data)
-
-    # テンプレートにデータを渡す
-    return render(request, 'soliloquizing_self_analy.html', {
-        'question_title_list': question_title_list,
-        'self_analy_list': self_analy_list,
-        'form': form,  # フォームも渡す
     })
 
 from django.http import JsonResponse
