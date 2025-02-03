@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Assessment
+from .models import *
 
 class LoginForm(forms.Form):
     mail = forms.CharField(max_length=150)
@@ -11,8 +11,6 @@ class LoginForm(forms.Form):
         super().__init__(*args, **kwargs)
 
 # サインアップ（新規登録）フォーム
-from django.core.exceptions import ValidationError
-from .models import User
 
 class SignupForm(forms.Form):
     # フィールド定義
@@ -37,11 +35,6 @@ class SignupForm(forms.Form):
         return password_conf
 
 # プロフィール更新用フォーム
-from .models import Profile
-import datetime
-
-from django import forms
-from .models import Profile
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -130,9 +123,6 @@ class AssessmentForm(forms.Form):
                 required=False
             )
 
-from django import forms
-from .models import Offer, Tag, Area1, Category00, Category01, Category10, Category11
-
 class AdmPostForm(forms.ModelForm):
     class Meta:
         model = Offer
@@ -188,9 +178,6 @@ class AdmPostForm(forms.ModelForm):
 
         # 福利厚生タグの表示をnameで設定
         self.fields['welfare'].label_from_instance = lambda obj: obj.name
-
-from django import forms
-from .models import Offer, Tag, Area1, Category00, Category01, Category10, Category11, Corporation
 
 class OfferEditForm(forms.ModelForm):
     class Meta:

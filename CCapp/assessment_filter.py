@@ -2,7 +2,7 @@ import google.generativeai as genai
 import concurrent.futures
 from tqdm import tqdm  # tqdmライブラリをインポート
 from django.db import transaction
-from .models import Question01, Assessment, User
+from .models import Question01, User
 from dotenv import load_dotenv
 import os
 import time  # 処理時間計測
@@ -64,11 +64,11 @@ def evaluate_response(model, question_text, answer):
     except Exception as e:
         return False  # エラー時はFalseを返す
 
-# メイン処理: ユーザーごとの質問と回答を評価しDBに保存
+# メイン処理: ユーザーごとの質問と回答を評価
 def evaluate_questions(assessment_data):
     """
     ユーザーIDと質問IDを含む辞書データを評価
-    Trueの場合のみDBに回答を保存
+    質問ごとの判定結果を全て返す
     """
     configure_genai()
     model = initialize_model()
@@ -77,72 +77,71 @@ def evaluate_questions(assessment_data):
     cpu_cores = os.cpu_count()
     max_workers = min(32, cpu_cores * 2)  # 最大32スレッド、またはCPUコア数×2
 
+    results = {}
+
     def process_user(user_id, questions_answers):
         """
-        各ユーザーの質問と回答を評価し、保存
+        各ユーザーの質問と回答を評価
         """
+        user_results = {}
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return False, f"ユーザーID {user_id} が見つかりません。"
+            return user_id, {"error": f"ユーザーID {user_id} が見つかりません。"}
 
-        # tqdmを利用して質問ごとの進捗を表示
         with tqdm(total=len(questions_answers), desc=f"User {user_id} Questions", leave=False) as question_pbar:
             for question_id, answer in questions_answers.items():
-                # 質問内容を取得
                 try:
                     question = Question01.objects.get(id=question_id)
                 except Question01.DoesNotExist:
-                    return False, f"質問ID {question_id} が見つかりません。"
+                    user_results[question_id] = "質問が見つかりません"
+                    continue
 
                 question_text = str(question)
                 is_valid = evaluate_response(model, question_text, answer)
-                if not is_valid:
-                    return False  # Falseが1つでもあれば終了
-
-                # DBに保存 (AI評価結果は保存しない)
-                try:
-                    with transaction.atomic():
-                        Assessment.objects.get_or_create(
-                            user=user,
-                            question01=question,
-                            answer=answer  # 保存するのはユーザーの回答のみ
-                        )
-                except Exception as e:
-                    return False, f"DB保存エラー: {e}"
-
+                user_results[question_id] = is_valid
                 question_pbar.update(1)  # 質問の進捗バーを更新
 
-        return True  # 全ての質問がTrueの場合
+        return user_id, user_results
 
     start_time = time.time()  # 処理開始時間を記録
 
-    # ユーザーごとの進捗を表示
     with tqdm(total=len(assessment_data), desc="Processing Users") as user_pbar:
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {
                 executor.submit(process_user, user_id, questions_answers): user_id
                 for user_id, questions_answers in assessment_data.items()
             }
-            results = []
             for future in concurrent.futures.as_completed(futures):
-                results.append(future.result())
+                user_id, user_result = future.result()
+                results[user_id] = user_result
                 user_pbar.update(1)  # ユーザーの進捗バーを更新
 
     elapsed_time = time.time() - start_time  # 処理時間を計測
     print(f"全処理が完了しました。処理時間: {elapsed_time:.2f}秒")
 
-    # Falseが1つでもあればFalseを返す
-    return all(results)
+    """
+    戻り値の形式:
+    {
+        user_id1: {
+            question_id1: True,  #? 回答が適切
+            question_id2: False  #? 回答が不適切
+        },
+        user_id2: {
+            question_id3: "質問が見つかりません"
+        }
+    }
+    """
+    return results
 
 # 外部から呼び出すエントリーポイント
 def run_evaluation(assessment_data):
     """
     辞書型データを受け取り、評価結果を返す
-    assessment_data: {user_id: {question_id: answer, question_id: answer ...}, {...}, {...}, ...}
-    return: bool
+    assessment_data: {user_id: {question_id: answer, ...}, ...}
+    return: dict
     """
     if not isinstance(assessment_data, dict):
         raise ValueError("assessment_dataは辞書型である必要があります。")
- 
+
     return evaluate_questions(assessment_data)

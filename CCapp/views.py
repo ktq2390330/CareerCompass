@@ -1,34 +1,22 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.contrib import messages
 from .models import *
 from .forms import LoginForm
 from django.views.generic import TemplateView
 from django.views import View
 from .forms import SignupForm
 from django.contrib.auth import logout
-# TemplateViewをインポート
 from django.views.generic.base import TemplateView
-# FormViewをインポート
 from django.views.generic import FormView
-# django.urlsからreverse_lazyをインポート
 from django.urls import reverse_lazy
-# formsモジュールからContactFormをインポート
 from .forms import ContactForm
-# django.contribからmesseagesをインポート
 from django.contrib import messages
-# django.core.mailモジュールからEmailMessageをインポート
 from django.core.mail import EmailMessage
 from django.db import DatabaseError
 
 from .forms import ProfileForm
-from django.contrib.auth import update_session_auth_hash
 
-from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 @login_required(login_url='CCapp:login')
@@ -124,15 +112,15 @@ class ContactView(LoginRequiredMixin, FormView):
         message = form.cleaned_data['message']
 
         message = \
-         '送信者名: {0}\nメールアドレス: {1}\n お問い合わせ内容:\n{2}'\
-         .format(name, email, message)
+        '送信者名: {0}\nメールアドレス: {1}\n お問い合わせ内容:\n{2}'\
+        .format(name, email, message)
         
         from_email = 'admin@example.com'
         to_list = ['tyotyotyo112@gmail.com']
         message = EmailMessage(body=message,
-                               from_email=from_email,
-                               to=to_list,
-                               )
+                                from_email=from_email,
+                                to=to_list,
+                                )
         
         message.send()
         messages.success(
@@ -177,7 +165,7 @@ class ProfileView(LoginRequiredMixin, FormView):
         """
         messages.error(self.request, '入力内容に誤りがあります。')
         return super().form_invalid(form)
-# accout
+# account
 # signin
 class SigninView(LoginRequiredMixin,TemplateView):
     template_name = 'signin.html'
@@ -258,15 +246,8 @@ def filter_view(request):
         'tag_list': tag_list # 福利厚生の条件
     })
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Offer, Area0, Area1, Category00, Category01, Category10, Category11, Tag, Corporation
-from django.shortcuts import render
 from .filters import filter_offers
-from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
-from .models import Offer
 
 @login_required(login_url='CCapp:login')
 def offer_search_view(request):
@@ -304,9 +285,7 @@ def offer_search_view(request):
 
 # admin
 from django.db.models import Q
-from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, View
-from .models import Offer
 # dashboard
 class AdmTopView(LoginRequiredMixin, ListView):
     model = Offer
@@ -431,7 +410,6 @@ class AdmPostListView(TemplateView):
 
 # subscription
 from django.views.generic import DetailView
-from .models import Offer
 
 class SubscriptionView(DetailView):
     model = Offer
@@ -453,11 +431,7 @@ class JobsView(LoginRequiredMixin, TemplateView):
     template_name = 'jobs.html'
     login_url = 'CCapp:login'
 
-# soliloquizing
 # self_analy
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Question00, Question01, Assessment
 from .forms import AssessmentForm  # 必要であればフォームを使う
 
 @login_required(login_url='CCapp:login')
@@ -473,7 +447,7 @@ def self_analy_view(request):
         data=request.POST or None  # POSTデータがあれば渡す
     )
 
-    # 関数 assessmentfilter に文章を渡して判定させたのち、結果がTrueの時のみ保存をする
+    # 関数 assessment_filter に文章を渡して判定させたのち、結果がTrueの時のみ保存をする
     # 結果がFalseの場合は、AI判定の結果文章が質問に対し不適切と判断されたため保存できませんでしたというエラー文を出すようにする
     if request.method == "POST" and form.is_valid():
         # 保存処理
@@ -497,8 +471,6 @@ def self_analy_view(request):
         'form': form,
     })
 
-from django.contrib import messages
-
 # @login_required(login_url='CCapp:login')
 # def self_analy_view(request):
 #     # データベースから質問を取得
@@ -521,7 +493,7 @@ from django.contrib import messages
 #                 answer_value = form.cleaned_data[answer_key]
 
 #                 # AI判定
-#                 if assessmentfilter(answer_value):  # True の場合のみ保存
+#                 if assessment_filter(answer_value):  # True の場合のみ保存
 #                     Assessment.objects.update_or_create(
 #                         user=request.user,
 #                         question01=question,
@@ -652,8 +624,6 @@ def jobtype_view(request):
 
 from django.http import JsonResponse
 from .forms import AdmPostForm
-from .models import Offer, Category01, Category11
-from django.shortcuts import render, get_object_or_404
 
 class AdmPostView(LoginRequiredMixin,View):
     template_name = 'adm_post.html'
@@ -693,13 +663,8 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
     template_name = 'adm_post_done.html'
     login_url = '#'
 
-from django.shortcuts import render, get_object_or_404
-from django.contrib import messages
-from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
-from .models import Offer, Category01, Category11, Area1, Tag
 from .forms import OfferEditForm
-from django.http import JsonResponse
 
 class AdmEditPostView(UpdateView):
     model = Offer
@@ -718,8 +683,7 @@ class AdmEditPostView(UpdateView):
     def get_object(self, queryset=None):
         return super().get_object(queryset)
 
-from django.shortcuts import render, get_object_or_404
-from .models import Offer
+from django.shortcuts import get_object_or_404
 
 def job_detail(request, id):
     offer = get_object_or_404(Offer, id=id)
