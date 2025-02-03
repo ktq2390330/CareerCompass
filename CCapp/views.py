@@ -471,49 +471,6 @@ def self_analy_view(request):
         'form': form,
     })
 
-# @login_required(login_url='CCapp:login')
-# def self_analy_view(request):
-#     # データベースから質問を取得
-#     question_title_list = Question00.objects.filter(id=1)
-#     self_analy_list = Question01.objects.filter(question00_id=1)
-
-#     # フォームの初期データを動的に設定
-#     form = AssessmentForm(
-#         questions=self_analy_list, 
-#         user=request.user,
-#         data=request.POST or None  # POSTデータがあれば渡す
-#     )
-
-#     if request.method == "POST" and form.is_valid():
-#         all_valid = True  # すべての回答が有効かどうかを判定
-
-#         for question in self_analy_list:
-#             answer_key = f'answer_{question.id}'
-#             if answer_key in form.cleaned_data:
-#                 answer_value = form.cleaned_data[answer_key]
-
-#                 # AI判定
-#                 if assessment_filter(answer_value):  # True の場合のみ保存
-#                     Assessment.objects.update_or_create(
-#                         user=request.user,
-#                         question01=question,
-#                         defaults={'answer': answer_value}
-#                     )
-#                 else:
-#                     all_valid = False  # 不適切な回答があった場合
-#                     messages.error(request, f"質問「{question.text}」の回答が不適切と判断されたため保存できませんでした。")
-
-#         if all_valid:
-#             return redirect('CCapp:self_analy')
-
-#     return render(request, 'soliloquizing_self_analy.html', {
-#         'question_title_list': question_title_list,
-#         'self_analy_list': self_analy_list,
-#         'form': form,
-#     })
-
-
-
 # axis
 @login_required(login_url='CCapp:login')
 def axis_view(request):
