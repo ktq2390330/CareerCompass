@@ -117,8 +117,29 @@ td {
     width: 120px;
     font-size: 20px;
     transition: background-color 0.3s;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button-group a {
+    text-decoration: none;
+    padding: 12px 20px; /* ボタン内の余白を増やす */
+    background-color: #4598eb; /* ボタンの色 */
+    color: white;
+    border: none;
+    border-radius: 8px; /* 角の丸みを増やす */
+    cursor: pointer;
+    width: 120px;
+    font-size: 20px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .button-group button:hover {
+    background-color: #367bb7;
+}
+
+.button-group a:hover {
     background-color: #367bb7;
 }

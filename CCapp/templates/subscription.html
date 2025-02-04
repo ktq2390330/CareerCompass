@@ -4,82 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>求人応募</title>
+    <title>{% block title %} 求人応募 {% endblock %}</title>
     <link href="{% static 'css/subscription.css' %}" rel="stylesheet"/>
 </head>
 <body>
     <!-- header -->
     <header class="header">
+        <!-- brand name -->
         <div id="brand">
-            <a class="brand" href="#"><i>Career
-                <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
-            <h1 class="h1">{{ offer.corporation.name }}</h1>
+            <a class="brand" href="{% url 'CCapp:top' %}"><i>Career<br>&nbsp;&nbsp;&nbsp;Compass</i></a>
         </div>
     </header>
 
-    <h2>応募確認</h2>
     <hr>
 
-    <form action="{% url 'CCapp:subscription_done' offer.id %}" method="post">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td class="form-group"><label for="UName">氏名</label></td>
-                <td><input type="text" id="UName" name="UName" value="{{ user.name }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label for="Furigana">フリガナ</label></td>
-                <td><input type="text" id="Furigana" name="Furigana" value="{{ profile.furigana }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label>生年月日</label></td>
-                <td><input type="text" id="Birth_Date" name="Birth_Date" value="{{ profile.birth }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label>性別</label></td>
-                <td><input type="text" id="Gender" name="Gender" value="{{ profile.gender }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label for="Mail">メールアドレス</label></td>
-                <td><input type="email" id="Mail" name="Mail" value="{{ user.mail }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label for="UTel">電話番号</label></td>
-                <td><input type="tel" id="UTel" name="UTel" value="{{ profile.uTel }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label for="UAddress">住所</label></td>
-                <td><input type="text" id="UAddress" name="UAddress" value="{{ profile.uAddress }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label for="USchool">学校名</label></td>
-                <td><input type="text" id="USchool" name="USchool" value="{{ profile.uSchool }}" readonly></td>
-            </tr>
-            <tr>
-                <td class="form-group"><label for="Graduation">卒業年</label></td>
-                <td><input type="text" id="Graduation" name="Graduation" value="{{ profile.graduation }}" readonly></td>
-            </tr>
-        </table>
+    <div class="container">
+        <div class="row-field">
 
-        <div class="button-group">
-            <button type="button" onclick="history.back()">戻る</button>
-            <button type="submit">応募する</button>
+            <!-- タイトル -->
+            <h2>応募確認</h2>
+
+            <form action="{% url 'CCapp:subscription_done' offer.id %}" method="post">
+
+                <!-- 会社名 -->
+                <h2 class="h2">{{ offer.corporation.name }}</h2>
+
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td class="form-group"><label for="UName">氏名</label></td>
+                        <td><input type="text" id="UName" name="UName" value="{{ user.name }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label for="Furigana">フリガナ</label></td>
+                        <td><input type="text" id="Furigana" name="Furigana" value="{{ profile.furigana }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label>生年月日</label></td>
+                        <td><input type="text" id="Birth_Date" name="Birth_Date" value="{{ profile.birth }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label>性別</label></td>
+                        <td><input type="text" id="Gender" name="Gender" value="{{ profile.gender }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label for="Mail">メールアドレス</label></td>
+                        <td><input type="email" id="Mail" name="Mail" value="{{ user.mail }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label for="UTel">電話番号</label></td>
+                        <td><input type="tel" id="UTel" name="UTel" value="{{ profile.uTel }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label for="UAddress">住所</label></td>
+                        <td><input type="text" id="UAddress" name="UAddress" value="{{ profile.uAddress }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label for="USchool">学校名</label></td>
+                        <td><input type="text" id="USchool" name="USchool" value="{{ profile.uSchool }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="form-group"><label for="Graduation">卒業年</label></td>
+                        <td><input type="text" id="Graduation" name="Graduation" value="{{ profile.graduation }}" readonly></td>
+                    </tr>
+                </table>
+
+                <div class="button-group">
+                    <button type="button" onclick="history.back()">戻る</button>
+                    <button type="submit">応募する</button>
+                </div>
+            </form>
         </div>
-    </form>
-
-    <div id="brands">
-        <a class="brands" href="#"><i>Career
-            <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer-->
     <footer class="footer bg-light">
         <div class="container">
+            
+            <!-- copyright -->
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                     <p class="text-muted small mb-4 mb-lg-0">copyright &copy; Career Compass</p>
                 </div>
             </div>
+
         </div>
     </footer>
 </body>
