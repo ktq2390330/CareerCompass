@@ -151,7 +151,13 @@ class ProfileView(LoginRequiredMixin, FormView):
         初期値を設定
         """
         user = self.request.user
-        profile, created = Profile.objects.get_or_create(user=user)
+        profile, created = Profile.objects.get_or_create(
+            user=user,
+            defaults={'birth': '2000-01-01', 'graduation': 25},
+        )
+
+        print(f"DEBUG: get_initial() -> Profile created: {created}, birth: {profile.birth}")
+
         initial = super().get_initial()
         
         # プロフィールが存在する場合、フィールドに値を設定
@@ -160,9 +166,10 @@ class ProfileView(LoginRequiredMixin, FormView):
             initial[field] = value if value is not None else ''  # Noneの場合は空文字を設定
 
         if profile.birth is None:
-            initial['birth'] = '2000-01-01'  # 空文字を設定するか、適切なデフォルト値を設定
-    
+            initial['birth'] = '2000-01-01'  # 🔥 birth が None の場合はデフォルト値をセット
+        
         return initial
+
     
 
     def form_valid(self, form):
