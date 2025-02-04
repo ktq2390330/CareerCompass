@@ -44,8 +44,10 @@ urlpatterns = [
     path('post/<int:pk>/delete/done/', views.AdmPostDelDoneView.as_view(), name='adm_post_del_done'),  # 削除完了画面
 
     # subscription
-    path('offer/<int:pk>/subscription/',views.SubscriptionView.as_view(), name='subscription'),
-    path('subscription_done/', views.Subscription_doneView.as_view(), name='subscription_done'),
+    # 求人応募確認ページ
+    path('offer/<int:offer_id>/apply/confirm/', views.SubscriptionView.as_view(), name='offer_apply_confirm'),
+    # 求人応募完了ページ
+    path('offer/<int:offer_id>/apply/complete/', views.Subscription_doneView.as_view(), name='offer_apply_complete'),
 
     # about
     path('about/', views.AboutView.as_view(), name='about'),
