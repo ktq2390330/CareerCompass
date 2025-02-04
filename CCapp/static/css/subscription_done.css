@@ -104,9 +104,12 @@ h2 {
 
 .button-group {
     text-align: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
 }
 
-.button-group button {
+.button-group a {
+    text-decoration: none;
     padding: 12px 20px; /* ボタン内の余白を増やす */
     background-color: #4598eb; /* ボタンの色 */
     color: white;
@@ -119,7 +122,7 @@ h2 {
     transition: background-color 0.3s;
 }
 
-.button-group button:hover {
+.button-group a:hover {
     background-color: #367bb7;
 }
 
