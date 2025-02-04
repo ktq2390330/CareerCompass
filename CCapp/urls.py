@@ -45,9 +45,9 @@ urlpatterns = [
 
     # subscription
     # 求人応募確認ページ
-    path('offer/<int:offer_id>/apply/confirm/', views.SubscriptionView.as_view(), name='offer_apply_confirm'),
+    path('offer/<int:offer_id>/apply/confirm/', views.SubscriptionView.as_view(), name='subscription'),
     # 求人応募完了ページ
-    path('offer/<int:offer_id>/apply/complete/', views.Subscription_doneView.as_view(), name='offer_apply_complete'),
+    path('offer/<int:offer_id>/apply/complete/', views.Subscription_doneView.as_view(), name='subscription_done'),
 
     # about
     path('about/', views.AboutView.as_view(), name='about'),

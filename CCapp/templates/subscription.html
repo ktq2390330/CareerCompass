@@ -20,7 +20,7 @@
     <h2>応募確認</h2>
     <hr>
 
-    <form action="{% url 'CCapp:offer_apply_complete' offer.id %}" method="post">
+    <form action="{% url 'CCapp:subscription_done' offer.id %}" method="post">
         {% csrf_token %}
         <table>
             <tr>
