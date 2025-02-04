@@ -13,7 +13,7 @@ from .forms import ContactForm
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.db import DatabaseError
-
+from django.db import IntegrityError
 from .forms import ProfileForm
 
 from django.contrib.auth.decorators import login_required
@@ -78,22 +78,35 @@ class SignupView(View):
     def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
-            mail = form.cleaned_data.get('Mail')  # 'Mail' フィールドを取得
-            password = form.cleaned_data.get('Password')
-            name = form.cleaned_data.get('UName')
+            furigana = form.cleaned_data.get('furigana')
+            birth = form.cleaned_data.get('birth')
+            gender = form.cleaned_data.get('gender')
+            postalCode = form.cleaned_data.get('postalCode')
+            uAddress = form.cleaned_data.get('uAddress')
+            uTel = form.cleaned_data.get('uTel')
+            uSchool = form.cleaned_data.get('uSchool')
+            graduation = form.cleaned_data.get('graduation')
+            mail = form.cleaned_data.get('mail')  # メールアドレスを取得
+            password = form.cleaned_data.get('password')  # パスワードを取得
 
-            # 'mail' を使用してユーザーを作成
-            # パスワードをハッシュ化せずに保存（後にハッシュ化できるようにする）
-            user = User.objects.create(mail=mail, password=password)
-            # user = User.objects.create_user(mail=mail, password=password)
-            user.name = name  # 名前を 'name' フィールドに保存
-            user.save()
+            try:
+                # ユーザーを作成
+                user = User.objects.create_user(
+                    mail=mail,
+                    password=password,
+                    name=furigana,
+                    authority=2  # 権限を設定（必要に応じて変更）
+                )
 
-            # 自動ログイン
-            login(request, user)
+                # 自動ログイン
+                login(request, user)
 
-            messages.success(request, '新規登録が完了しました。')
-            return redirect('CCapp:top')  # トップページにリダイレクト
+                messages.success(request, '新規登録が完了しました。')
+                return redirect('CCapp:top')  # トップページにリダイレクト
+
+            except IntegrityError:
+                messages.error(request, 'このメールアドレスはすでに使用されています。')
+                return render(request, 'signup.html', {'form': form})
 
         else:
             messages.error(request, '入力に誤りがあります。')

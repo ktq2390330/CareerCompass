@@ -15,24 +15,44 @@
     {% csrf_token %}
     <table>
         <tr>
-            <td class="form-group"><label for="UName">氏名</label></td>
-            <td><input type="text" id="UName" name="UName" required style="width: 120px;"> <small>例：田中太郎</small></td>
+            <td class="form-group"><label for="furigana">氏名（カナ）</label></td>
+            <td><input type="text" id="furigana" name="furigana" required style="width: 120px;"> <small>例：タナカタロウ</small></td>
         </tr>
         <tr>
-            <td class="form-group"><label for="Mail">メールアドレス</label></td>
-            <td><input type="email" id="Mail" name="Mail" required></td>
+            <td class="form-group"><label for="birth">生年月日</label></td>
+            <td><input type="date" id="birth" name="birth" required></td>
         </tr>
         <tr>
-            <td class="form-group"><label for="Password">パスワード</label></td>
-            <td>
-                <input type="password" id="Password" name="Password" required>
-            </td>
+            <td class="form-group"><label for="gender">性別</label></td>
+            <td><input type="text" id="gender" name="gender" required placeholder="例：男性、女性、その他"></td>
         </tr>
         <tr>
-            <td class="form-group"><label for="Password_Conf">パスワード確認</label></td>
-            <td>
-                <input type="password" id="Password_Conf" name="Password_Conf" required>
-            </td>
+            <td class="form-group"><label for="postalCode">郵便番号</label></td>
+            <td><input type="text" id="postalCode" name="postalCode" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="uAddress">住所</label></td>
+            <td><input type="text" id="uAddress" name="uAddress" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="uTel">電話番号</label></td>
+            <td><input type="tel" id="uTel" name="uTel" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="uSchool">学校名</label></td>
+            <td><input type="text" id="uSchool" name="uSchool" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="graduation">卒業年度</label></td>
+            <td><input type="text" id="graduation" name="graduation" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="mail">メールアドレス</label></td>
+            <td><input type="email" id="mail" name="mail" required></td>
+        </tr>
+        <tr>
+            <td class="form-group"><label for="password">パスワード</label></td>
+            <td><input type="password" id="password" name="password" required></td>
         </tr>
     </table>
 
@@ -56,7 +76,7 @@
 </form>
 
 <div class="link-group" style="text-align: center; margin-top: 20px;">
-    <a href="login.html">すでにアカウントをお持ちの方はこちら</a>
+    <a href="{% url 'CCapp:login' %}">すでにアカウントをお持ちの方はこちら</a>
 </div>
 
 </body>

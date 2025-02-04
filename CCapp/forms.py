@@ -14,35 +14,31 @@ class LoginForm(forms.Form):
 
 class SignupForm(forms.Form):
     # フィールド定義
-    UName = forms.CharField(label='氏名', max_length=255, required=True)
-    Mail = forms.EmailField(label='メールアドレス', required=True)
-    Password = forms.CharField(label='パスワード', widget=forms.PasswordInput(), required=True)
-    Password_Conf = forms.CharField(label='パスワード確認', widget=forms.PasswordInput(), required=True)
+    furigana = forms.CharField(label='氏名（カナ）', max_length=100)
+    birth = forms.DateField(label='生年月日')
+    gender = forms.CharField(label='性別', max_length=10)
+    postalCode = forms.CharField(label='郵便番号', max_length=10)
+    uAddress = forms.CharField(label='住所', max_length=255)
+    uTel = forms.CharField(label='電話番号', max_length=15)
+    uSchool = forms.CharField(label='学校名', max_length=100)
+    graduation = forms.CharField(label='卒業年度', max_length=10)
+    mail = forms.EmailField(label='メールアドレス', max_length=254)  # メールアドレスフィールドを追加
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput)  # パスワードフィールドを追加
 
-    # バリデーション
-    def clean_Mail(self):
-        mail = self.cleaned_data.get('Mail')
-        if User.objects.filter(mail=mail).exists():
-            raise forms.ValidationError('このメールアドレスはすでに使用されています。')
-        return mail
-
-    def clean_Password_Conf(self):
-        password = self.cleaned_data.get('Password')
-        password_conf = self.cleaned_data.get('Password_Conf')
-
-        if password != password_conf:
-            raise forms.ValidationError('パスワードと確認用パスワードが一致しません。')
-        return password_conf
+# プロフィール更新用フォーム
 
 # プロフィール更新用フォーム
 
 class ProfileForm(forms.ModelForm):
+    mail = forms.EmailField(label='メールアドレス', max_length=254, required=True)  # メールアドレスフィールドを追加
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput, required=True)  # パスワードフィールドを追加
     class Meta:
         model = Profile
         fields = [
             'furigana', 'birth', 'gender', 'graduation',
             'uSchool', 'uTel',
-            'postalCode', 'uAddress', 'photo'
+            'postalCode', 'uAddress', 'photo',
+            # 'mail', 'password',
         ]
         labels = {
             'furigana': 'フリガナ',
