@@ -180,7 +180,7 @@ from .models import Offer, Corporation, Tag, Category00, Category01, Category10,
 
 class OfferEditForm(forms.ModelForm):
     corporation_name = forms.CharField(label="法人名", max_length=256, required=True)
-    corporation_corp = forms.CharField(label="法人番号", max_length=13, required=True)
+    corporation_corp = forms.CharField(label="法人番号", max_length=13, required=True, disabled=True)
     corporation_cMail = forms.EmailField(label="メールアドレス", max_length=255, required=True)
     corporation_cTel = forms.CharField(label="電話番号", max_length=16, required=True)
     corporation_url = forms.URLField(label="会社HP URL", max_length=512, required=False)
@@ -212,7 +212,8 @@ class OfferEditForm(forms.ModelForm):
             self.fields['corporation_cTel'].initial = self.instance.corporation.cTel
             self.fields['corporation_url'].initial = self.instance.corporation.url
             self.fields['corporation_address'].initial = self.instance.corporation.address
-            # カテゴリ01とカテゴリ11をすべて表示
+            self.fields['corporation_corp'].widget.attrs['readonly'] = True
+         # カテゴリ01とカテゴリ11をすべて表示
         self.fields['category01'].queryset = Category01.objects.all()
         self.fields['category11'].queryset = Category11.objects.all()
 
@@ -255,5 +256,4 @@ class OfferEditForm(forms.ModelForm):
             self.save_m2m()
 
         return offer
-
 

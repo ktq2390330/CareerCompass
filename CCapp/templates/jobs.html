@@ -66,8 +66,9 @@
         <div class="content-box">
             <h3>◇ お問い合わせ先</h3>
             <table>
-                <tr><th>会社HP</th><td><a href="{{ offer.url }}">{{ offer.url }}</a></td></tr>
-                <tr><th>E-mail</th><td><a href="mailto:{{ offer.cMail }}">{{ offer.cMail }}</a></td></tr>
+                <tr><th>会社HP</th><td><a href="{{ offer.corporation.url }}">{{ offer.corporation.url }}</a></td></tr>
+<tr><th>E-mail</th><td><a href="mailto:{{ offer.corporation.cMail }}">{{ offer.corporation.cMail }}</a></td></tr>
+
             </table>
         </div>
 
