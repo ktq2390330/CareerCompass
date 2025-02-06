@@ -75,18 +75,7 @@ from django.views import View
 from django.contrib.auth import login
 from django.contrib import messages
 from django.db import IntegrityError
-from django.contrib.auth.models import User
-from ..CCapp.models import Profile
-from ..CCapp.forms import SignupForm
 
-from django.shortcuts import render, redirect
-from django.views import View
-from django.contrib.auth import login
-from django.contrib import messages
-from django.db import IntegrityError
-from django.contrib.auth.models import User
-from ..CCapp.models import Profile
-from ..CCapp.forms import SignupForm
 
 class SignupView(View):
     def get(self, request):
@@ -94,10 +83,12 @@ class SignupView(View):
         return render(request, 'signup.html', {'form': form})
 
     def post(self, request):
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, request.FILES)  # 画像アップロード対応
         if form.is_valid():
             # フォームの入力値を取得
-            furigana = form.cleaned_data.get('furigana')  # 🔥 修正1: furiganaを取得して保存
+            mail = form.cleaned_data.get('mail')  # `email` ではなく `mail`
+            password = form.cleaned_data.get('password')
+            furigana = form.cleaned_data.get('furigana')
             birth = form.cleaned_data.get('birth')
             gender = form.cleaned_data.get('gender')
             postalCode = form.cleaned_data.get('postalCode')
@@ -105,36 +96,36 @@ class SignupView(View):
             uTel = form.cleaned_data.get('uTel')
             uSchool = form.cleaned_data.get('uSchool')
             graduation = form.cleaned_data.get('graduation')
-            email = form.cleaned_data.get('mail')  # メールアドレス
-            password = form.cleaned_data.get('password')  # パスワード
+            photo = form.cleaned_data.get('photo')  # プロフィール写真
 
             try:
-                # 1️⃣ ユーザーを作成（furiganaを保存するため `first_name` を使用）
+                # 1️⃣ ユーザーを作成（UserManagerの `create_user` を使用）
                 user = User.objects.create_user(
-                    name=furigana,
-                    email=email,
+                    mail=mail,
                     password=password,
-                    authority=2
+                    name=furigana,  # `name` に `furigana` を保存
+                    authority=2  # 一般ユーザーとして登録
                 )
 
                 # 2️⃣ プロフィールを作成
                 profile = Profile.objects.create(
                     user=user,
-                    birth=birth if birth else '2000-01-01',  # birth が None の場合、デフォルト値をセット
+                    furigana=furigana,
+                    birth=birth,
                     gender=gender,
                     postalCode=postalCode,
                     uAddress=uAddress,
                     uTel=uTel,
                     uSchool=uSchool,
-                    graduation=graduation if graduation else '25',  # デフォルト値をセット
-                    furigana=furigana  # 🔥 修正3: Profile にも furigana を保存
+                    graduation=int(graduation),  # `IntegerField` に適合
+                    photo=photo  # 画像（アップロードがない場合は `None`）
                 )
 
                 # 3️⃣ 自動ログイン
                 login(request, user)
 
                 # 4️⃣ 成功メッセージとリダイレクト
-                messages.success(request, f'新規登録が完了しました。ようこそ、{furigana} さん！')
+                messages.success(request, f'新規登録が完了しました！ようこそ、{furigana} さん！')
                 return redirect('CCapp:top')
 
             except IntegrityError:
@@ -145,6 +136,7 @@ class SignupView(View):
             messages.error(request, '入力に誤りがあります。')
 
         return render(request, 'signup.html', {'form': form})
+
 class ContactView(LoginRequiredMixin, FormView):
     template_name ='contact.html'
     form_class = ContactForm

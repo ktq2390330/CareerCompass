@@ -1,4 +1,3 @@
-import time
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .models import *
@@ -71,6 +70,12 @@ class LoginView(FormView):
 
 
 # 新規登録のviews
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.views import View
+from .forms import SignupForm, ProfileForm
+from CCapp.models import User  # カスタムユーザーモデルをインポート
+
 class SignupView(View):
     def get(self, request):
         """ サインアップページを表示 """
@@ -198,6 +203,7 @@ class ProfileView(LoginRequiredMixin, FormView):
         user = self.request.user
         context['user_name'] = user.name  # ユーザー名をコンテキストに渡す
         return context
+
 
 # account
 # signin
@@ -503,64 +509,62 @@ class JobsView(LoginRequiredMixin, TemplateView):
     login_url = 'CCapp:login'
 
 # self_analy
-from .forms import AssessmentForm
-from django.db import transaction
+from .forms import AssessmentForm  # 必要であればフォームを使う
 from .assessment_filter import run_evaluation
 
 @login_required(login_url='CCapp:login')
 def self_analy_view(request):
-    """自己分析ページを表示"""
+    # データベースから質問を取得
     question_title_list = Question00.objects.filter(id=1)
     self_analy_list = Question01.objects.filter(question00_id=1)
 
-    # セッションから判定結果を取得（初回はNone）
-    evaluation_results = request.session.pop('evaluation_results', None)
-
+    # フォームの初期データを動的に設定
     form = AssessmentForm(
         questions=self_analy_list, 
         user=request.user,
-        data=request.POST or None
+        data=request.POST or None  # POSTデータがあれば渡す
     )
+
+    # POSTリクエスト処理
+    if request.method == "POST" and form.is_valid():
+        # 回答データの準備
+        assessment_data = {request.user.id: {}}
+        for question in self_analy_list:
+            answer_key = f'answer_{question.id}'
+            if answer_key in form.cleaned_data:
+                answer_value = form.cleaned_data[answer_key]
+                assessment_data[request.user.id][question.id] = answer_value
+
+        # 評価関数の呼び出し
+        evaluation_results = run_evaluation(assessment_data)
+
+        # 保存処理
+        errors = []
+        for question_id, is_valid in evaluation_results.get(request.user.id, {}).items():
+            if is_valid is True:
+                Assessment.objects.update_or_create(
+                    user=request.user,
+                    question01_id=question_id,
+                    defaults={'answer': assessment_data[request.user.id][question_id]}
+                )
+            else:
+                errors.append(f"質問ID {question_id} の回答は不適切と判断されました。")
+
+        if errors:
+            return render(request, 'soliloquizing_self_analy.html', {
+                'question_title_list': question_title_list,
+                'self_analy_list': self_analy_list,
+                'form': form,
+                'errors': errors  # エラーメッセージを渡す
+            })
+
+        return redirect('CCapp:self_analy')
 
     return render(request, 'soliloquizing_self_analy.html', {
         'question_title_list': question_title_list,
         'self_analy_list': self_analy_list,
         'form': form,
-        'evaluation_results': evaluation_results,  # 判定結果を表示
     })
-
-
-@login_required(login_url='CCapp:login')
-def self_analy_processing(request):
-    """判定中の処理を行い、完了後にリダイレクト"""
-    if request.method == "POST":
-        self_analy_list = Question01.objects.filter(question00_id=1)
-        
-        # ユーザーの回答を取得
-        user_answers = {
-            question.id: request.POST.get(f'answer_{question.id}', '')
-            for question in self_analy_list
-        }
-
-        # AIで評価
-        evaluation_results = run_evaluation({request.user.id: user_answers}).get(request.user.id, {})
-
-        # True のものだけを保存
-        with transaction.atomic():
-            for question in self_analy_list:
-                answer_value = request.POST.get(f'answer_{question.id}', '')
-                if evaluation_results.get(question.id, False):  # True の場合のみ保存
-                    Assessment.objects.update_or_create(
-                        user=request.user,
-                        question01=question,
-                        defaults={'answer': answer_value}
-                    )
-
-        # セッションに判定結果を保存し、元のページにリダイレクト
-        request.session['evaluation_results'] = evaluation_results
-        return redirect('CCapp:self_analy')
-
-    return render(request, 'processing.html')  # GETリクエスト時は判定中画面を表示
 
 # axis
 @login_required(login_url='CCapp:login')
@@ -713,6 +717,9 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
 
 from django.views.generic.edit import UpdateView
 from .forms import OfferEditForm
+from django.urls import reverse_lazy
+from django.contrib import messages
+from .models import Offer
 
 class AdmEditPostView(UpdateView):
     model = Offer
@@ -727,9 +734,6 @@ class AdmEditPostView(UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "入力内容に誤りがあります。もう一度確認してください。")
         return super().form_invalid(form)
-
-    def get_object(self, queryset=None):
-        return super().get_object(queryset)
 
 
 from django.shortcuts import get_object_or_404

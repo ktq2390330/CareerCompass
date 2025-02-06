@@ -59,7 +59,6 @@ input[type="password"] {
     height: 60px;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 8px;
     box-sizing: border-box;
     margin-bottom: -1px;
     font-size: 20px;
@@ -84,7 +83,7 @@ input[type="password"] {
 }
 
 button:hover {
-    background-color: #367bb7;
+    background-color: #ccc;
 }
 
 .button-area p {
@@ -106,7 +105,7 @@ button:hover {
 }
 
 a:hover {
-    background-color: #367bb7;
+    background-color: #ccc;
 }
 
 .separator {
