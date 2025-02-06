@@ -78,13 +78,13 @@ textarea {
 
 
 /* 判定ボタンエリア */
-.judge-button-container {
+.button-container {
     display: flex;
     justify-content: center;
 }
 
 /* 判定ボタン */
-.judge-button {
+.button-container button {
     padding: 12px 20px; /* ボタン内の余白を増やす */
     background-color: #4598eb; /* ボタンの色 */
     color: white;
@@ -95,6 +95,6 @@ textarea {
     font-size: 20px;
 }
 
-.judge-button:hover {
+.button-container button:hover {
     background-color: #367bb7;
 }
