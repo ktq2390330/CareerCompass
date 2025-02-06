@@ -18,10 +18,8 @@
                 <h1>プロフィール</h1>
 
                 <!-- ユーザー名表示 -->
-                <div class="form-group">
-                    <label for="user_name">氏名</label>
-                    <input type="text" id="user_name" name="user_name" value="{{ user_name }}" readonly />
-                </div>
+                <label for="name">氏名</label>
+                    <input type="text" name="name" value="{{ user.name }}" required>
 
                 <div class="form-group">
                     <label for="furigana">フリガナ</label>

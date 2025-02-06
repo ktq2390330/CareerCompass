@@ -13,17 +13,19 @@ h1 {
     font-style: italic;
     color: #000000;
     margin-bottom: 20px;
+    font-size: 50px;
 }
 
 .container {
-    width: 300px;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid transparent;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h2 {
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 80px;
 }
 
 h3 {
@@ -32,22 +34,24 @@ h3 {
 
 .button-group {
     display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
+    justify-content: center;  /* ボタンを中央に配置 */
+    margin-top: 20px;
 }
 
-button {
+.button-group a {
     text-decoration: none;
-    padding: 12px 10px; /* ボタン内の余白を増やす */
+    padding: 12px 10px;
+    text-align: center;
     background-color: #4598eb; /* ボタンの色 */
     color: white;
     border: none;
     border-radius: 8px; /* 角の丸みを増やす */
     cursor: pointer;
-    width: 100px;
-    font-size: 20px; 
+    width: auto;
+    font-size: 20px;
+    transition: background-color 0.3s;
 }
 
-.button-group button:hover{
+.button-group a:hover{
     background-color: #367bb7;
 }

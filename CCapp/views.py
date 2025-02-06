@@ -178,17 +178,29 @@ class ProfileView(LoginRequiredMixin, FormView):
         フォームが正常に送信された場合、氏名を更新
         """
         user = self.request.user
-        # フォームのnameフィールドを更新
-        user.name = form.cleaned_data['name']
+
+        # `name` フィールドは ProfileForm に存在しないため、リクエストから直接取得する
+        user.name = self.request.POST.get("name", user.name)  # name が送信されていない場合は変更しない
         user.save()
 
         # プロフィールのデータも更新
+        # profile = user.profile
+        # profile.birth = form.cleaned_data['birth']
+        # profile.graduation = form.cleaned_data['graduation']
+
         profile = user.profile
-        profile.birth = form.cleaned_data['birth']
-        profile.graduation = form.cleaned_data['graduation']
+        profile.furigana = form.cleaned_data.get("furigana", profile.furigana)
+        profile.birth = form.cleaned_data.get("birth", profile.birth)
+        profile.gender = form.cleaned_data.get("gender", profile.gender)
+        profile.graduation = form.cleaned_data.get("graduation", profile.graduation)
+        profile.uSchool = form.cleaned_data.get("uSchool", profile.uSchool)
+        profile.uTel = form.cleaned_data.get("uTel", profile.uTel)
+        profile.postalCode = form.cleaned_data.get("postalCode", profile.postalCode)
+        profile.uAddress = form.cleaned_data.get("uAddress", profile.uAddress)
         profile.save()
 
         return super().form_valid(form)
+
 
     def get_context_data(self, **kwargs):
         """
@@ -196,7 +208,7 @@ class ProfileView(LoginRequiredMixin, FormView):
         """
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context['user_name'] = user.name  # ユーザー名をコンテキストに渡す
+        context['name'] = user.name  # ユーザー名をコンテキストに渡す
         return context
 
 # account
