@@ -1,5 +1,4 @@
 import os
-import logging
 import datetime
 from django_setup_def import djangoImportSetup
 djangoImportSetup()
@@ -8,7 +7,6 @@ from CCapp.defs import *
 from django.db import transaction
 from datetime import datetime
 from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ログの設定
 def import_data_SettingLogs():

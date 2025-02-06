@@ -1,0 +1,17 @@
+{% extends "soliloquizing_base.html" %}
+{% load static %}
+
+{% block soliloquizing %}
+    <div class="processing-container">
+        <div class="spinner" id="spinner"></div>
+        <p id="status-text">AIで回答を分析中です。しばらくお待ちください...</p>
+        
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <p id="progress-text">現在の進捗：0%</p>
+    </div>
+
+    <script src="{% static 'js/progress.js' %}"></script>
+{% endblock %}

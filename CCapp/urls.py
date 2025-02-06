@@ -60,6 +60,7 @@ urlpatterns = [
 
     # self
     path('self_analy/', views.self_analy_view, name='self_analy'),
+    path('self_analy_processing/', views.self_analy_processing, name='self_analy_processing'),
     path('axis/', views.axis_view, name='axis'),
     path('industry/', views.industry_view, name='industry'),
     path('jobtype/', views.jobtype_view, name='jobtype'),

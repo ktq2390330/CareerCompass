@@ -130,7 +130,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'CCapp', 'static'),  # CCapp 内の static フォルダを指定
+    os.path.join(BASE_DIR, 'CCapp', 'static'),
 ]
 
 

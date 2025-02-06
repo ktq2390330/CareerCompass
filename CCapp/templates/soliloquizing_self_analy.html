@@ -1,17 +1,10 @@
-<!-- soliloquizing_base.htmlを継承 -->
 {% extends "soliloquizing_base.html" %}
-
-<!-- staticタグを使うために追加 -->
 {% load static %}
-
-<!-- カスタムフィルターを読み込む -->
 {% load custom_filters %}
 
-<!-- Djangoのmessagesを使用 -->
 {% block soliloquizing %}
 
-
-    <form method="POST" action="{% url 'CCapp:self_analy' %}">
+    <form method="POST" action="{% url 'CCapp:self_analy_processing' %}" id="assessment-form">
         {% csrf_token %}
 
         <!-- 質問のタイトルを表示 -->
@@ -21,12 +14,28 @@
             {% endfor %}
         {% endif %}
 
+        <!-- 判定結果（判定ボタンの上） -->
+        {% if evaluation_results %}
+            <div class="message-container">
+                {% if False in evaluation_results.values %}
+                    <p class="error-message">
+                        判定結果：質問
+                        {% for question_id, result in evaluation_results.items %}
+                            {% if not result %}{{ question_id }}{% if not forloop.last %}, {% endif %}{% endif %}
+                        {% endfor %}
+                        が不適切だと判断されました
+                    </p>
+                {% else %}
+                    <p class="success-message">判定結果：すべての回答が正常に保存されました</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
         <!-- 動的に生成されたフォームフィールドを表示 -->
         {% for field in form %}
             <div class="form-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
-                <!-- 各フィールドのエラーメッセージを表示 -->
                 {% if field.errors %}
                     <div class="error-message">
                         {{ field.errors|join:", " }}
@@ -35,57 +44,10 @@
             </div>
         {% endfor %}
 
-        <!-- 保存ボタン -->
-        <div class="save-button-container">
-            <button type="submit" class="save-button">保存</button>
+        <!-- 判定ボタン -->
+        <div class="judge-button-container">
+            <button type="submit" class="judge-button">判定</button>
         </div>
     </form>
 
 {% endblock %}
-
-<!-- エラーメッセージの表示時間を設定 -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // すべてのtextareaに対して高さ自動調整機能を適用
-        const textareas = document.querySelectorAll('textarea');
-
-        // 高さを自動調整する関数
-        const adjustHeight = (element) => {
-            element.style.height = 'auto'; // 初期化
-            element.style.height = element.scrollHeight + 'px'; // 必要な高さにリサイズ
-        };
-
-        // 各textareaに対してイベントリスナーを追加
-        textareas.forEach(textarea => {
-            adjustHeight(textarea);
-            textarea.addEventListener('input', function() {
-                adjustHeight(this);
-            });
-        });
-
-        // エラーメッセージを3秒後に非表示にする
-        setTimeout(() => {
-            const messages = document.querySelectorAll('.error-message');
-            messages.forEach(msg => {
-                msg.style.opacity = '0';
-                setTimeout(() => msg.style.display = 'none', 500);
-            });
-        }, 3000);
-    });
-</script>
-
-<!-- CSS（適宜追加） -->
-<style>
-    .message-container {
-        margin: 10px 0;
-    }
-    .error-message {
-        background-color: #ffdddd;
-        color: #d8000c;
-        padding: 10px;
-        border: 1px solid #d8000c;
-        border-radius: 5px;
-        margin-bottom: 5px;
-        transition: opacity 0.5s ease-out;
-    }
-</style>

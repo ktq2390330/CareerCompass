@@ -6,7 +6,7 @@ from .models import Question01, User
 from dotenv import load_dotenv
 import os
 import time  # 処理時間計測
-import math  # スレッド数調整
+from CCapp.defs import *
 
 # 設定クラス
 class Settings:
@@ -132,6 +132,7 @@ def evaluate_questions(assessment_data):
         }
     }
     """
+    print(results)
     return results
 
 # 外部から呼び出すエントリーポイント
@@ -143,5 +144,7 @@ def run_evaluation(assessment_data):
     """
     if not isinstance(assessment_data, dict):
         raise ValueError("assessment_dataは辞書型である必要があります。")
+
+    print()
 
     return evaluate_questions(assessment_data)
