@@ -14,7 +14,7 @@ from .forms import ContactForm
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.db import DatabaseError
-
+from django.db import IntegrityError
 from .forms import ProfileForm
 
 from django.contrib.auth.decorators import login_required
@@ -79,22 +79,35 @@ class SignupView(View):
     def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
-            mail = form.cleaned_data.get('Mail')  # 'Mail' フィールドを取得
-            password = form.cleaned_data.get('Password')
-            name = form.cleaned_data.get('UName')
+            furigana = form.cleaned_data.get('furigana')
+            birth = form.cleaned_data.get('birth')
+            gender = form.cleaned_data.get('gender')
+            postalCode = form.cleaned_data.get('postalCode')
+            uAddress = form.cleaned_data.get('uAddress')
+            uTel = form.cleaned_data.get('uTel')
+            uSchool = form.cleaned_data.get('uSchool')
+            graduation = form.cleaned_data.get('graduation')
+            mail = form.cleaned_data.get('mail')  # メールアドレスを取得
+            password = form.cleaned_data.get('password')  # パスワードを取得
 
-            # 'mail' を使用してユーザーを作成
-            # パスワードをハッシュ化せずに保存（後にハッシュ化できるようにする）
-            user = User.objects.create(mail=mail, password=password)
-            # user = User.objects.create_user(mail=mail, password=password)
-            user.name = name  # 名前を 'name' フィールドに保存
-            user.save()
+            try:
+                # ユーザーを作成
+                user = User.objects.create_user(
+                    mail=mail,
+                    password=password,
+                    name=furigana,
+                    authority=2  # 権限を設定（必要に応じて変更）
+                )
 
-            # 自動ログイン
-            login(request, user)
+                # 自動ログイン
+                login(request, user)
 
-            messages.success(request, '新規登録が完了しました。')
-            return redirect('CCapp:top')  # トップページにリダイレクト
+                messages.success(request, '新規登録が完了しました。')
+                return redirect('CCapp:top')  # トップページにリダイレクト
+
+            except IntegrityError:
+                messages.error(request, 'このメールアドレスはすでに使用されています。')
+                return render(request, 'signup.html', {'form': form})
 
         else:
             messages.error(request, '入力に誤りがあります。')
@@ -139,7 +152,13 @@ class ProfileView(LoginRequiredMixin, FormView):
         初期値を設定
         """
         user = self.request.user
-        profile, created = Profile.objects.get_or_create(user=user)
+        profile, created = Profile.objects.get_or_create(
+            user=user,
+            defaults={'birth': '2000-01-01', 'graduation': 25},
+        )
+
+        print(f"DEBUG: get_initial() -> Profile created: {created}, birth: {profile.birth}")
+
         initial = super().get_initial()
         
         # プロフィールが存在する場合、フィールドに値を設定
@@ -148,9 +167,10 @@ class ProfileView(LoginRequiredMixin, FormView):
             initial[field] = value if value is not None else ''  # Noneの場合は空文字を設定
 
         if profile.birth is None:
-            initial['birth'] = '2000-01-01'  # 空文字を設定するか、適切なデフォルト値を設定
-    
+            initial['birth'] = '2000-01-01'  # 🔥 birth が None の場合はデフォルト値をセット
+        
         return initial
+
     
 
     def form_valid(self, form):
@@ -410,17 +430,54 @@ class AdmPostListView(TemplateView):
 
 
 # subscription
-from django.views.generic import DetailView
+from django.core.mail import send_mail
+from django.contrib import messages
+# subscription
+class SubscriptionView(LoginRequiredMixin, View):
+    """
+    求人応募の確認画面
+    """
+    def get(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)
+        profile = get_object_or_404(Profile, user=request.user)
+        return render(request, 'subscription.html', {'offer': offer, 'profile': profile})
 
-class SubscriptionView(DetailView):
-    model = Offer
-    template_name = 'subscription.html'
-    context_object_name = 'offer'
-# subscription_done
-class Subscription_doneView(LoginRequiredMixin, TemplateView):
-    template_name = 'subscription_done.html'
-    login_url = 'CCapp:login'
+class Subscription_doneView(LoginRequiredMixin, View):
+    """
+    求人応募の処理＆完了画面
+    """
+    def post(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
 
+        # 企業情報を取得
+        corporation = offer.corporation
+        if not corporation:
+            messages.error(request, "企業情報が設定されていません。")
+            return redirect('CCapp:offer_detail', offer_id=offer_id)
+        
+        # 応募処理（ManyToManyに追加）
+        offer.applicants.add(user)
+        
+        # 企業へメール送信
+        subject = f"{user.name} 様が {offer.name} に応募しました"
+        message = (
+            f"この方からの応募がありました。\n\n"
+            f"名前: {profile.furigana}\n"
+            f"メール: {user.mail}\n"
+            f"電話番号: {profile.uTel}\n"
+            f"学校名: {profile.uSchool}\n\n"
+            f"下記メールアドレスから応募者とやり取りを開始してください。\n"
+            f"応募者メール: {user.mail}"
+        )
+        send_mail(subject, message, 'no-reply@example.com', [corporation.cMail])
+        
+        return render(request, 'subscription_done.html', {
+            'offer': offer,
+            'corporation': corporation,
+            'corporation_mail': corporation.cMail
+        })
 
 # about
 class AboutView(LoginRequiredMixin, TemplateView):
@@ -660,6 +717,7 @@ class AdmEditPostView(UpdateView):
 
     def get_object(self, queryset=None):
         return super().get_object(queryset)
+
 
 from django.shortcuts import get_object_or_404
 

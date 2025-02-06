@@ -4,35 +4,7 @@
 {% block title %}プロフィール{% endblock %}
 
 {% block head %}
-<link href="{% static 'css/profile.css' %}" rel="stylesheet">
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const photoInput = document.querySelector("#id_photo"); // ファイル入力フィールド
-        const previewImage = document.querySelector("#preview-image"); // プレビュー画像
-        const currentImage = "{% if form.instance.photo and form.instance.photo.url %}{{ form.instance.photo.url }}{% else %}{% endif %}"; // 画像がある場合のみURLを設定
-
-        // ページロード時に保存された画像をプレビュー
-        if (currentImage.trim() !== "") {
-            previewImage.src = currentImage;
-            previewImage.style.display = "block";
-        }
-
-        // 画像選択時にプレビュー更新
-        photoInput.addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImage.src = e.target.result;
-                    previewImage.style.display = "block"; // プレビュー画像を表示
-                };
-                reader.readAsDataURL(file);
-            } else {
-                previewImage.style.display = "none"; // ファイルが選択されていない場合非表示
-            }
-        });
-    });
-</script>
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -85,4 +57,33 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const photoInput = document.querySelector("#id_photo"); // ファイル入力フィールド
+        const previewImage = document.querySelector("#preview-image"); // プレビュー画像
+        const currentImage = "{% if form.instance.photo and form.instance.photo.url %}{{ form.instance.photo.url }}{% else %}{% endif %}"; // 画像がある場合のみURLを設定
+
+        // ページロード時に保存された画像をプレビュー
+        if (currentImage.trim() !== "") {
+            previewImage.src = currentImage;
+            previewImage.style.display = "block";
+        }
+
+        // 画像選択時にプレビュー更新
+        photoInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = "block"; // プレビュー画像を表示
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewImage.style.display = "none"; // ファイルが選択されていない場合非表示
+            }
+        });
+    });
+</script>
 {% endblock %}

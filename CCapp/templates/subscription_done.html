@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>求人応募完了ページ</title>
+    <title>{% block title %} 求人応募完了 {% endblock %}</title>
     <link href="{% static 'css/subscription_done.css' %}" rel="stylesheet"/>
 </head>
 <body>
@@ -12,48 +12,47 @@
     <header class="header">
         <!-- brand name -->
         <div id="brand">
-            <a class="brand" href="#"><i>Career
-                <br>&nbsp;&nbsp;&nbsp;Compass</i></a>
+            <a class="brand" href="{% url 'CCapp:top' %}"><i>Career<br>&nbsp;&nbsp;&nbsp;Compass</i></a>
         </div>
-        <!-- ナビゲーション下の実線 -->
-        <hr class="header-line">
-</header>
-<hr>
-<form action="#" method="post">
+    </header>
+
+    <hr>
+
     <div class="container">
-        <div class="profile-box"> <!-- 外枠 -->
-            <h1 class="h1">求人情報への応募を受け付けました。</h1>
-            <p class="email">example1@gmail.com</p>
-            <p class="text">上記のメールアドレスから確認メールが届かない場合は、下記のお問い合わせ先までご連絡ください。</h2>
-            <div class="contact-info">
-                <p class="inquiry_target">■お問い合わせ先</p>
-                <p class="responsible_person">担当者: {{ company_info.responsible_person }}</p>
-                <p class="tel">TEL: {{ company_info.tel }}</p>
-                <p class="e-mail">メールアドレス: {{ company_info.email }}</p>
-            </div>
+        <div class="row-field">
+            <form action="#" method="post">
                 
+
+                <!-- タイトル -->
+                <h2>応募完了</h2>
+
+                <div class="profile-box"> <!-- 外枠 -->
+                    <p class="message">求人情報への応募を受け付けました。</p>
+                    <p class="email">応募先メールアドレス: <strong>{{ corporation_mail }}</strong></p>
+                    <p class="text">上記のメールアドレスからの連絡をお待ちください。</p>
+                </div>
+
+                <!-- ボタン -->
+                <div class="button-group">
+                    <a href={% url "CCapp:top" %}>Topへ戻る</button>
+                </div>
+
+            </form>
         </div>
     </div>
-    <div class="button-group">
-        <button type="button" onclick="history.back()">Topへ戻る</button>
-    </div>
-</form>
 
-
-
-<!-- Footer-->
-<footer class="footer bg-light">
-    <div class="container">
-        
-        <!-- copyright -->
-        <div class="row">
-            <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                <p class="text-muted small mb-4 mb-lg-0">copyright &copy; Career Compass</p>
+    <!-- Footer-->
+    <footer class="footer bg-light">
+        <div class="container">
+            
+            <!-- copyright -->
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                    <p class="text-muted small mb-4 mb-lg-0">copyright &copy; Career Compass</p>
+                </div>
             </div>
+
         </div>
-
-    </div>
-</footer>
-
+    </footer>
 </body>
 </html>

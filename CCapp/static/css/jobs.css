@@ -21,9 +21,6 @@
 .content-box {
     margin: 20px auto; /* 上下のマージンを狭く */
     padding: 5px 15px; /* 上下のパディングを少し狭く */
-    border: 2px solid #666;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     max-width: 90%; /* 幅を少し小さく設定 */
 }
 
@@ -79,14 +76,14 @@ table {
     border-collapse: collapse;
     margin-top: 10px;
     margin: 0 auto; /* Center the table horizontally */
-    border: 2px solid #333; /* Teーブル全体の外枠を太く */
+    border: 1px solid #333; /* Teーブル全体の外枠を太く */
     table-layout: fixed; /* テーブルの幅を固定 */
     word-wrap: break-word; /* テキストをセル内で折り返し */
 }
 
 th, td {
     padding: 8px 12px;
-    border: 2px solid #333; /* セルの枠線を太く */
+    border: 1px solid #333; /* セルの枠線を太く */
     text-align: left;
     white-space: normal; /* セル内でのテキスト折り返しを有効に */
     overflow: hidden; /* 溢れた内容を隠す */
@@ -119,8 +116,30 @@ td {
     cursor: pointer;
     width: 120px;
     font-size: 20px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button-group a {
+    text-decoration: none;
+    padding: 12px 20px; /* ボタン内の余白を増やす */
+    background-color: #4598eb; /* ボタンの色 */
+    color: white;
+    border: none;
+    border-radius: 8px; /* 角の丸みを増やす */
+    cursor: pointer;
+    width: 120px;
+    font-size: 20px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .button-group button:hover {
+    background-color: #367bb7;
+}
+
+.button-group a:hover {
     background-color: #367bb7;
 }
