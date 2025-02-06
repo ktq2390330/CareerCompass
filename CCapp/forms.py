@@ -175,17 +175,7 @@ class AdmPostForm(forms.ModelForm):
         # 福利厚生タグの表示をnameで設定
         self.fields['welfare'].label_from_instance = lambda obj: obj.name
 
-from django import forms
-from .models import Offer, Corporation, Tag, Category00, Category01, Category10, Category11
-
 class OfferEditForm(forms.ModelForm):
-    corporation_name = forms.CharField(label="法人名", max_length=256, required=True)
-    corporation_corp = forms.CharField(label="法人番号", max_length=13, required=True, disabled=True)
-    corporation_cMail = forms.EmailField(label="メールアドレス", max_length=255, required=True)
-    corporation_cTel = forms.CharField(label="電話番号", max_length=16, required=True)
-    corporation_url = forms.URLField(label="会社HP URL", max_length=512, required=False)
-    corporation_address = forms.CharField(label="住所", max_length=256, required=True)
-
     class Meta:
         model = Offer
         fields = [
@@ -205,15 +195,8 @@ class OfferEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.corporation:
-            self.fields['corporation_name'].initial = self.instance.corporation.name
-            self.fields['corporation_corp'].initial = self.instance.corporation.corp
-            self.fields['corporation_cMail'].initial = self.instance.corporation.cMail
-            self.fields['corporation_cTel'].initial = self.instance.corporation.cTel
-            self.fields['corporation_url'].initial = self.instance.corporation.url
-            self.fields['corporation_address'].initial = self.instance.corporation.address
-            self.fields['corporation_corp'].widget.attrs['readonly'] = True
-         # カテゴリ01とカテゴリ11をすべて表示
+
+        # カテゴリ01とカテゴリ11をすべて表示
         self.fields['category01'].queryset = Category01.objects.all()
         self.fields['category11'].queryset = Category11.objects.all()
 
@@ -233,27 +216,4 @@ class OfferEditForm(forms.ModelForm):
 
         # 福利厚生タグの表示をnameで設定
         self.fields['welfare'].label_from_instance = lambda obj: obj.name
-
-    def save(self, commit=True):
-        offer = super().save(commit=False)
-        corp_data = {
-            "corp": self.cleaned_data['corporation_corp'],
-            "name": self.cleaned_data['corporation_name'],
-            "cMail": self.cleaned_data['corporation_cMail'],
-            "cTel": self.cleaned_data['corporation_cTel'],
-            "url": self.cleaned_data['corporation_url'],
-            "address": self.cleaned_data['corporation_address'],
-        }
-
-        corporation, _ = Corporation.objects.update_or_create(
-            corp=corp_data["corp"],
-            defaults=corp_data
-        )
-        offer.corporation = corporation
-
-        if commit:
-            offer.save()
-            self.save_m2m()
-
-        return offer
 

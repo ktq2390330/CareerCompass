@@ -29,8 +29,8 @@
             {% for job in jobs %}
             <div class="job-item">
                 <div class="job-info">
-                    <p class="company-name">企業名：{{ job.corporation.name }}</p> <!-- 会社名 -->
-                    <p>法人番号：{{ job.corporation.corp }}</p> <!-- 法人番号 -->
+                    <p class="company-name">求人名：{{ job.name }}</p> <!-- 会社名 -->
+                    <p>企業名：{{ job.corporation.name }}</p> <!-- 会社名 -->
                     <div class="job-buttons">
                         <!-- 求人削除ボタン -->
                         <form action="{% url 'CCapp:adm_post_del' job.id %}" method="GET" class="delete-form">

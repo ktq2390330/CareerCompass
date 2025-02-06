@@ -697,9 +697,6 @@ class AdmPostDoneView(LoginRequiredMixin, TemplateView):
 
 from django.views.generic.edit import UpdateView
 from .forms import OfferEditForm
-from django.urls import reverse_lazy
-from django.contrib import messages
-from .models import Offer
 
 class AdmEditPostView(UpdateView):
     model = Offer
@@ -714,6 +711,9 @@ class AdmEditPostView(UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "入力内容に誤りがあります。もう一度確認してください。")
         return super().form_invalid(form)
+
+    def get_object(self, queryset=None):
+        return super().get_object(queryset)
 
 
 from django.shortcuts import get_object_or_404
