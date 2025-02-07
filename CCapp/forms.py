@@ -175,7 +175,7 @@ class OfferEditForm(forms.ModelForm):
             'CoB', 'subject', 'NoP', 'departments', 'characteristic', 'PES',
             'giving', 'allowances', 'salaryRaise', 'bonus', 'holiday',
             'workingHours', 'area1', 'category00', 'category01',
-            'category10', 'category11', 'corporation', 'period', 'status', 'welfare'
+            'category10', 'category11', 'period', 'status', 'welfare'
         ]
 
     welfare = forms.ModelMultipleChoiceField(
