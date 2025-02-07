@@ -46,3 +46,30 @@ AI判定の実演、どんな質問内容があるのか　その質問にどん
 管理者画面の実演もするから、バグの確認と体裁を整える
 
 ーーーーーーーーーーーーーーーーーーーー
+自問自答エラー
+
+ResourceExhausted at /self_analy_processing/
+429 Resource has been exhausted (e.g. check quota).
+Request Method:	POST
+Request URL:	http://127.0.0.1:8000/self_analy_processing/
+Django Version:	5.1.2
+Exception Type:	ResourceExhausted
+Exception Value:	
+429 Resource has been exhausted (e.g. check quota).
+Exception Location:	C:\Users\tomo\CareerCompass\myvenv\Lib\site-packages\google\api_core\grpc_helpers.py, line 174, in error_remapped_callable
+Raised during:	CCapp.views.self_analy_processing
+Python Executable:	C:\Users\tomo\CareerCompass\myvenv\scripts\python.exe
+Python Version:	3.11.9
+Python Path:	
+['C:\\Users\\tomo\\CareerCompass',
+ 'C:\\Program '
+ 'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\python311.zip',
+ 'C:\\Program '
+ 'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\DLLs',
+ 'C:\\Program '
+ 'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib',
+ 'C:\\Program '
+ 'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0',
+ 'C:\\Users\\tomo\\CareerCompass\\myvenv',
+ 'C:\\Users\\tomo\\CareerCompass\\myvenv\\Lib\\site-packages']
+Server time:	Fri, 07 Feb 2025 14:00:29 +0900
