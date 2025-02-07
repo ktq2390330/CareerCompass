@@ -10,7 +10,7 @@ urlpatterns = [
     path('top/', views.top_page_view, name='top'),
 
     # account
-    path('login/', views.LoginView.as_view(), name='login'),
+    path('', views.LoginView.as_view(), name='login'),
     path('logout_conf/', views.LogoutConfView.as_view(), name='logout_conf'),
     path('logout/', views.LogoutView, name='logout'),
     path('signup/', views.SignupView.as_view(), name='signup'),
