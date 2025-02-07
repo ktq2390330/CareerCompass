@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>アカウント削除</title>
-    <link href='../static/css/delete_ac.css' rel="stylesheet"/>
+    <link href="{% static 'css/delete_ac.css' %}" rel="stylesheet"/>
 </head>
 <body>
 
-<h1><big>Career Compass</big></h1>
+<h1>Career Compass</h1>
 <div class="container">
     <h3>アカウントを削除しますか？</h3>
 
@@ -33,11 +34,11 @@
     <div class="button-group">
         <form method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" name="action" value="yes" class="action-button yes">はい</button>
+            <button type="submit" name="action" value="no" class="action-button no">いいえ</button>
         </form>
         <form method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" name="action" value="no" class="action-button no">いいえ</button>
+            <button type="submit" name="action" value="yes" class="action-button yes">はい</button>
         </form>
     </div>
     
