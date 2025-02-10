@@ -141,6 +141,7 @@ class Profile(models.Model):
     postalCode = models.CharField(max_length=8, verbose_name="郵便番号")
     uAddress = models.CharField(max_length=256, verbose_name="住所")
     photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True, verbose_name="プロフィール写真")
+    entryAuth = models.BooleanField(default=False, verbose_name="エントリー認証")
 
     class Meta:
         db_table = "profile"
