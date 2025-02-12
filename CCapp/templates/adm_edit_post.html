@@ -133,7 +133,8 @@
 
         <div class="form-actions">
             <button type="submit">保存</button>
-            <a href="{% url 'CCapp:adm_post_list' %}" class="cancel-btn">キャンセル</a>
+            <a href="{% url 'CCapp:adm_post_list' %}?query={{ request.GET.query }}" class="cancel-btn">キャンセル</a>
+
         </div>
     </form>
 </div>
