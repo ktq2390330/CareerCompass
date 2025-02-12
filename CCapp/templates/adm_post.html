@@ -198,14 +198,42 @@
         <input type="checkbox" id="id_status" name="status" {% if form.status.value %}checked{% endif %}>
     </div>
 
-    <!-- 法人 -->
+    <!-- 法人情報 -->
+    <h3>法人情報</h3>
+    <!-- 法人番号 -->
     <div class="form-group">
-        <label for="id_corporation">法人</label>
-        <select id="id_corporation" name="corporation" class="form-control">
-            {% for corporation in form.corporation.field.queryset %}
-                <option value="{{ corporation.corp }}" {% if corporation.corp == form.corporation.value %}selected{% endif %}>{{ corporation.name }}</option>
-            {% endfor %}
-        </select>
+        <label for="id_corp">法人番号</label>
+        <input type="text" id="id_corp" name="corp" value="{{ form.corp.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 法人名 -->
+    <div class="form-group">
+        <label for="id_name">法人名</label>
+        <input type="text" id="id_name" name="name" value="{{ form.name.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 住所 -->
+    <div class="form-group">
+        <label for="id_address">住所</label>
+        <input type="text" id="id_address" name="address" value="{{ form.address.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- メールアドレス -->
+    <div class="form-group">
+        <label for="id_cMail">メールアドレス</label>
+        <input type="email" id="id_cMail" name="cMail" value="{{ form.cMail.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- 電話番号 -->
+    <div class="form-group">
+        <label for="id_cTel">電話番号(ハイフンあり)</label>
+        <input type="text" id="id_cTel" name="cTel" value="{{ form.cTel.value|default:'' }}" class="form-control">
+    </div>
+
+    <!-- ホームページURL -->
+    <div class="form-group">
+        <label for="id_url">ホームページURL</label>
+        <input type="url" id="id_url" name="url" value="{{ form.url.value|default:'' }}" class="form-control">
     </div>
 
     <!-- 提出ボタン -->

@@ -112,6 +112,13 @@ class AssessmentForm(forms.Form):
             )
 
 class AdmPostForm(forms.ModelForm):
+    corp = forms.CharField(max_length=13, label="法人番号")
+    name = forms.CharField(max_length=256, label="法人名")
+    cMail = forms.EmailField(max_length=255, label="メールアドレス")
+    address = forms.CharField(max_length=256, label="住所")
+    url = forms.URLField(max_length=512, label="ホームページURL", required=False)
+    cTel = forms.CharField(max_length=16, label="電話番号")
+
     class Meta:
         model = Offer
         fields = [
@@ -119,15 +126,33 @@ class AdmPostForm(forms.ModelForm):
             'CoB', 'subject', 'NoP', 'departments', 'characteristic', 'PES',
             'giving', 'allowances', 'salaryRaise', 'bonus', 'holiday',
             'workingHours', 'area1', 'category00', 'category01',
-            'category10', 'category11', 'corporation', 'period', 'status', 'welfare'
+            'category10', 'category11', 'period', 'status', 'welfare'
         ]
 
         welfare = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        label="福利厚生",
-        required=False,
-        widget=forms.CheckboxSelectMultiple
-    )
+            queryset=Tag.objects.all(),
+            label="福利厚生",
+            required=False,
+            widget=forms.CheckboxSelectMultiple
+        )
+
+    def clean_corp(self):
+        corp = self.cleaned_data.get('corp')
+        if Corporation.objects.filter(corp=corp).exists():
+            raise forms.ValidationError("この法人番号はすでに使用されています")
+        return corp
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if Corporation.objects.filter(
+            name=cleaned_data.get('name'),
+            cMail=cleaned_data.get('cMail'),
+            address=cleaned_data.get('address'),
+            cTel=cleaned_data.get('cTel'),
+            url=cleaned_data.get('url')
+        ).exists():
+            raise forms.ValidationError("すでに登録されています")
+        return cleaned_data
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

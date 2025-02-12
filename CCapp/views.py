@@ -685,7 +685,7 @@ def jobtype_view(request):
 from django.http import JsonResponse
 from .forms import AdmPostForm
 
-class AdmPostView(LoginRequiredMixin,View):
+class AdmPostView(LoginRequiredMixin, View):
     template_name = 'adm_post.html'
 
     def get(self, request):
@@ -695,9 +695,26 @@ class AdmPostView(LoginRequiredMixin,View):
     def post(self, request):
         form = AdmPostForm(request.POST)
         if form.is_valid():
-            form.save()
+            # 法人情報の保存
+            corp = Corporation(
+                corp=form.cleaned_data['corp'],
+                name=form.cleaned_data['name'],
+                address=form.cleaned_data['address'],
+                cMail=form.cleaned_data['cMail'],
+                cTel=form.cleaned_data['cTel'],
+                url=form.cleaned_data['url'],
+            )
+            corp.save()  # 法人情報を保存
+
+            # 求人情報の保存
+            offer = form.save(commit=False)
+            offer.corporation = corp  # 保存した法人情報を関連付け
+            offer.save()  # 求人情報を保存
+
             return redirect('CCapp:adm_post_done')  # 投稿完了画面にリダイレクト
+
         return render(request, self.template_name, {'form': form})
+
     
 # 求人投稿完了のビュー
 class AdmPostDoneView(View):
@@ -718,10 +735,6 @@ def get_area_options(request, area1_id):
     """エリアの都道府県を取得"""
     area = get_object_or_404(Area1, pk=area1_id)
     return JsonResponse({'area': area.name.split('-')[-1]})
-
-class AdmPostDoneView(LoginRequiredMixin, TemplateView):
-    template_name = 'adm_post_done.html'
-    login_url = '#'
 
 from django.views.generic.edit import UpdateView
 from .forms import OfferEditForm
