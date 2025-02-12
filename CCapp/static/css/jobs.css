@@ -102,44 +102,38 @@ td {
 }
 
 .button-group {
-    text-align: center;
-    margin-top: 40px; /* 上の要素との間隔を空ける */
+    display: flex;
+    justify-content: space-between; /* 左右の端に配置 */
+    align-items: center; /* 高さを揃える */
+    margin-top: 40px;
     margin-bottom: 40px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.button-group a,
 .button-group button {
-    padding: 12px 20px; /* ボタン内の余白を増やす */
-    background-color: #4598eb; /* ボタンの色 */
+    padding: 12px 20px;
+    background-color: #4598eb;
     color: white;
     border: none;
-    border-radius: 8px; /* 角の丸みを増やす */
+    border-radius: 8px;
     cursor: pointer;
-    width: 120px;
+    width: 150px; /* ボタンの幅を統一 */
     font-size: 20px;
+    text-align: center;
     transition: background-color 0.3s;
-    margin-left: 10px;
-    margin-right: 10px;
 }
 
 .button-group a {
     text-decoration: none;
-    padding: 12px 20px; /* ボタン内の余白を増やす */
-    background-color: #4598eb; /* ボタンの色 */
-    color: white;
-    border: none;
-    border-radius: 8px; /* 角の丸みを増やす */
-    cursor: pointer;
-    width: 120px;
-    font-size: 20px;
-    transition: background-color 0.3s;
-    margin-left: 10px;
-    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.button-group button:hover {
-    background-color: #367bb7;
-}
-
+.button-group button:hover,
 .button-group a:hover {
     background-color: #367bb7;
 }

@@ -761,4 +761,19 @@ from django.shortcuts import get_object_or_404
 
 def job_detail(request, id):
     offer = get_object_or_404(Offer, id=id)
-    return render(request, 'jobs.html', {'offer': offer})
+    
+    # 認証済みユーザーなら Profile を取得、それ以外は None
+    profile = None
+    if request.user.is_authenticated:
+        profile = Profile.objects.filter(user=request.user).first()
+    
+    # エントリー権限がない場合のメッセージ
+    show_analysis_message = False
+    if profile and not profile.entryAuth:
+        show_analysis_message = True
+
+    return render(request, 'jobs.html', {
+        'offer': offer,
+        'profile': profile,
+        'show_analysis_message': show_analysis_message
+    })

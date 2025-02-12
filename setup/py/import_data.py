@@ -682,7 +682,7 @@ def main():
         'question01.csv': question01,
         'assessment.csv': assessment,
         'corporation.csv': corporation,
-        'offer': (offer, 3),
+        'offer': (offer, 6),
         'offerEntry.json': offerEntry,
         'offerTag.json': offerTag,
     }
