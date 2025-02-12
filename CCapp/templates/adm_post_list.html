@@ -37,9 +37,9 @@
                             <button type="submit" class="delete-btn">求人削除</button>
                         </form>
                         <!-- 求人編集ボタン -->
-                        <a href="{% url 'CCapp:edit_job' job.id %}">
+                        <a href="{% url 'CCapp:edit_job' job.id %}?query={{ query }}">
                             <button type="button">求人編集</button>
-                        </a>
+                        </a>                        
                     </div>
                 </div>
             </div>
