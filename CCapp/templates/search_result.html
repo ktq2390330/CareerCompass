@@ -11,22 +11,16 @@
 {% block content %}
 <div class="container">
     <div class="search-field">
-            
-        <!-- ページネーション情報 -->
         <section class="pagination-info" style="text-align: center;">
             {% if page_obj.paginator.count > 0 %}
-                <!-- 求人数と表示されるページ番号 -->
                 <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
             {% else %}
-                <!-- 該当する求人情報がない場合 -->
                 <p>該当する求人情報は見つかりませんでした。</p>
             {% endif %}
         </section>
 
         <div class="pagination">
-            <!-- ページ番号のグループと「前へ」「次へ」ボタンを左右に配置 -->
             <div class="pagination-btn-group">
-                <!-- 前へボタン: もし前のページがあればリンクを表示、なければ非活性状態に -->
                 <div class="pagination-btn-left">
                     {% if page_obj.has_previous %}
                         <a href="?page={{ page_obj.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn prev">前へ</a>
@@ -34,41 +28,31 @@
                         <span class="pagination-btn prev disabled">前へ</span>
                     {% endif %}
                 </div>
-        
-                <!-- ページ番号のグループ -->
+
                 <div class="page-group">
-                    <!-- 現在のページが3ページ目以降の場合、最初のページ（1ページ）を表示 -->
                     {% if page_obj.number > 3 %}
                         <a href="?page=1&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn">1</a>
-                        
-                        <!-- 現在のページが4ページ目以降の場合、`...`（省略記号）を表示 -->
                         {% if page_obj.number > 4 %}
                             <span class="pagination-btn ellipsis">...</span>
                         {% endif %}
                     {% endif %}
                     
-                    <!-- ページ番号を表示 -->
                     {% for page_num in page_range %}
-                        <!-- 現在のページと一致するページはactiveクラスを付与して強調 -->
                         {% if page_num == page_obj.number %}
                             <a href="?page={{ page_num }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn active">{{ page_num }}</a>
                         {% elif page_num > page_obj.number|add:"-3" and page_num < page_obj.number|add:"3" %}
-                            <!-- 現在のページ番号の前後3ページの範囲のみ表示 -->
                             <a href="?page={{ page_num }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn">{{ page_num }}</a>
                         {% endif %}
                     {% endfor %}
-        
-                    <!-- 現在のページが最終ページから3ページ前より前の場合、省略記号`...`を表示 -->
+
                     {% if page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
                         {% if page_obj.number < page_obj.paginator.num_pages|add:"-4" %}
                             <span class="pagination-btn ellipsis">...</span>
                         {% endif %}
-                        <!-- 最後のページ番号を表示 -->
                         <a href="?page={{ page_obj.paginator.num_pages }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn">{{ page_obj.paginator.num_pages }}</a>
                     {% endif %}
                 </div>
                 
-                <!-- 次へボタン: もし次のページがあればリンクを表示、なければ非活性状態に -->
                 <div class="pagination-btn-right">
                     {% if page_obj.has_next %}
                         <a href="?page={{ page_obj.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn next">次へ</a>
@@ -78,44 +62,21 @@
                 </div>
             </div>
         </div>
-        
 
-        <!-- 求人情報の表示 -->
         {% for offer in page_obj.object_list %}
-        <article class="company-card">
+        <article class="company-card small-card">
             <h2>
                 <a href="/offer/{{ offer.id }}/">{{ offer.name }}</a>
             </h2>
             <h3>{{ offer.corporation.name }}</h3>
             <div class="company-content">
                 <p class="description">{{ offer.detail|default:"説明がありません" }}</p>
-                <div class="job-item">
-                    <!-- 画像がある場合は表示、なければデフォルト画像を表示 -->
-                    {% if offer.photo %}
-                        <img src="{{ offer.photo.url }}" alt="{{ offer.name }}">
-                    {% else %}
-                        <img src="{% static 'images/no_image.png' %}" alt="画像なし">
-                    {% endif %}
-                </div>
             </div>
         </article>
         {% endfor %}
 
-        <!-- ページネーション情報 -->
-        <section class="pagination-info" style="text-align: center;">
-            {% if page_obj.paginator.count > 0 %}
-                <!-- 求人数と表示されるページ番号 -->
-                <p>全{{ page_obj.paginator.count }}件 {{ page_obj.start_index }} - {{ page_obj.end_index }}件表示</p>
-            {% else %}
-                <!-- 該当する求人情報がない場合 -->
-                <p>該当する求人情報は見つかりませんでした。</p>
-            {% endif %}
-        </section>
-
         <div class="pagination">
-            <!-- ページ番号のグループと「前へ」「次へ」ボタンを左右に配置 -->
             <div class="pagination-btn-group">
-                <!-- 前へボタン: もし前のページがあればリンクを表示、なければ非活性状態に -->
                 <div class="pagination-btn-left">
                     {% if page_obj.has_previous %}
                         <a href="?page={{ page_obj.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn prev">前へ</a>
@@ -123,41 +84,31 @@
                         <span class="pagination-btn prev disabled">前へ</span>
                     {% endif %}
                 </div>
-        
-                <!-- ページ番号のグループ -->
+
                 <div class="page-group">
-                    <!-- 現在のページが3ページ目以降の場合、最初のページ（1ページ）を表示 -->
                     {% if page_obj.number > 3 %}
                         <a href="?page=1&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn">1</a>
-                        
-                        <!-- 現在のページが4ページ目以降の場合、`...`（省略記号）を表示 -->
                         {% if page_obj.number > 4 %}
                             <span class="pagination-btn ellipsis">...</span>
                         {% endif %}
                     {% endif %}
                     
-                    <!-- ページ番号を表示 -->
                     {% for page_num in page_range %}
-                        <!-- 現在のページと一致するページはactiveクラスを付与して強調 -->
                         {% if page_num == page_obj.number %}
                             <a href="?page={{ page_num }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn active">{{ page_num }}</a>
                         {% elif page_num > page_obj.number|add:"-3" and page_num < page_obj.number|add:"3" %}
-                            <!-- 現在のページ番号の前後3ページの範囲のみ表示 -->
                             <a href="?page={{ page_num }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn">{{ page_num }}</a>
                         {% endif %}
                     {% endfor %}
-        
-                    <!-- 現在のページが最終ページから3ページ前より前の場合、省略記号`...`を表示 -->
+
                     {% if page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
                         {% if page_obj.number < page_obj.paginator.num_pages|add:"-4" %}
                             <span class="pagination-btn ellipsis">...</span>
                         {% endif %}
-                        <!-- 最後のページ番号を表示 -->
                         <a href="?page={{ page_obj.paginator.num_pages }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn">{{ page_obj.paginator.num_pages }}</a>
                     {% endif %}
                 </div>
                 
-                <!-- 次へボタン: もし次のページがあればリンクを表示、なければ非活性状態に -->
                 <div class="pagination-btn-right">
                     {% if page_obj.has_next %}
                         <a href="?page={{ page_obj.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="pagination-btn next">次へ</a>
@@ -169,5 +120,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

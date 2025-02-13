@@ -76,12 +76,13 @@ h2::after {
     font-size: 18px;
     color: #333;
     text-align: center;
-    word-wrap: break-word; /* テキストを折り返す */
-    overflow-wrap: break-word; /* 長い単語も折り返して表示 */
-    max-width: 260px; /* 画像と同じ幅に合わせる */
-    margin-right: auto; /* 中央寄せ */
-    margin-left: 50px; /* 文字を少し右に寄せる */
-    flex: 1; /* 空きスペースを占める */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 80%; /* 幅を適度に制限 */
+    margin-left: auto; /* 左右中央寄せ */
+    margin-right: auto;
+    flex: 1; /* 空きスペースを均等に使用 */
+    line-height: 1.6; /* 行間を広げる */
 }
 
 .company-content img {
