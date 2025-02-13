@@ -489,10 +489,14 @@ class Subscription_doneView(LoginRequiredMixin, View):
         subject = f"{user.name} 様が {offer.name} に応募しました"
         message = (
             f"この方からの応募がありました。\n\n"
-            f"名前: {profile.furigana}\n"
-            f"メール: {user.mail}\n"
+            f"名前: {user.name}\n"
+            f"フリガナ: {profile.furigana}\n"
+            f"生年月日: {profile.birth}\n"
+            f"メールアドレス: {user.mail}\n"
             f"電話番号: {profile.uTel}\n"
-            f"学校名: {profile.uSchool}\n\n"
+            f"住所: {profile.uAddress}\n"
+            f"学校名: {profile.uSchool}\n"
+            f"卒業年: {profile.graduation}\n\n"
             f"下記メールアドレスから応募者とやり取りを開始してください。\n"
             f"応募者メール: {user.mail}"
         )
