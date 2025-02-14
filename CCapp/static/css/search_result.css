@@ -232,3 +232,20 @@ h2::after {
     background-color: #f8f9fa;
     cursor: not-allowed;
 }
+
+.picture-box1, .picture-box2{
+    width: 250px;
+    height: 200px;
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid #000000;
+  }
+  
+  .picture-box1 {
+    background-color: white;
+  }
+  
+  .picture-box2 {
+    background-color: white;
+  }
+  
