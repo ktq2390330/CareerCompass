@@ -1,21 +1,16 @@
 /* サービスについてタイトルのスタイル */
 .service-title {
-    font-size: 30px; /* フォントサイズを大きく */
-    text-transform: uppercase; /* 大文字に変換 */
-    color: black; /* 色を黒に変更 */
-    text-align: center; /* 中央揃え */
-    margin-bottom: 50px; /* 下に余白を追加 */
+    font-size: 30px;
+    text-transform: uppercase;
+    color: black;
+    text-align: center;
+    margin-bottom: 50px;
     margin-top: 50px;
 }
 
-/* サービス説明文のスタイル */
-.service-description {
-    font-size: 20px; /* フォントサイズを小さく */
-    text-align: center; /* 中央揃え */
-    margin-bottom: 100px; /* 下に余白を追加 */
-}
 
-.profile-box {
+/* 説明文の外枠 */
+.text-field {
     border: 2px solid; /* 外枠を維持 */
     padding: 60 40px; /* パディングを調整 */
     margin: 100px auto;
@@ -23,12 +18,21 @@
     text-align: center;
 }
 
+/* サービス説明文のスタイル */
+.service-description {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+/* ボタングループ */
 .button-group {
     text-align: center;
     margin-top: 60px;
     margin-bottom: 60px;
 }
 
+/* ボタンの体裁 */
 .button-group a {
     text-decoration: none;
     padding: 12px 20px; /* ボタン内の余白を増やす */
@@ -43,6 +47,7 @@
     transition: background-color 0.3s;
 }
 
+/* ボタンのホバー */
 .button-group a:hover {
     background-color: #367bb7;
 }
