@@ -34,11 +34,11 @@
     <div class="button-group">
         <form method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" name="action" value="no" class="action-button no">いいえ</button>
+            <button type="submit" name="action" value="yes" class="action-button yes">はい</button>
         </form>
         <form method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" name="action" value="yes" class="action-button yes">はい</button>
+            <button type="submit" name="action" value="no" class="action-button no">いいえ</button>
         </form>
     </div>
     
