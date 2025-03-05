@@ -1,0 +1,28 @@
+git clone https://github.com/ktq2390330/CareerCompass
+※Visual Studio Codeのターミナルにて1から順に実行してください
+1. python -m venv myvenv
+2. myvenv\Scripts\activate
+3. pip install -r requirements.txt
+4. python manage.py migrate
+5. python setup/py/import_data.py
+6. python manage.py runserver 
+
+↑これらのコードが入力し終わったら
+
+http://127.0.0.1:8000/
+↑このようなURLが出てくるので、
+ このURLをCtrlキー＋クリックしていただくか、WebブラウザにURLを貼り付けアクセスしてください。
+
+アクセスした後は、一般ユーザー(学生など)が利用する画面に飛びます。
+新規登録ボタンから新規登録をすると、CareerCompassのトップページへ遷移します。
+
+管理者ダッシュボードにアクセスする際は
+http://127.0.0.1:8000/adm_login/
+↑こちらのURLをCtrlキー＋クリックしていただくか、WebブラウザにURLを貼り付け
+ アクセスしてください。
+
+管理者ダッシュボードにログインする際は
+メールアドレス：admintest1@mastertest1.com
+パスワード：master111
+↑こちらを入力していただくと管理者ダッシュボードにログインができます。
+(何故かCSRF検証に失敗する場合がありますが、その際はお手数ですがもう一度お試しください)
